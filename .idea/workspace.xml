@@ -27,8 +27,8 @@
       <file leaf-file-name="clean_data_2013.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.90066224">
-              <caret line="245" column="34" selection-start-line="191" selection-start-column="0" selection-end-line="245" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.205298">
+              <caret line="289" column="0" selection-start-line="289" selection-start-column="0" selection-end-line="296" selection-end-column="62" />
               <folding>
                 <element signature="e#27#46#0" expanded="true" />
               </folding>
@@ -378,8 +378,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.90066224">
-          <caret line="245" column="34" selection-start-line="191" selection-start-column="0" selection-end-line="245" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.205298">
+          <caret line="289" column="0" selection-start-line="289" selection-start-column="0" selection-end-line="296" selection-end-column="62" />
           <folding>
             <element signature="e#27#46#0" expanded="true" />
           </folding>

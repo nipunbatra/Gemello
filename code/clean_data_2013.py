@@ -140,7 +140,7 @@ def create_predictions(appliance="hvac", feature='aggregate+area'):
         overall_dfs[k] = {}
 
 
-        for month in ["%s_%d" %(appliance,i) for i in range(1,13)]:
+        for i, month in enumerate(["%s_%d" %(appliance,i) for i in range(1,13)]):
             #print month
             y = df[month]
             y2 = y.dropna()
@@ -166,7 +166,7 @@ def create_predictions(appliance="hvac", feature='aggregate+area'):
             out_month[k][month] = out_pred
             gt_month[k][month] = y3.values
             overall_dfs[k][month] = pd.DataFrame({"gt":y3.values, "pred":out_pred,
-                                                  "gt_total":df3["aggregate_"+str(i-1)].values}, index=y3.index)
+                                                  "gt_total":df3["aggregate_"+str(i+1)].values}, index=y3.index)
             overall_dfs[k][month]["national average"] = overall_dfs[k][month]["gt_total"]*national_average[appliance]
     return overall_dfs
 
@@ -197,7 +197,7 @@ for feature_name, feature in feature_columns.iteritems():
     for month in range(1, 13):
         results[feature_name][month] = compute_metrics(overall_dfs[4][appliance+"_"+str(month)].ix[fridge_fhmm_pred.index])["Percentage error in appliance energy"]
 result_df = pd.DataFrame(results)
-
+overall_dfs_fridge = deepcopy(overall_dfs)
 temp = []
 for month in range(1, 13):
     temp.append(percentage_error(overall_dfs[4][appliance+"_"+str(month)].ix[fridge_fhmm_pred.index]["gt"],
@@ -245,25 +245,97 @@ result_df["FHMM"] = pd.Series(results_hvac)
 
 hvac_df = result_df.ix[5:9].mean()
 
-latexify(columns=2, fig_height=3)
+
+
+
+fridge_accuracy = pd.Series({"National Average":59, "FHMM":69, "Neighbourhood NILM":81, "Best reported accuracy":80})
+hvac_accuracy = pd.Series({"National Average":0, "FHMM":67, "Neighbourhood NILM":82, "Best reported accuracy":85})
+
+
+fridge_hvac = pd.DataFrame({"HVAC":hvac_accuracy, "Fridge":fridge_accuracy})
+
+latexify(fig_height=2.8)
 plt.clf()
-ax = percentage_fridge.plot(kind="bar", rot=0)
+ax=fridge_hvac.ix[['National Average','FHMM','Neighbourhood NILM','Best reported accuracy']].T.plot(kind="bar",rot=0)
 format_axes(ax)
-plt.ylabel("Percentage error in fridge energy\n(Lower is better)")
+ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.25),
+          ncol=2)
+plt.ylabel("Energy accuracy (\%)")
+
+#plt.tight_layout()
+plt.savefig("../figures/fridge_hvac_energy.pdf", bbox_inches="tight")
+
+
+
+# 3367 for HVAC
+"""
+o = {}
+for i in range(5, 11):
+    temp = overall_dfs[4]['hvac_'+str(i)]
+    o[i] = (temp['pred']-temp['gt']).abs().div(temp['gt']).mul(100)
+odf.dropna().sum(axis=1)
+
+"""
+
+odf_hvac = {}
+for i in range(5, 11):
+    odf_hvac[i] = overall_dfs[4]['hvac_'+str(i)].ix[3367]
+
+odf_hvac = pd.DataFrame(odf_hvac).T
+odf_hvac['FHMM'] = hvac_fhmm_pred.ix[3367].ix[5:11].values
+odf_hvac = odf_hvac.rename(columns={"pred":"Neighbourhood NILM", "national average":"National Average","gt":"Ground Truth"})
+odf_hvac = odf_hvac.drop("gt_total",1)
+
+
+latexify(columns=2, fig_height=3.2)
+plt.clf()
+ax = odf_hvac.plot(kind="bar",rot=0)
+format_axes(ax)
+plt.ylabel("HVAC energy (kWh)")
 plt.xlabel("Month")
 plt.tight_layout()
-plt.savefig("../figures/fridge_percentage_energy.pdf", bbox_inches="tight")
+plt.savefig("../figures/hvac_months.pdf", bbox_inches="tight")
 
 
 
-latexify(columns=2, fig_height=3)
+# Fridge
+"""
+o = {}
+for i in range(1, 13):
+    temp = overall_dfs_fridge[4]['fridge_'+str(i)]
+    o[i] = (temp['pred']-temp['gt']).abs().div(temp['gt']).mul(100)
+odf = pd.DataFrame(o)
+odf.dropna().sum(axis=1)
+"""
+
+odf_fridge = {}
+for i in range(1, 13):
+    odf_fridge[i] = overall_dfs[4]['fridge_'+str(i)].ix[2814]
+
+odf_fridge = pd.DataFrame(odf_fridge).T
+odf_fridge['FHMM'] = fridge_fhmm_pred.ix[2814].values
+odf_fridge = odf_fridge.rename(columns={"pred":"Neighbourhood NILM", "national average":"National Average","gt":"Ground Truth"})
+odf_fridge = odf_fridge.drop("gt_total",1)
+
+latexify(columns=2, fig_height=3.2)
 plt.clf()
-ax = percentage_pie_fridge.plot(kind="bar", rot=0)
+ax = odf_fridge.plot(kind="bar",rot=0)
 format_axes(ax)
-plt.ylabel("Percentage error in fridge proportion\n(Lower is better)")
+plt.ylabel("Fridge energy (kWh)")
 plt.xlabel("Month")
 plt.tight_layout()
-plt.savefig("../figures/fridge_percentage_pie.pdf", bbox_inches="tight")
+plt.savefig("../figures/fridge_months.pdf", bbox_inches="tight")
+
+
+
+latexify(columns=2, fig_height=3.2)
+plt.clf()
+ax = odf_hvac.plot(kind="bar",rot=0)
+format_axes(ax)
+plt.ylabel("HVAC energy")
+plt.xlabel("Month")
+plt.tight_layout()
+plt.savefig("../figures/hvac_months.pdf", bbox_inches="tight")
 """
 HVAC
 """
