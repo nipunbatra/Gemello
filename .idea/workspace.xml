@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/clean_data_2013.py" afterPath="$PROJECT_DIR$/code/clean_data_2013.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/hvac_ipsn.ipynb" afterPath="$PROJECT_DIR$/code/hvac_ipsn.ipynb" />
     </list>
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,8 +26,8 @@
       <file leaf-file-name="clean_data_2013.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.205298">
-              <caret line="289" column="0" selection-start-line="289" selection-start-column="0" selection-end-line="296" selection-end-column="62" />
+            <state vertical-scroll-proportion="7.8656716">
+              <caret line="533" column="63" selection-start-line="502" selection-start-column="0" selection-end-line="533" selection-end-column="63" />
               <folding>
                 <element signature="e#27#46#0" expanded="true" />
               </folding>
@@ -62,7 +61,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="725" />
+    <option name="height" value="724" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -296,7 +295,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="725" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="724" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -378,8 +377,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.205298">
-          <caret line="289" column="0" selection-start-line="289" selection-start-column="0" selection-end-line="296" selection-end-column="62" />
+        <state vertical-scroll-proportion="7.8656716">
+          <caret line="533" column="63" selection-start-line="502" selection-start-column="0" selection-end-line="533" selection-end-column="63" />
           <folding>
             <element signature="e#27#46#0" expanded="true" />
           </folding>

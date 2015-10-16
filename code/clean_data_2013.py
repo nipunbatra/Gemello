@@ -36,6 +36,11 @@ for key, int_key in zip(common_homes_keys, common_homes):
     hvac = np.array([np.NaN]*12)
     fridge = np.array([np.NaN]*12)
     wm = np.array([np.NaN]*12)
+    furnace = np.array([np.NaN]*12)
+    ev = np.array([np.NaN]*12)
+    dw = np.array([np.NaN]*12)
+    dr = np.array([np.NaN]*12)
+    light = np.array([np.NaN]*12)
 
 
 
@@ -49,20 +54,48 @@ for key, int_key in zip(common_homes_keys, common_homes):
     if 'air2' in df_res_kwh.columns:
         temp = temp + df_res_kwh['air2']
 
+    if 'lights_plugs1' in df_res_kwh.columns:
+        temp_light = df_res_kwh['lights_plugs1']
+    if 'lights_plugs2' in df_res_kwh.columns:
+        temp_light = temp_light+ df_res_kwh['lights_plugs2']
+    if 'lights_plugs3' in df_res_kwh.columns:
+        temp_light = temp_light+df_res_kwh['lights_plugs3']
+    if 'lights_plugs4' in df_res_kwh.columns:
+        temp_light = temp_light+df_res_kwh['lights_plugs4']
+    if 'lights_plugs5' in df_res_kwh.columns:
+        temp_light = temp_light+df_res_kwh['lights_plugs5']
+
+
+    if 'furnace1' in df_res_kwh.columns:
+        furnace = df_res_kwh['furnace1']
+
     aggregate = df_res_kwh["use"].values
 
     hvac = temp
+    light = temp_light
 
     if "clotheswasher1" in df_res_kwh.columns:
         wm = df_res_kwh['clotheswasher1']
-    out[int_key] = np.hstack([aggregate, hvac, fridge, wm])
+
+    if "dishwasher1" in df_res_kwh.columns:
+        dw = df_res_kwh['dishwasher1']
+
+    if "drye1" in df_res_kwh.columns:
+        dr = df_res_kwh['drye1']
+
+    out[int_key] = np.hstack([aggregate, hvac, fridge, wm, furnace, dw, dr, light])
 
 
 df = pd.DataFrame(out).T
 df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
            ["hvac_%d" %i for i in range(1,13)],
            ["fridge_%d" %i for i in range(1,13)],
-           ["wm_%d" %i for i in range(1,13)]
+           ["wm_%d" %i for i in range(1,13)],
+           ["furnace_%d" %i for i in range(1,13)],
+           ["dw_%d" %i for i in range(1,13)],
+           ["dr_%d" %i for i in range(1,13)],
+            ["light_%d" %i for i in range(1,13)]
+
            ])
 
 # Adding area information
@@ -111,6 +144,8 @@ aggregate_area_rooms.append("num_rooms")
 aggregate_area_occupants = deepcopy(aggregate_area)
 aggregate_area_occupants.append("total_occupants")
 
+#df[only_aggregate] = df[only_aggregate].div(df[only_aggregate].max().max())
+
 feature_columns = {
     "aggregate":only_aggregate,
     "aggregate+area":aggregate_area,
@@ -122,13 +157,13 @@ feature_columns = {
 from sklearn import preprocessing
 
 
-hvac_fhmm_pred = pd.read_csv("../fhmm_disag.csv", index_col=0)
+hvac_fhmm_pred = pd.read_csv("../fhmm_disag_new.csv", index_col=0)
 fridge_fhmm_pred = pd.read_csv("../fridge_fhmm.csv", index_col=0)
 appliance_fhmm = {'fridge':fridge_fhmm_pred,
                   'hvac':hvac_fhmm_pred}
 
 
-national_average = {"fridge":0.07,"hvac":0.13}
+national_average = {"fridge":0.07,"hvac":0.18, 'wm':0.01, 'furnace':0.09, 'dw':0.02,'dr':0.04,'light':.11}
 
 def create_predictions(appliance="hvac", feature='aggregate+area'):
     out_month = {}
@@ -145,7 +180,8 @@ def create_predictions(appliance="hvac", feature='aggregate+area'):
             y = df[month]
             y2 = y.dropna()
             y3 = y2[y2>0].dropna()
-            df3 = df.ix[y3.index].dropna()
+            df3 = df[feature_columns[feature]].ix[y3.index].dropna()
+            #df3 = df.ix[y3.index].dropna()
             y3 = y3.ix[df3.index]
             #df3 = df3.ix[appliance_fhmm[appliance].index].dropna()
             #y3 = y3.ix[df3.index]
@@ -184,6 +220,21 @@ def compute_metrics(df):
 
 from common_functions import *
 
+
+def pred_appliance(appliance):
+    results={}
+    for feature_name, feature in feature_columns.iteritems():
+        overall_dfs = create_predictions(appliance, feature=feature_name)
+        results[feature_name] = {}
+        for month in range(1, 13):
+            results[feature_name][month] = compute_metrics(overall_dfs[4][appliance+"_"+str(month)])["Percentage error in appliance energy"]
+    result_df = pd.DataFrame(results)
+    temp = []
+    for month in range(1, 13):
+        temp.append(percentage_error(overall_dfs[4][appliance+"_"+str(month)]["gt"],
+                                overall_dfs[4][appliance+"_"+str(month)]["national average"]).median())
+    result_df["National Average"]=temp
+    return result_df
 
 
 """
@@ -297,6 +348,16 @@ plt.tight_layout()
 plt.savefig("../figures/hvac_months.pdf", bbox_inches="tight")
 
 
+### WM
+appliance="furnace"
+results={}
+for feature_name, feature in feature_columns.iteritems():
+    overall_dfs = create_predictions(appliance, feature=feature_name)
+    results[feature_name] = {}
+    for month in range(1, 13):
+        results[feature_name][month] = compute_metrics(overall_dfs[4][appliance+"_"+str(month)])["Percentage error in appliance energy"]
+result_df = pd.DataFrame(results)
+
 
 # Fridge
 """
@@ -310,7 +371,7 @@ odf.dropna().sum(axis=1)
 
 odf_fridge = {}
 for i in range(1, 13):
-    odf_fridge[i] = overall_dfs[4]['fridge_'+str(i)].ix[2814]
+    odf_fridge[i] = overall_dfs_fridge[4]['fridge_'+str(i)].ix[2814]
 
 odf_fridge = pd.DataFrame(odf_fridge).T
 odf_fridge['FHMM'] = fridge_fhmm_pred.ix[2814].values
@@ -332,7 +393,7 @@ latexify(columns=2, fig_height=3.2)
 plt.clf()
 ax = odf_hvac.plot(kind="bar",rot=0)
 format_axes(ax)
-plt.ylabel("HVAC energy")
+plt.ylabel("HVAC energy (kWh)")
 plt.xlabel("Month")
 plt.tight_layout()
 plt.savefig("../figures/hvac_months.pdf", bbox_inches="tight")
@@ -340,7 +401,7 @@ plt.savefig("../figures/hvac_months.pdf", bbox_inches="tight")
 HVAC
 """
 
-
+"""
 for appliance in ["hvac"]:
     overall_dfs = create_predictions(appliance, feature='aggregate+area+occupants')
     results = {}
@@ -385,11 +446,11 @@ plt.savefig("../figures/hvac_percentage_pie.pdf", bbox_inches="tight")
 
 
 
-"""
+
 ##################
-CODE for sensitivity analysis
+#CODE for sensitivity analysis
 ##################
-"""
+
 
 sensitivity_k_hvac={}
 appliance ="hvac"
@@ -435,5 +496,42 @@ plt.xlabel("Month")
 plt.ylabel("Percentage error in fridge energy\n(Lower is better)")
 plt.tight_layout()
 plt.savefig("../figures/fridge_sensitivity.pdf", bbox_inches="tight")
+
+"""
+
+
+############ PLOTTING ILLUSTRATION##########
+latexify(columns=2, fig_height=3.2)
+plt.clf()
+fig, ax = plt.subplots(nrows=2, sharex=True)
+from sklearn.neighbors import NearestNeighbors
+nbrs = NearestNeighbors(n_neighbors=3).fit( df[["aggregate_%d" %i for i in range(1,13)]])
+distances, indices = nbrs.kneighbors(df[["aggregate_%d" %i for i in range(1,13)]].ix[3367])
+df[["aggregate_%d" %i for i in range(1,13)]].T.plot(legend=False, ax=ax[0], color='k',alpha=0.05)
+#ax[0].set_xlabel(range(1, 13))
+ax[0].set_ylabel("Aggregate energy (kWh)")
+#ax[0].set_xticklabels(range(1, 13))
+df[["aggregate_%d" %i for i in range(1,13)]].ix[3367].T.plot(ax=ax[0],legend=False, color='orange', alpha=1, linewidth=6, zorder=-10)
+nghbrs_list = df[["aggregate_%d" %i for i in range(1,13)]].index[indices].values[0][1:]
+for ne in nghbrs_list:
+    df[["aggregate_%d" %i for i in range(1,13)]].ix[ne].T.plot(ax=ax[0],legend=False, color='green', alpha=1, linewidth=2)
+
+df[["hvac_%d" %i for i in range(1,13)]].T.plot(legend=False, ax=ax[1], color='k',alpha=0.05)
+
+df[["hvac_%d" %i for i in range(1,13)]].ix[3367].T.plot(ax=ax[1],legend=False, color='orange', alpha=1, linewidth=6, zorder=-10)
+
+for ne in nghbrs_list:
+    df[["hvac_%d" %i for i in range(1,13)]].ix[ne].T.plot(ax=ax[1],legend=False, color='green', alpha=1, linewidth=2)
+
+format_axes(ax[0])
+format_axes(ax[1])
+plt.locator_params(axis = 'x', nbins = 12)
+ax[1].set_ylim((-50, 1600))
+ax[1].set_xticklabels(range(1, 13))
+ax[1].set_xlabel("Month")
+ax[1].set_ylabel("HVAC energy (kWh)")
+plt.tight_layout()
+plt.savefig("../figures/illustration.pdf", bbox_inches="tight")
+
 
 
