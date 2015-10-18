@@ -6,131 +6,9 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
-st = pd.HDFStore(os.path.expanduser("~/Downloads/wiki-temp.h5"))
-o = {}
 
-all_keys = st.keys()
-for k in all_keys:
-    try:
-        o[k] = len(st[k]['2013'])
-    except:
-        pass
-
-s = pd.Series(o)
-homes_keys = s[s>505478].index.tolist()
-homes_int = map(lambda x: int(x[1:]),homes_keys)
-
-
-survey_df = pd.read_csv(os.path.expanduser("~/git/nilm-actionable/data/total/survey_2013.csv"))
-
-common_homes = np.intersect1d(survey_df.dataid.values, homes_int)
-
-common_homes_keys = map(lambda x: "/"+str(x), common_homes)
-
-out = {}
-for key, int_key in zip(common_homes_keys, common_homes):
-    print key
-    df = st[key]['2013']
-    df_res = df.resample('1M',how="sum")
-    df_res_kwh = df_res.mul(0.000017)
-    hvac = np.array([np.NaN]*12)
-    fridge = np.array([np.NaN]*12)
-    wm = np.array([np.NaN]*12)
-    furnace = np.array([np.NaN]*12)
-    ev = np.array([np.NaN]*12)
-    dw = np.array([np.NaN]*12)
-    dr = np.array([np.NaN]*12)
-    light = np.array([np.NaN]*12)
-
-
-
-
-    if "refrigerator1" in df_res_kwh.columns:
-        fridge = df_res_kwh['refrigerator1']
-
-
-    if 'air1' in df_res_kwh.columns:
-        temp = df_res_kwh['air1']
-    if 'air2' in df_res_kwh.columns:
-        temp = temp + df_res_kwh['air2']
-
-    if 'lights_plugs1' in df_res_kwh.columns:
-        temp_light = df_res_kwh['lights_plugs1']
-    if 'lights_plugs2' in df_res_kwh.columns:
-        temp_light = temp_light+ df_res_kwh['lights_plugs2']
-    if 'lights_plugs3' in df_res_kwh.columns:
-        temp_light = temp_light+df_res_kwh['lights_plugs3']
-    if 'lights_plugs4' in df_res_kwh.columns:
-        temp_light = temp_light+df_res_kwh['lights_plugs4']
-    if 'lights_plugs5' in df_res_kwh.columns:
-        temp_light = temp_light+df_res_kwh['lights_plugs5']
-
-
-    if 'furnace1' in df_res_kwh.columns:
-        furnace = df_res_kwh['furnace1']
-
-    aggregate = df_res_kwh["use"].values
-
-    hvac = temp
-    light = temp_light
-
-    if "clotheswasher1" in df_res_kwh.columns:
-        wm = df_res_kwh['clotheswasher1']
-
-    if "dishwasher1" in df_res_kwh.columns:
-        dw = df_res_kwh['dishwasher1']
-
-    if "drye1" in df_res_kwh.columns:
-        dr = df_res_kwh['drye1']
-
-    out[int_key] = np.hstack([aggregate, hvac, fridge, wm, furnace, dw, dr, light])
-
-
-df = pd.DataFrame(out).T
-df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
-           ["hvac_%d" %i for i in range(1,13)],
-           ["fridge_%d" %i for i in range(1,13)],
-           ["wm_%d" %i for i in range(1,13)],
-           ["furnace_%d" %i for i in range(1,13)],
-           ["dw_%d" %i for i in range(1,13)],
-           ["dr_%d" %i for i in range(1,13)],
-            ["light_%d" %i for i in range(1,13)]
-
-           ])
-
-# Adding area information
-o = []
-temp_df = survey_df[survey_df.dataid.isin(df.index)][["dataid", "house_square_feet"]]
-for home in df.index:
-    o.append(temp_df[temp_df.dataid==home]['house_square_feet'].values[0])
-
-df["area"] = o
-
-# Adding num rooms information
-o = []
-temp_df = survey_df[survey_df.dataid.isin(df.index)][["dataid", "house_num_rooms"]]
-for home in df.index:
-    o.append(temp_df[temp_df.dataid==home]['house_num_rooms'].values[0])
-
-df["num_rooms"] = o
-
-
-# Adding number of occupants
-
-survey_df.sex_males = survey_df.sex_males.replace("None", 0)
-survey_df.sex_males = survey_df.sex_males.replace("5 or more", 5)
-survey_df.sex_females = survey_df.sex_females.replace("None", 0)
-survey_df.sex_females = survey_df.sex_females.replace("5 or more", 5)
-survey_df.sex_males = survey_df.sex_males.convert_objects(convert_numeric=True)
-survey_df.sex_females = survey_df.sex_females.convert_objects(convert_numeric=True)
-survey_df['total_occupants'] = survey_df.sex_males + survey_df.sex_females
-o= []
-
-temp_df = survey_df[survey_df.dataid.isin(df.index)][["dataid", "total_occupants"]]
-for home in df.index:
-    o.append(temp_df[temp_df.dataid==home]['total_occupants'].values[0])
-
-df["total_occupants"] = o
+df = pd.read_csv("../main_df.csv",index_col=0)
+df_copy = df.copy()
 
 
 from copy import deepcopy
@@ -180,22 +58,33 @@ def create_predictions(appliance="hvac", feature='aggregate+area'):
             y = df[month]
             y2 = y.dropna()
             y3 = y2[y2>0].dropna()
-            df3 = df[feature_columns[feature]].ix[y3.index].dropna()
+            df3 = df[feature].ix[y3.index].dropna()
             #df3 = df.ix[y3.index].dropna()
             y3 = y3.ix[df3.index]
             #df3 = df3.ix[appliance_fhmm[appliance].index].dropna()
             #y3 = y3.ix[df3.index]
             from sklearn.cross_validation import LeaveOneOut
+            from sklearn.neighbors import NearestNeighbors
+            n = NearestNeighbors(n_neighbors=10)
             clf = KNeighborsRegressor(n_neighbors=k)
+
             #clf = KNeighborsRegressor(n_neighbors=k, weights = 'distance' )
             loo = LeaveOneOut(len(df3))
             out_pred = []
 
             for train, test in loo:
+                n.fit(df3[feature].values[train])
                 #clf.fit(preprocessing.normalize(df3[feature_columns[feature]].values[train]), y3.values[train])
-                clf.fit(df3[feature_columns[feature]].values[train], y3.values[train])
+                distances, indices = n.kneighbors(df3[feature].values[test])
+                nghbrs_list = df3[feature].index[indices].values[0]
+
+                from sklearn.linear_model import LinearRegression
+                from sklearn.svm import SVR
+                lr = LinearRegression()
+                lr.fit(df3[feature].ix[nghbrs_list],y3.ix[nghbrs_list])
+                #clf.fit(df3[feature_columns[feature]].values[train], y3.values[train])
                 #out_pred.append(clf.predict(preprocessing.normalize(df3[feature_columns[feature]].values[test])))
-                out_pred.append(clf.predict(df3[feature_columns[feature]].values[test]))
+                out_pred.append(lr.predict(df3[feature].values[test]))
 
             out_pred = np.hstack(out_pred)
 
@@ -207,14 +96,14 @@ def create_predictions(appliance="hvac", feature='aggregate+area'):
     return overall_dfs
 
 def percentage_error(gt, pred):
-    return 100*np.abs(gt-pred)/(gt)
+    return 100*np.abs(gt-pred)/(pred)
 
 
 
 def compute_metrics(df):
     temp = df[df.gt_total>0.0]
     temp = temp[temp.gt>temp.gt_total]
-    return {"Percentage error in appliance energy":np.median(percentage_error(df["gt"], df["pred"]))
+    return {"Percentage error in appliance energy":np.mean(percentage_error(df["gt"], df["pred"]))
             }
 
 
@@ -224,7 +113,7 @@ from common_functions import *
 def pred_appliance(appliance):
     results={}
     for feature_name, feature in feature_columns.iteritems():
-        overall_dfs = create_predictions(appliance, feature=feature_name)
+        overall_dfs = create_predictions(appliance, feature=feature)
         results[feature_name] = {}
         for month in range(1, 13):
             results[feature_name][month] = compute_metrics(overall_dfs[4][appliance+"_"+str(month)])["Percentage error in appliance energy"]
@@ -295,7 +184,6 @@ for month in range(1,13):
 result_df["FHMM"] = pd.Series(results_hvac)
 
 hvac_df = result_df.ix[5:9].mean()
-
 
 
 
@@ -533,12 +421,6 @@ ax[1].set_xlabel("Month")
 ax[1].set_ylabel("HVAC energy (kWh)")
 plt.tight_layout()
 plt.savefig("../figures/illustration.pdf", bbox_inches="tight")
-
-
-
-############MAIN PLOT###############
-df_wm = 100 - pred_appliance("wm").mean()
-
 
 
 
