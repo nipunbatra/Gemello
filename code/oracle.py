@@ -142,7 +142,7 @@ for appliance in ["dw"]:
         out[appliance][k] = {}
         for feature_name, feature in features_dict.iteritems():
             out[appliance][k][feature_name] = {}
-            for weights in ['uniform', 'distance']:
+            for weights in ['uniform']:
                 temp = create_predictions(appliance, feature, k, weights)
                 temp_month = {}
                 for month in range(1, 13):
@@ -437,20 +437,21 @@ plt.savefig("../figures/fridge_sensitivity.pdf", bbox_inches="tight")
 
 
 ############ PLOTTING ILLUSTRATION##########
-latexify(columns=2, fig_height=3.2)
+latexify(columns=2, fig_height=2.5)
+#latexify()
 plt.clf()
 fig, ax = plt.subplots(nrows=2, sharex=True)
 from sklearn.neighbors import NearestNeighbors
 nbrs = NearestNeighbors(n_neighbors=3).fit( df[["aggregate_%d" %i for i in range(1,13)]])
 distances, indices = nbrs.kneighbors(df[["aggregate_%d" %i for i in range(1,13)]].ix[3367])
-df[["aggregate_%d" %i for i in range(1,13)]].T.plot(legend=False, ax=ax[0], color='k',alpha=0.05)
+dfc[["aggregate_%d" %i for i in range(1,13)]].T.plot(legend=False, ax=ax[0], color='k',alpha=0.05)
 #ax[0].set_xlabel(range(1, 13))
-ax[0].set_ylabel("Aggregate energy (kWh)")
+ax[0].set_ylabel("Aggregate \nenergy (kWh)")
 #ax[0].set_xticklabels(range(1, 13))
-df[["aggregate_%d" %i for i in range(1,13)]].ix[3367].T.plot(ax=ax[0],legend=False, color='orange', alpha=1, linewidth=6, zorder=-10)
+dfc[["aggregate_%d" %i for i in range(1,13)]].ix[3367].T.plot(ax=ax[0],legend=False, color='orange', alpha=1, linewidth=6, zorder=-10)
 nghbrs_list = df[["aggregate_%d" %i for i in range(1,13)]].index[indices].values[0][1:]
 for ne in nghbrs_list:
-    df[["aggregate_%d" %i for i in range(1,13)]].ix[ne].T.plot(ax=ax[0],legend=False, color='green', alpha=1, linewidth=2)
+    dfc[["aggregate_%d" %i for i in range(1,13)]].ix[ne].T.plot(ax=ax[0],legend=False, color='green', alpha=1, linewidth=2)
 
 df[["hvac_%d" %i for i in range(1,13)]].T.plot(legend=False, ax=ax[1], color='k',alpha=0.05)
 
@@ -465,7 +466,7 @@ plt.locator_params(axis = 'x', nbins = 12)
 ax[1].set_ylim((-50, 1600))
 ax[1].set_xticklabels(range(1, 13))
 ax[1].set_xlabel("Month")
-ax[1].set_ylabel("HVAC energy (kWh)")
+ax[1].set_ylabel("HVAC \nenergy (kWh)")
 plt.tight_layout()
 plt.savefig("../figures/illustration.pdf", bbox_inches="tight")
 
@@ -541,7 +542,6 @@ plt.savefig("../figures/hvac_252.pdf", bbox_inches="tight")
 
 
 
-latexify(columns=1)
 oracle_series = pd.Series({'Dish washer':56, 'Fridge':94,'Lights':100, 'Washing machine':73, 'Dryer': 61, 'HVAC':95 })
 our_approach = pd.Series({'Dish washer':43, 'Fridge': 83,'HVAC':79,'Washing machine':64, 'Lights':49,'Dryer':43})
 national_average = pd.Series({'Dish washer':19,'Fridge':55,'HVAC':0,'Washing machine':36,'Lights':26,'Dryer':20})
@@ -565,10 +565,44 @@ optimal_features = {'HVAC':
 overall_df = pd.DataFrame({'National average':national_average,
                            'FHMM':fhmm_series,
                            'Neighbourhood NILM':our_approach,
-                          'Best reported NILM accuracy':best_reported_accuracy,
+                          'Best reported\n NILM accuracy':best_reported_accuracy,
                            'Oracle':oracle_series})
+
+
+
+latexify(columns=2, fig_height=1.8)
+
+plt.clf()
+overall_df[['National average','FHMM','Neighbourhood NILM','Best reported\n NILM accuracy','Oracle']].ix[['Fridge','HVAC','Washing machine','Dish washer','Dryer','Lights']].plot(kind="bar",rot=0)
+plt.ylim((0, 110))
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2),
+          ncol=5)
+format_axes(plt.gca())
+#plt.xlabel("Appliances")
+plt.ylabel("Energy accuracy (\%)\n(Higher is better)")
+#plt.tight_layout()
+plt.savefig("../figures/overall.pdf", bbox_inches="tight")
+
 
 
 ax = oracle_series.plot(kind="bar")
 plt.xlabel("Appliance")
 plt.ylabel("Accuracy")
+
+
+#### PIE CHART FOR US EIA
+pie = pd.Series([13, 11, 7, 4,2,1], index=['HVAC','Lighting','Refrigeration','Dryer','Dish washer','Washing machine'])
+
+
+
+###### HVAC neighbouhood poor
+plt.clf()
+hvac_contribution = pd.DataFrame([dfc['hvac_%d' %i]/dfc['aggregate_%d' %i] for i in range(1, 13)], index=range(1, 13))
+hvac_contribution.T.boxplot()
+format_axes(plt.gca())
+plt.grid(False)
+plt.xlabel("Month")
+plt.ylabel("Proportion of energy \ncontributed by HVAC")
+plt.tight_layout()
+plt.axhline(y=.18, linewidth=3, color='g')
+plt.savefig("../figures/hvac_boxplot.pdf", bbox_inches="tight")

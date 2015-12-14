@@ -70,7 +70,7 @@ def latexify(fig_width=None, fig_height=None, columns=1):
     assert(columns in [1,2])
 
     if fig_width is None:
-        fig_width = 3.39 if columns==1 else 6.9 # width in inches
+        fig_width = 3.39 if columns==1 else 7.1 # width in inches
 
     if fig_height is None:
         golden_mean = (sqrt(5)-1.0)/2.0    # Aesthetic ratio

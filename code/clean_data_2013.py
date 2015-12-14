@@ -31,9 +31,12 @@ out = {}
 for key, int_key in zip(common_homes_keys, common_homes):
     print key
     df = st[key]['2013']
+    df_15min = df.resample("15T",how="mean")
+    autocorr = df_15min['use'].autocorr(lag=96)
     df_res = df.resample('1M',how="sum")
     df_res_kwh = df_res.mul(0.000017)
     hvac = np.array([np.NaN]*12)
+    hvac_mins = np.NaN
     fridge = np.array([np.NaN]*12)
     wm = np.array([np.NaN]*12)
     furnace = np.array([np.NaN]*12)
@@ -45,14 +48,18 @@ for key, int_key in zip(common_homes_keys, common_homes):
 
 
 
+
     if "refrigerator1" in df_res_kwh.columns:
         fridge = df_res_kwh['refrigerator1']
 
 
     if 'air1' in df_res_kwh.columns:
+        hvac_mins = (df['air1']['2013-05-01':'2013-10-01']>200).sum()
         temp = df_res_kwh['air1']
     if 'air2' in df_res_kwh.columns:
+        hvac_mins = hvac_mins + (df['air2']['2013-05-01':'2013-10-01']>200).sum()
         temp = temp + df_res_kwh['air2']
+
 
     if 'lights_plugs1' in df_res_kwh.columns:
         temp_light = df_res_kwh['lights_plugs1']
@@ -70,6 +77,11 @@ for key, int_key in zip(common_homes_keys, common_homes):
         furnace = df_res_kwh['furnace1']
 
     aggregate = df_res_kwh["use"].values
+    hourly_df = pd.DataFrame({"power":df["use"].resample("1H", how="mean")})
+    hourly_df["hour"] = hourly_df.index.hour
+    daily_means = pd.pivot_table(hourly_df, index=["hour"])
+    daily_fraction = daily_means.div(daily_means.max())
+
 
     hvac = temp
     light = temp_light
@@ -83,18 +95,21 @@ for key, int_key in zip(common_homes_keys, common_homes):
     if "drye1" in df_res_kwh.columns:
         dr = df_res_kwh['drye1']
 
-    out[int_key] = np.hstack([aggregate, hvac, fridge, wm, furnace, dw, dr, light])
+    out[int_key] = np.hstack([aggregate, daily_fraction.squeeze().values, hvac, fridge, wm, furnace, dw, dr, light, hvac_mins, autocorr])
 
 
 df = pd.DataFrame(out).T
 df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
+                        ["fraction_%d" %i for i in range(1,25)],
            ["hvac_%d" %i for i in range(1,13)],
            ["fridge_%d" %i for i in range(1,13)],
            ["wm_%d" %i for i in range(1,13)],
            ["furnace_%d" %i for i in range(1,13)],
            ["dw_%d" %i for i in range(1,13)],
            ["dr_%d" %i for i in range(1,13)],
-            ["light_%d" %i for i in range(1,13)]
+           ["light_%d" %i for i in range(1,13)],
+        "mins_hvac",
+        "autocorr"
 
            ])
 
@@ -339,9 +354,9 @@ odf_hvac = odf_hvac.rename(columns={"pred":"Neighbourhood NILM", "national avera
 odf_hvac = odf_hvac.drop("gt_total",1)
 
 
-latexify(columns=2, fig_height=3.2)
+latexify(columns=2, fig_height=3)
 plt.clf()
-ax = odf_hvac.plot(kind="bar",rot=0)
+ax = odf_hvac[['National Average','FHMM','Neighbourhood NILM','Ground Truth']].plot(kind="bar",rot=0)
 format_axes(ax)
 plt.ylabel("HVAC energy (kWh)")
 plt.xlabel("Month")

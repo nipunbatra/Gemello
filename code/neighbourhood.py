@@ -6,13 +6,16 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
-df = pd.read_csv("../main_df.csv",index_col=0)
+df = pd.read_csv("../main_15min_autocorr.csv",index_col=0)
 dfc = df.copy()
 
-features_individual = {'area': 'area',
+features_individual = {'fraction':["fraction_%d" % i for i in range(1, 25)],
+                       'area': 'area',
+                       'autocorr':'autocorr',
                        'month': ["aggregate_%d" % i for i in range(1, 13)],
                        'occupants': 'total_occupants',
                        'rooms': 'num_rooms',
+                       #'mins_hvac':'mins_hvac',
                        'month_extract':['variance','ratio_min_max', 'difference_min_max',
                                         'ratio_difference_min_max']}
 
@@ -38,6 +41,7 @@ df[["aggregate_%d" % i for i in range(1, 13)]] = df[["aggregate_%d" % i for i in
 df['area'] = df['area'].div(df['area'].max())
 df['num_rooms'] = df['num_rooms'].div(df['num_rooms'].max())
 df['total_occupants'] = df['total_occupants'].div(df['total_occupants'].max())
+df['mins_hvac'] =  df['mins_hvac'].div(df['mins_hvac'].max())
 
 # Adding new feature
 aa = df[["aggregate_%d" % i for i in range(1, 13)]].copy()
@@ -53,7 +57,6 @@ def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'
     gt_month = {}
     overall_dfs = {}
     for i, month in enumerate(["%s_%d" %(appliance,i) for i in range(1,13)]):
-        print month, i
         y = df[month]
         y2 = y.dropna()
         y3 = y2[y2>0].dropna()
@@ -100,11 +103,28 @@ def compute_metrics(df):
 from common_functions import *
 
 
-def make_predict():
+optimal_features = {'hvac':
+                        {'k':5,'features':['month']},
+                    'fridge':
+                        {'k':3,'features':['month_extract','month','rooms']},
+                    'dw':
+                        {'k':7,'features':['occupants','area']},
+                    'wm':
+                        {'k':5,'features':['month_extract','month','occupants']},
+                    'light':
+                        {'k':2, 'features':['month','area']},
+                    'dr':
+                        {'k':1, 'features':['month_extract', 'month', 'rooms', 'occupants']}
+                    }
+
+all_optimal_features = [tuple(appliance_dict['features']) for appliance_name, appliance_dict in optimal_features.iteritems()]
+
 out = {}
-for appliance in ["dr"]:
+for appliance in ["hvac"]:
+#for appliance in ["light"]:
+    print appliance
     out[appliance] = {}
-    for k in range(1, 6):
+    for k in range(3, 8):
     #for k in [x/10.0 for x in range(20)]:
         print "*"*80
         print k
@@ -113,7 +133,7 @@ for appliance in ["dr"]:
         for feature_name, feature in features_dict.iteritems():
             out[appliance][k][feature_name] = {}
 
-            temp = create_predictions(appliance, feature, k, weights)
+            temp = create_predictions(appliance, feature, k)
             temp_month = {}
             for month in range(1, 13):
                 if appliance in ["fridge","hvac"]:
@@ -123,8 +143,82 @@ for appliance in ["dr"]:
                     #temp_month[month] = compute_metrics(temp[month].ix[appliance_fhmm["hvac"].index])
 
             out[appliance][k][feature_name] = pd.DataFrame(temp_month).squeeze()
-    return out
 
+# Sensitivity analysis over K
+sensitivity_over_k = {}
+for appliance in ["fridge","hvac","wm","dw","dr","light"]:
+    sensitivity_over_k[appliance] = {}
+    best_feature = optimal_features[appliance]['features']
+    for k in range(1, 8):
+        if appliance in ["hvac"]:
+            sensitivity_over_k[appliance][k]= 100-out[appliance][k][tuple(best_feature)].ix[5:10].mean()
+        else:
+            sensitivity_over_k[appliance][k]= 100-out[appliance][k][tuple(best_feature)].mean()
+
+sensitivity_over_k_df = pd.DataFrame(sensitivity_over_k)
+sensitivity_over_k_df =sensitivity_over_k_df.rename(columns={'fridge':'Fridge','dr':'Dryer','dw':'Dish washer','hvac':'HVAC','light':'Lights','wm':'Washing machine'})
+latexify(columns=2, fig_height=1.8)
+plt.clf()
+ax = sensitivity_over_k_df[['Fridge','HVAC','Washing machine','Dish washer','Dryer','Lights']].T.plot(kind="bar",rot=0)
+plt.legend(title="\# Neighbours (K)",loc='upper center', bbox_to_anchor=(0.5, 1.22),
+          ncol=7)
+#plt.xlabel("Appliances")
+plt.ylabel("Energy accuracy (\%)\n(Higher is better)")
+ax =format_axes(ax)
+plt.tight_layout()
+plt.savefig("../figures/sensitivity_k.pdf",bbox_inches="tight")
+
+def findnth(haystack, needle, n):
+    parts= haystack.split(needle, n+1)
+    if len(parts)<=n+1:
+        return -1
+    return len(haystack)-len(parts[-1])-len(needle)
+
+feature_name_map = {'area':'Area','month':'Raw monthly energy','month_extract':'Derived monthly energy',
+                    'rooms':r'\# rooms','occupants':'\# occupants'}
+def rename_features(features):
+    out_string = feature_name_map[features[0]]
+    num_features = len(features)
+    if num_features>1:
+        for f in features[1:]:
+            out_string = out_string+", "+feature_name_map[f]
+
+    """
+    if num_features>=3:
+        nth_comma= findnth(out_string, ",", 2)
+        out_string = out_string[:nth_comma]+"\n"+out_string[nth_comma+1:]
+    """
+    return out_string
+
+
+# Sensitivity analysis over features
+sensitivity_over_features = {}
+for appliance in ["fridge","hvac","wm","dw","dr","light"]:
+    sensitivity_over_features[appliance] = {}
+    best_k = optimal_features[appliance]['k']
+    for feature in all_optimal_features:
+        if appliance in ["hvac"]:
+            sensitivity_over_features[appliance][rename_features(feature)]= 100-out[appliance][best_k][tuple(feature)].ix[5:10].mean()
+        else:
+            sensitivity_over_features[appliance][rename_features(feature)]= 100-out[appliance][best_k][tuple(feature)].mean()
+
+sensitivity_over_features_df = pd.DataFrame(sensitivity_over_features)
+sensitivity_over_features_df.index = ['Derived monthly energy, Raw monthly energy,\n \# occupants',
+       'Derived monthly energy, Raw monthly energy,\n \# rooms',
+       'Derived monthly energy, Raw monthly energy,\n \# rooms, \# occupants',
+       'Raw monthly energy', 'Raw monthly energy, Area',
+       '\# occupants, Area']
+sensitivity_over_features_df =sensitivity_over_features_df.rename(columns={'fridge':'Fridge','dr':'Dryer','dw':'Dish washer','hvac':'HVAC','light':'Lights','wm':'Washing machine'})
+latexify(columns=2, fig_height=2.5)
+plt.clf()
+ax = sensitivity_over_features_df[['Fridge','HVAC','Washing machine','Dish washer','Dryer','Lights']].T.plot(kind="bar",rot=0)
+plt.ylim((0, 100))
+plt.legend(title="Features",loc='upper center', bbox_to_anchor=(0.5, 1.23),
+          ncol=3)#plt.xlabel("Appliances")
+plt.ylabel("Energy accuracy (\%)\n(Higher is better)")
+ax =format_axes(ax)
+plt.tight_layout()
+plt.savefig("../figures/sensitivity_features.pdf",bbox_inches="tight")
 
 def pred_appliance(appliance):
     results={}
@@ -245,10 +339,12 @@ odf_hvac = odf_hvac.rename(columns={"pred":"Neighbourhood NILM", "national avera
 odf_hvac = odf_hvac.drop("gt_total",1)
 
 
-latexify(columns=2, fig_height=3.2)
+latexify(columns=2, fig_height=1.5)
 plt.clf()
-ax = odf_hvac.plot(kind="bar",rot=0)
+ax = odf_hvac[['National Average','FHMM','Neighbourhood NILM','Ground Truth']].plot(kind="bar",rot=0)
 format_axes(ax)
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2),
+          ncol=4)
 plt.ylabel("HVAC energy (kWh)")
 plt.xlabel("Month")
 plt.tight_layout()
