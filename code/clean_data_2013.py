@@ -6,6 +6,13 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
+import statsmodels.api as sm
+
+
+def decompose(df, freq=96):
+    res = sm.tsa.seasonal_decompose(df.fillna(method='ffill').values, freq=freq)
+    return pd.DataFrame({"seasonal":res.seasonal, "trend":res.trend, "obs":res.observed}, index=df.index)
+
 st = pd.HDFStore(os.path.expanduser("~/Downloads/wiki-temp.h5"))
 o = {}
 
@@ -27,6 +34,10 @@ common_homes = np.intersect1d(survey_df.dataid.values, homes_int)
 
 common_homes_keys = map(lambda x: "/"+str(x), common_homes)
 
+
+import pickle
+f = pickle.load(open( "../fhmm_model.p", "rb" ))
+
 out = {}
 for key, int_key in zip(common_homes_keys, common_homes):
     print key
@@ -45,7 +56,28 @@ for key, int_key in zip(common_homes_keys, common_homes):
     dr = np.array([np.NaN]*12)
     light = np.array([np.NaN]*12)
 
+    decomposed_df_daily = decompose(df_15min["use"], 96)
+    decomposed_df_weekly = decompose(df_15min["use"], 96*7)
+    seasonal_daily = decomposed_df_daily.seasonal
+    trend_daily = decomposed_df_daily.trend
 
+    max_seasonal_daily = seasonal_daily.max()
+    stdev_seasonal_daily = seasonal_daily.std()
+
+    max_trend_daily = trend_daily.max()
+    stdev_trend_daily = trend_daily.std()
+
+    seasonal_weekly = decomposed_df_weekly.seasonal
+    trend_weekly = decomposed_df_weekly.trend
+
+    max_seasonal_weekly = seasonal_weekly.max()
+    stdev_seasonal_weekly = seasonal_weekly.std()
+
+    max_trend_weekly = trend_weekly.max()
+    stdev_trend_weekly = trend_weekly.std()
+
+    disag = f.disaggregate_chunk(df_15min["use"])
+    disag_fridge = disag["refrigerator1"].sum()
 
 
 
@@ -95,7 +127,10 @@ for key, int_key in zip(common_homes_keys, common_homes):
     if "drye1" in df_res_kwh.columns:
         dr = df_res_kwh['drye1']
 
-    out[int_key] = np.hstack([aggregate, daily_fraction.squeeze().values, hvac, fridge, wm, furnace, dw, dr, light, hvac_mins, autocorr])
+    out[int_key] = np.hstack([aggregate, daily_fraction.squeeze().values, hvac, fridge, wm, furnace, dw, dr, light, hvac_mins,
+                              autocorr, max_seasonal_daily, stdev_seasonal_daily, max_trend_daily, stdev_trend_daily,
+                              max_seasonal_weekly, stdev_seasonal_weekly, max_trend_weekly, stdev_trend_weekly,
+                              disag_fridge ])
 
 
 df = pd.DataFrame(out).T
@@ -109,7 +144,16 @@ df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
            ["dr_%d" %i for i in range(1,13)],
            ["light_%d" %i for i in range(1,13)],
         "mins_hvac",
-        "autocorr"
+        "autocorr",
+        "max_seasonal_daily",
+        "stdev_seasonal_daily",
+        "max_trend_daily",
+        "stdev_trend_daily",
+         "max_seasonal_weekly",
+        "stdev_seasonal_weekly",
+        "max_trend_weekly",
+        "stdev_trend_weekly",
+        "disag_fridge"
 
            ])
 
@@ -553,7 +597,6 @@ plt.savefig("../figures/illustration.pdf", bbox_inches="tight")
 
 ############MAIN PLOT###############
 df_wm = 100 - pred_appliance("wm").mean()
-
 
 
 

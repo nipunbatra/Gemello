@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/oracle_new.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/clean_data_2013.py" afterPath="$PROJECT_DIR$/code/clean_data_2013.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/common_functions.py" afterPath="$PROJECT_DIR$/code/common_functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/eco.py" afterPath="$PROJECT_DIR$/code/eco.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/neighbourhood.py" afterPath="$PROJECT_DIR$/code/neighbourhood.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/oracle.py" afterPath="$PROJECT_DIR$/code/oracle.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -32,8 +30,8 @@
       <file leaf-file-name="clean_data_2013.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="148" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+            <state vertical-scroll-proportion="-10.269231">
+              <caret line="223" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
               <folding>
                 <element signature="e#27#46#0" expanded="true" />
               </folding>
@@ -44,8 +42,8 @@
       <file leaf-file-name="neighbourhood.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/neighbourhood.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3154574">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+            <state vertical-scroll-proportion="9.723229">
+              <caret line="742" column="0" selection-start-line="742" selection-start-column="0" selection-end-line="743" selection-end-column="34" />
               <folding>
                 <element signature="e#27#46#0" expanded="true" />
               </folding>
@@ -79,7 +77,17 @@
         <entry file="file://$PROJECT_DIR$/code/oracle.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="577" column="0" selection-start-line="577" selection-start-column="0" selection-end-line="578" selection-end-column="17" />
+              <caret line="577" column="4" selection-start-line="577" selection-start-column="4" selection-end-line="578" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="oracle_new.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/oracle_new.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -128,8 +136,8 @@
         <option value="$PROJECT_DIR$/code/regression.py" />
         <option value="$PROJECT_DIR$/code/common_functions.py" />
         <option value="$PROJECT_DIR$/code/eco.py" />
-        <option value="$PROJECT_DIR$/code/oracle.py" />
         <option value="$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py" />
+        <option value="$PROJECT_DIR$/code/oracle.py" />
         <option value="$PROJECT_DIR$/code/clean_data_2013.py" />
         <option value="$PROJECT_DIR$/code/neighbourhood.py" />
       </list>
@@ -141,7 +149,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="729" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -366,7 +374,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="729" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="728" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -408,14 +416,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/code/common_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/oracle.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -824,19 +824,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/oracle.py">
+    <entry file="file://$PROJECT_DIR$/code/eco.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="577" column="0" selection-start-line="577" selection-start-column="0" selection-end-line="578" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/common_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
-          <folding />
+          <caret line="12" column="61" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -850,30 +844,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/eco.py">
+    <entry file="file://$PROJECT_DIR$/code/common_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="61" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
+          <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="148" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+        <state vertical-scroll-proportion="-10.269231">
+          <caret line="223" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
           <folding>
             <element signature="e#27#46#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/oracle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="577" column="4" selection-start-line="577" selection-start-column="4" selection-end-line="578" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/oracle_new.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/neighbourhood.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3154574">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+        <state vertical-scroll-proportion="9.723229">
+          <caret line="742" column="0" selection-start-line="742" selection-start-column="0" selection-end-line="743" selection-end-column="34" />
           <folding>
             <element signature="e#27#46#0" expanded="true" />
           </folding>

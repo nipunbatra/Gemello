@@ -6,18 +6,46 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
-df = pd.read_csv("../main_15min_autocorr.csv",index_col=0)
+df = pd.read_csv("../main_15min_decomposition_daily.csv",index_col=0)
 dfc = df.copy()
 
-features_individual = {'fraction':["fraction_%d" % i for i in range(1, 25)],
+df = df.drop(871)
+df = df.drop(1169)
+
+w=df[['aggregate_%d' %i for i in range(1,13)]]
+
+df = df.ix[w[w>0].dropna().index]
+"""
+features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
                        'area': 'area',
                        'autocorr':'autocorr',
                        'month': ["aggregate_%d" % i for i in range(1, 13)],
                        'occupants': 'total_occupants',
                        'rooms': 'num_rooms',
-                       #'mins_hvac':'mins_hvac',
-                       'month_extract':['variance','ratio_min_max', 'difference_min_max',
-                                        'ratio_difference_min_max']}
+                       #'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
+                       #'trend_daily':['stdev_trend_daily','max_trend_daily'],
+                       'seasonal_weekly':['stdev_seasonal_weekly','max_seasonal_weekly'],
+                       'trend_weekly':['stdev_trend_weekly','max_trend_weekly'],}
+                       #'disag_fridge':'disag_fridge'}
+                       #'mins_hvac':'mins_hvac',}
+                       #'month_extract':['variance','ratio_min_max', 'difference_min_max',
+                        #                'ratio_difference_min_max']}
+
+"""
+features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
+                       'area': 'area',
+                       'autocorr':'autocorr',
+                       'month': ["aggregate_%d" % i for i in range(1, 13)],
+                       'occupants': 'total_occupants',
+                       'rooms': 'num_rooms',
+                       #'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
+                       #'trend_daily':['stdev_trend_daily','max_trend_daily'],
+                       'seasonal':['stdev_seasonal','max_seasonal'],
+                       'trend_weekly':['stdev_trend','max_trend'],}
+                       #'disag_fridge':'disag_fridge'}
+                       #'mins_hvac':'mins_hvac',}
+                       #'month_extract':['variance','ratio_min_max', 'difference_min_max',
+                        #                'ratio_difference_min_max']}
 
 from itertools import combinations
 features_dict = {}
@@ -39,18 +67,31 @@ max_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].max().max()
 df[["aggregate_%d" % i for i in range(1, 13)]] = df[["aggregate_%d" % i for i in range(1, 13)]].div(max_aggregate)
 
 df['area'] = df['area'].div(df['area'].max())
+
 df['num_rooms'] = df['num_rooms'].div(df['num_rooms'].max())
 df['total_occupants'] = df['total_occupants'].div(df['total_occupants'].max())
 df['mins_hvac'] =  df['mins_hvac'].div(df['mins_hvac'].max())
+
+max_cols = {}
+for col in ["stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
+            "stdev_trend_weekly","stdev_seasonal_weekly","max_seasonal_weekly","max_trend_weekly","disag_fridge",
+            'stdev_trend','stdev_seasonal','max_seasonal','max_trend']:
+    if col in df.columns:
+        max_cols[col] = dfc[col].max()
+        df[col] = df[col].div(df[col].max())
+
 
 # Adding new feature
 aa = df[["aggregate_%d" % i for i in range(1, 13)]].copy()
 df['variance'] = df[["aggregate_%d" % i for i in range(1, 13)]].var(axis=1)
 df['ratio_min_max'] = aa.min(axis=1)/aa.max(axis=1)
+
 df['difference_min_max'] = aa.max(axis=1)-aa.min(axis=1)
 df['ratio_difference_min_max'] = (aa.max(axis=1)-aa.min(axis=1)).div(aa.max(axis=1))
 
 
+
+appliance_min = {'fridge':5,'hvac':5,'wm':0,'dw':0,'dr':0,'light':0}
 
 def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'],k=2, weights='uniform'):
     out_month = {}
@@ -59,7 +100,7 @@ def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'
     for i, month in enumerate(["%s_%d" %(appliance,i) for i in range(1,13)]):
         y = df[month]
         y2 = y.dropna()
-        y3 = y2[y2>0].dropna()
+        y3 = y2[y2>appliance_min[appliance]].dropna()
         df3 = df[feature].ix[y3.index].dropna()
         #df3 = df.ix[y3.index].dropna()
         y3 = y3.ix[df3.index]
@@ -93,6 +134,7 @@ def percentage_error(gt, pred):
 
 
 
+
 def compute_metrics(df):
     temp = df[df.gt_total>0.0]
     temp = temp[temp.gt>temp.gt_total]
@@ -120,15 +162,19 @@ optimal_features = {'hvac':
 all_optimal_features = [tuple(appliance_dict['features']) for appliance_name, appliance_dict in optimal_features.iteritems()]
 
 out = {}
-for appliance in ["hvac"]:
-#for appliance in ["light"]:
+#for appliance in [ "light","dr","wm","fridge"]:
+for appliance in ["light"]:
     print appliance
+    if appliance is "hvac":
+        start, stop=5, 10
+    else:
+        start, stop = 1, 12
     out[appliance] = {}
-    for k in range(3, 8):
+    for k in range(1, 8):
     #for k in [x/10.0 for x in range(20)]:
         print "*"*80
         print k
-        print "*"*80
+
         out[appliance][k] = {}
         for feature_name, feature in features_dict.iteritems():
             out[appliance][k][feature_name] = {}
@@ -136,13 +182,18 @@ for appliance in ["hvac"]:
             temp = create_predictions(appliance, feature, k)
             temp_month = {}
             for month in range(1, 13):
-                if appliance in ["fridge","hvac"]:
+                if appliance in ["alpha"]:
+                #if appliance in ["fridge","hvac"]:
                     temp_month[month] = compute_metrics(temp[month].ix[appliance_fhmm[appliance].index])
                 else:
                     temp_month[month] = compute_metrics(temp[month])
                     #temp_month[month] = compute_metrics(temp[month].ix[appliance_fhmm["hvac"].index])
 
             out[appliance][k][feature_name] = pd.DataFrame(temp_month).squeeze()
+        d = pd.DataFrame(out[appliance][k]).ix[start:stop].mean()
+        d.sort()
+        print d.head(4)
+        print "*"*80
 
 # Sensitivity analysis over K
 sensitivity_over_k = {}
@@ -605,4 +656,187 @@ ax[1].set_xlabel("Month")
 ax[1].set_ylabel("HVAC energy (kWh)")
 plt.tight_layout()
 plt.savefig("../figures/hvac_252.pdf", bbox_inches="tight")
+
+
+
+#####
+features_optimal_fridge = ["seasonal","area","trend","autocorr","month","rooms"]
+
+features_list = ['stdev_seasonal','max_seasonal','area','stdev_trend','max_trend',
+                 'num_rooms',
+                 "aggregate_1","aggregate_2","aggregate_3","aggregate_4","aggregate_5",
+                 "aggregate_6","aggregate_7","aggregate_8","aggregate_9","aggregate_10",
+                 "aggregate_11","aggregate_12"]
+
+from sklearn.neighbors import NearestNeighbors
+nbrs = NearestNeighbors(n_neighbors=3).fit( df[features_list].dropna())
+distances, indices = nbrs.kneighbors(df[features_list].ix[3367])
+initial_nghbrs = df[features_list].ix[indices]
+
+# Now introducing some perturbation
+
+dfcc = df.copy()
+import os
+df_3367 = pd.HDFStore(os.path.expanduser("~/Downloads/wiki-temp.h5"))['/3367']['2013']
+df_15min = df_3367.resample("15T",how="mean")
+autocorr = df_15min['use'].autocorr(lag=96)
+df_res = df_3367.resample('1M',how="sum")
+df_res_kwh = df_res.mul(0.000017)
+fridge_original = df_res_kwh['refrigerator1']
+# Twice the energy consumption now
+fridge_new_last_month = 2*fridge_original.values[-1]
+
+aggregate_new_last_month = df_res_kwh['use'].values[-1] - fridge_original[-1] + fridge_new_last_month
+
+aggregate_new_fraction = aggregate_new_last_month*1.0/max_aggregate
+
+df_15min_copy = df_15min.copy()
+df_15min_copy['use'] = df_15min_copy['use']+df_15min_copy['refrigerator1']
+
+import statsmodels.api as sm
+
+
+def decompose(df):
+    res = sm.tsa.seasonal_decompose(df.fillna(method='ffill').values, freq=96)
+    return pd.DataFrame({"seasonal":res.seasonal, "trend":res.trend, "obs":res.observed}, index=df.index)
+
+decomposed_df = decompose(df_15min_copy["use"])
+
+seasonal = decomposed_df.seasonal
+trend = decomposed_df.trend
+
+max_seasonal = seasonal.max()
+stdev_seasonal = seasonal.std()
+
+max_trend = trend.max()
+stdev_trend = trend.std()
+
+new_max_seasonal = max_seasonal/max_cols['max_seasonal']
+new_max_trend = max_seasonal/max_cols['max_trend']
+new_stdev_seasonal = max_seasonal/max_cols['stdev_seasonal']
+new_stdev_trend = max_seasonal/max_cols['stdev_seasonal']
+
+dfcc.ix[3367]['aggregate_12'] = aggregate_new_fraction
+dfcc.ix[3367]['stdev_seasonal'] = new_stdev_seasonal
+dfcc.ix[3367]['stdev_trend'] = new_stdev_trend
+dfcc.ix[3367]['max_seasonal'] = new_max_seasonal
+dfcc.ix[3367]['max_trend'] = new_max_trend
+
+
+
+
+#########################################
+best_feature = {
+
+    'fridge':{'feature':['area','month'],
+              'k':3}
+}
+feature=['area','num_rooms','max_trend','stdev_trend','autocorr','max_seasonal',
+         'stdev_seasonal','aggregate_1','aggregate_2','aggregate_3','aggregate_4',
+         'aggregate_5','aggregate_6','aggregate_7','aggregate_8','aggregate_9',
+         'aggregate_10','aggregate_11','aggregate_12']
+
+feature = ['autocorr','total_occupants','num_rooms','stdev_trend','max_trend']
+
+
+df_bk = df.copy()
+a=df[['fridge_%d' %i for i in range(1,13)]].dropna()
+df = df.ix[a[a>=5].dropna().index]
+feature = ['stdev_seasonal','max_seasonal','num_rooms','area','max_trend','stdev_trend',
+           'variance','ratio_min_max', 'difference_min_max',
+                                        'ratio_difference_min_max',
+           'autocorr','aggregate_1','aggregate_2','aggregate_3','aggregate_4',
+         'aggregate_5','aggregate_6','aggregate_7','aggregate_8','aggregate_9',
+         'aggregate_10','aggregate_11','aggregate_12']
+
+feature = ['stdev_seasonal','max_seasonal','max_trend','stdev_trend',
+
+           'autocorr','total_occupants']
+
+
+k=3
+temp = create_predictions(appliance, feature, k)
+errors = {}
+for i in range(1, 13):
+    errors[i] = percentage_error(temp[i]["gt"], temp[i]["pred"])
+error_df = pd.DataFrame(errors)
+accur_df = 100-error_df
+accur_df[accur_df<0]=0
+
+print accur_df.mean().median()
+print accur_df.median().median()
+print accur_df.median().mean()
+print accur_df.mean().mean()
+
+
+accur_df_2 = accur_df.ix[appliance_fhmm[appliance].index]
+
+
+#Homes showing poor accuracy
+mean_accuracy = accur_df.dropna().mean(axis=1)
+homes_poor_accuracy = mean_accuracy[mean_accuracy<60].index
+
+df_410 = st['/410']
+
+poor_accuracy = {}
+for home in homes_poor_accuracy:
+    for month in range(1, 13):
+        poor_accuracy[month] = temp[month].ix[7866][["gt","pred","gt_total"]]
+
+
+
+# PLot all fridges
+df[['fridge_%d' %i for i in range(1,13)]].T.plot(style='k-', alpha=0.3, legend=False)
+#Plot 410
+for home in homes_poor_accuracy:
+    df.ix[home][['fridge_%d' %i for i in range(1,13)]].T.plot(alpha=1, legend=True)
+
+fridge_homes_index = df[['fridge_%d' %i for i in range(1,13)]].dropna().index
+df_consider = df[feature].dropna().ix[fridge_homes_index]
+from sklearn.neighbors import NearestNeighbors
+nbrs = NearestNeighbors(n_neighbors=5).fit( df_consider[feature].dropna())
+distances, indices = nbrs.kneighbors(df_consider[feature].dropna().ix[6072])
+
+
+
+# Plot for 6072
+df.ix[6072][['fridge_%d' %i for i in range(1,13)]].T.plot(alpha=1, legend=True, color='red')
+nghbrs_list = df_consider.index[indices].values[0][1:]
+for ne in nghbrs_list:
+    df[['fridge_%d' %i for i in range(1,13)]].dropna().ix[ne].T.plot(legend=True, alpha=1, linewidth=2)
+
+
+df[['fridge_%d' %i for i in range(1,13)]].T.plot(style='k-', alpha=0.3, legend=False)
+
+fridge_homes_index = df[['fridge_%d' %i for i in range(1,13)]].dropna().index
+df_consider = df[feature].dropna().ix[fridge_homes_index]
+from sklearn.neighbors import NearestNeighbors
+nbrs = NearestNeighbors(n_neighbors=5).fit( df_consider[feature].dropna())
+distances, indices = nbrs.kneighbors(df_consider[feature].dropna().ix[7866])
+df.ix[7866][['fridge_%d' %i for i in range(1,13)]].T.plot(alpha=1, legend=True, color='red')
+nghbrs_list = df_consider.index[indices].values[0][1:]
+for ne in nghbrs_list:
+    df[['fridge_%d' %i for i in range(1,13)]].dropna().ix[ne].T.plot(legend=True, alpha=1, linewidth=2)
+
+
+# 7866
+
+fridge_homes_index = df[['fridge_%d' %i for i in range(1,13)]].dropna().index
+df_consider = df[feature].dropna().ix[fridge_homes_index]
+from sklearn.neighbors import NearestNeighbors
+nbrs = NearestNeighbors(n_neighbors=5).fit( df_consider[feature].dropna())
+distances, indices = nbrs.kneighbors(df_consider[feature].dropna().ix[7866])
+df.ix[7866][['fridge_%d' %i for i in range(1,13)]].T.plot(alpha=1, legend=True, color='red')
+nghbrs_list = df_consider.index[indices].values[0][1:]
+for ne in nghbrs_list:
+    df[['fridge_%d' %i for i in range(1,13)]].dropna().ix[ne].T.plot(legend=True, alpha=1, linewidth=2)
+
+
+# Now plotting their aggregates
+df.ix[7866][['aggregate_%d' %i for i in range(1,13)]].T.plot(alpha=1, legend=True, color='red')
+for ne in nghbrs_list:
+    df[['aggregate_%d' %i for i in range(1,13)]].dropna().ix[ne].T.plot(legend=True, alpha=1, linewidth=2)
+
+
+
 
