@@ -94,18 +94,24 @@ df['ratio_difference_min_max'] = (aa.max(axis=1)-aa.min(axis=1)).div(aa.max(axis
 appliance_min = {'fridge':5,'hvac':5,'wm':0,'dw':0,'dr':0,'light':0}
 
 def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'],k=2, weights='uniform'):
+
     out_month = {}
     gt_month = {}
     overall_dfs = {}
+    a= df[['%s_%d' %(appliance, i) for i in range(1,13)]].dropna()
+
+    df2 = df.ix[a[a>=appliance_min[appliance]].dropna().index]
+    print len(df2), appliance
     for i, month in enumerate(["%s_%d" %(appliance,i) for i in range(1,13)]):
         y = df[month]
-        y2 = y.dropna()
-        y3 = y2[y2>appliance_min[appliance]].dropna()
-        df3 = df[feature].ix[y3.index].dropna()
+        #y2 = y.dropna()
+        #y3 = y2[y2>appliance_min[appliance]].dropna()
+        df3 = df2[feature].ix[df2.index].dropna()
         #df3 = df.ix[y3.index].dropna()
-        y3 = y3.ix[df3.index]
-        #df3 = df3.ix[appliance_fhmm[appliance].index].dropna()
         #y3 = y3.ix[df3.index]
+        #df3 = df3.ix[appliance_fhmm[appliance].index].dropna()
+        y3 = y.ix[df3.index]
+
         from sklearn.cross_validation import LeaveOneOut
         from sklearn.neighbors import RadiusNeighborsRegressor
         #clf = RadiusNeighborsRegressor(radius=k)
@@ -163,7 +169,7 @@ all_optimal_features = [tuple(appliance_dict['features']) for appliance_name, ap
 
 out = {}
 #for appliance in [ "light","dr","wm","fridge"]:
-for appliance in ["light"]:
+for appliance in ["hvac"]:
     print appliance
     if appliance is "hvac":
         start, stop=5, 10
