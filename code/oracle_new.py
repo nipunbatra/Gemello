@@ -6,10 +6,53 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
-df = pd.read_csv("../main_df.csv",index_col=0)
+df = pd.read_csv("../main_15min_decomposition_daily_weekly.csv",index_col=0)
 dfc = df.copy()
 
+df = df.drop(871)
+df = df.drop(1169)
 
+w=df[['aggregate_%d' %i for i in range(1,13)]]
+
+df = df.ix[w[w>0].dropna().index]
+"""
+features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
+                       'area': 'area',
+                       'autocorr':'autocorr',
+                       'month': ["aggregate_%d" % i for i in range(1, 13)],
+                       'occupants': 'total_occupants',
+                       'rooms': 'num_rooms',
+                       #'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
+                       #'trend_daily':['stdev_trend_daily','max_trend_daily'],
+                       'seasonal_weekly':['stdev_seasonal_weekly','max_seasonal_weekly'],
+                       'trend_weekly':['stdev_trend_weekly','max_trend_weekly'],}
+                       #'disag_fridge':'disag_fridge'}
+                       #'mins_hvac':'mins_hvac',}
+                       #'month_extract':['variance','ratio_min_max', 'difference_min_max',
+                        #                'ratio_difference_min_max']}
+
+"""
+features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
+                       'area': 'area',
+                       'autocorr':'autocorr',
+                       'month': ["aggregate_%d" % i for i in range(1, 13)],
+                       'occupants': 'total_occupants',
+                       'rooms': 'num_rooms',
+                       'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
+                       'trend_daily':['stdev_trend_daily','max_trend_daily'],
+                       'seasonal_weekly':['stdev_seasonal_weekly','max_seasonal_weekly'],
+                       'trend_weekly':['stdev_trend_weekly','max_trend_weekly'],}
+                       #'disag_fridge':'disag_fridge'}
+                       #'mins_hvac':'mins_hvac',}
+                       #'month_extract':['variance','ratio_min_max', 'difference_min_max',
+                        #                'ratio_difference_min_max']}
+
+from itertools import combinations
+features_dict = {}
+for feature_size in range(1,len(features_individual)):
+    combinations_size_n = list(combinations(features_individual.keys(), feature_size))
+    for com in combinations_size_n:
+        features_dict[com] = np.hstack([features_individual[x] for x in com]).tolist()
 
 hvac_fhmm_pred = pd.read_csv("../fhmm_disag_new.csv", index_col=0)
 fridge_fhmm_pred = pd.read_csv("../fridge_fhmm.csv", index_col=0)
@@ -24,29 +67,63 @@ max_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].max().max()
 df[["aggregate_%d" % i for i in range(1, 13)]] = df[["aggregate_%d" % i for i in range(1, 13)]].div(max_aggregate)
 
 df['area'] = df['area'].div(df['area'].max())
+
 df['num_rooms'] = df['num_rooms'].div(df['num_rooms'].max())
 df['total_occupants'] = df['total_occupants'].div(df['total_occupants'].max())
+df['mins_hvac'] =  df['mins_hvac'].div(df['mins_hvac'].max())
+
+max_cols = {}
+for col in ["stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
+            "stdev_trend_weekly","stdev_seasonal_weekly","max_seasonal_weekly","max_trend_weekly","disag_fridge",
+            'stdev_trend','stdev_seasonal','max_seasonal','max_trend']:
+    if col in df.columns:
+        max_cols[col] = dfc[col].max()
+        df[col] = df[col].div(df[col].max())
+
 
 # Adding new feature
 aa = df[["aggregate_%d" % i for i in range(1, 13)]].copy()
 df['variance'] = df[["aggregate_%d" % i for i in range(1, 13)]].var(axis=1)
 df['ratio_min_max'] = aa.min(axis=1)/aa.max(axis=1)
+
 df['difference_min_max'] = aa.max(axis=1)-aa.min(axis=1)
 df['ratio_difference_min_max'] = (aa.max(axis=1)-aa.min(axis=1)).div(aa.max(axis=1))
 
 
-out = {}
-all_homes = {}
-for appliance in ["fridge","hvac","wm","dw","light","dr"]:
-    if appliance in appliance_fhmm:
-        all_homes[appliance] = np.intersect1d(df.index.values, appliance_fhmm[appliance].index.values)
-    else:
-        #all_homes[appliance] = df.index.values
-        all_homes[appliance] = np.intersect1d(df.index.values, appliance_fhmm["hvac"].index.values)
 
+appliance_min = {'fridge':5,'hvac':5,'wm':0,'dw':0,'dr':0,'light':0}
+from itertools import combinations
+
+out = {}
+
+all_homes = {
+    'dw':[  94,  370,  545,  624, 2156, 2242, 2814, 2829, 3723,
+            4767, 5357,6636, 6910, 7769, 9934],
+    'wm':[  94,  370,  545,  624, 2156, 2242, 2470, 2814, 3367, 3456, 3723,
+            3967, 5357, 7769, 9654, 9922, 9934],
+
+    'hvac':[  26,   94,  370,  410,  545,  624, 1283, 1642, 1953, 2129,
+            2156, 2242, 2470, 2814, 2829,  3367, 3456, 3723,
+            3967, 4767, 5218, 5357, 5371, 5746, 5785, 5814, 6072,
+            6636, 6836, 6910, 7731, 7769, 7866, 9609, 9654, 9922, 9933, 9934],
+    'fridge':[  94,  370,  410,  545,  624, 1953, 2156, 2242, 2814, 2829, 3367,
+            3456, 3723, 3967, 4767, 5357, 5371, 6072, 6636, 6910, 7769, 7866],
+    'light':[ 624, 1334, 2814, 2925, 2986, 3367, 3456, 3482, 3723, 3967, 4732,
+            4767, 5814, 5817, 6072, 6266, 6910, 7016, 7429, 7731, 7769, 7866,
+            8317, 8626, 9052, 9654, 9922],
+    'dr':[  94,  370,  410, 2156, 2242, 2814, 3456, 3723, 4767,
+            5785, 5814, 6072, 6636, 6836, 7731, 7769, 7866, 9654, 9922,
+            9933, 9982]
+}
+
+for appliance in ["wm","dw","hvac","fridge","light","dr"]:
     out[appliance] = {}
     for home in all_homes[appliance]:
         out[appliance][home] = {"best_prediction_array":{}, "best_score":1e7, "optimal_subset":{}}
+
+
+
+appliance="wm"
 
 
 appliance_columns = {'fridge':["fridge_%d" % i for i in range(1, 13)],
@@ -56,12 +133,10 @@ appliance_columns = {'fridge':["fridge_%d" % i for i in range(1, 13)],
                      "wm":["wm_%d" % i for i in range(1, 13)],
                      "dr":["dr_%d" % i for i in range(1, 13)]}
 
-from itertools import combinations
 
-appliance="hvac"
-
-
-for max_length in range(1, 6):
+errors_dict = {}
+for max_length in range(1, 3):
+    errors_dict[max_length] = {}
     all_combinations = combinations(all_homes[appliance], max_length)
     for train_homes in all_combinations:
         test_homes = np.setdiff1d(all_homes[appliance],train_homes)
@@ -73,9 +148,15 @@ for max_length in range(1, 6):
             else:
                 error = np.mean(100*(gt_home-pred_home).abs().div(gt_home))
             if error<out[appliance][home]['best_score']:
+                if appliance is "hvac":
+                    errors_dict[max_length][home] = 100*(gt_home-pred_home).abs().div(gt_home)[4:9]
+                else:
+                    errors_dict[max_length][home] = 100*(gt_home-pred_home).abs().div(gt_home)
                 out[appliance][home]['best_score'] = error
                 out[appliance][home]['optimal_subset'] = train_homes
                 out[appliance][home]['best_prediction_array'] = pred_home
+
+#pd.DataFrame(errors_dict).median(axis=1).mean()
 
 
 def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'],k=2, weights='uniform'):
@@ -606,3 +687,11 @@ plt.ylabel("Proportion of energy \ncontributed by HVAC")
 plt.tight_layout()
 plt.axhline(y=.18, linewidth=3, color='g')
 plt.savefig("../figures/hvac_boxplot.pdf", bbox_inches="tight")
+
+
+#################
+
+
+for i in _374:
+    s = decompose(st['/%d' %i]['use']['2013'].resample("15T").dropna())
+    print i, s.seasonal.corr(weather_data_df.temperature)

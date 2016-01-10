@@ -16,6 +16,7 @@ def decompose(df, freq=96):
 st = pd.HDFStore(os.path.expanduser("~/Downloads/wiki-temp.h5"))
 o = {}
 
+weather_data_df = pd.HDFStore("../weather.h5")['/weather']
 all_keys = st.keys()
 for k in all_keys:
     try:
@@ -37,12 +38,40 @@ common_homes_keys = map(lambda x: "/"+str(x), common_homes)
 
 import pickle
 f = pickle.load(open( "../fhmm_model.p", "rb" ))
-
+from sklearn.cluster import KMeans
 out = {}
 for key, int_key in zip(common_homes_keys, common_homes):
+    if int_key in [1697, 4031, 6121, 7800, 9729]:
+        continue
+    #for key, int_key in zip(['/3224'],[3224]):
     print key
     df = st[key]['2013']
+
+    df_hourly_use = df['use'].resample("60T").dropna()
+
+    s = decompose(df_hourly_use)
+    temperature_corr = 1.+s.seasonal.corr(weather_data_df.temperature)
     df_15min = df.resample("15T",how="mean")
+    d_df = deepcopy(df_15min[['use']])
+    d_df['day'] = d_df.index.dayofweek
+    e = d_df.groupby("day").mean().values
+
+    diff_15min = df_15min["use"].diff().dropna()
+
+    abs_diff_15min = diff_15min.dropna().abs()
+
+    tot = len(abs_diff_15min)
+    lt_500 = 1.*(abs_diff_15min<500).sum()/tot
+    bet_500_1000 = 1.*((abs_diff_15min>=500)&(abs_diff_15min<1000)).sum()/tot
+    gt_1000 = 1.*(abs_diff_15min>=1000).sum()/tot
+
+    np.random.seed(0)
+    c = KMeans(n_clusters=1)
+    c.fit(abs_diff_15min[(abs_diff_15min>50) & (abs_diff_15min<200)].reshape(-1,1))
+    cluster_small = c.cluster_centers_[0][0]
+    c = KMeans(n_clusters=1)
+    c.fit(abs_diff_15min[abs_diff_15min>1000].reshape(-1,1))
+    cluster_big = c.cluster_centers_[0][0]
     autocorr = df_15min['use'].autocorr(lag=96)
     df_res = df.resample('1M',how="sum")
     df_res_kwh = df_res.mul(0.000017)
@@ -56,8 +85,20 @@ for key, int_key in zip(common_homes_keys, common_homes):
     dr = np.array([np.NaN]*12)
     light = np.array([np.NaN]*12)
 
+    decomposed_df_12 = decompose(df_15min["use"], 12)
     decomposed_df_daily = decompose(df_15min["use"], 96)
     decomposed_df_weekly = decompose(df_15min["use"], 96*7)
+
+    seasonal_12 = decomposed_df_12.seasonal
+    trend_12 = decomposed_df_12.trend
+
+    max_seasonal_12 = seasonal_12.max()
+    stdev_seasonal_12 = seasonal_12.std()
+
+    max_trend_12 = trend_12.max()
+    stdev_trend_12 = trend_12.std()
+
+
     seasonal_daily = decomposed_df_daily.seasonal
     trend_daily = decomposed_df_daily.trend
 
@@ -93,6 +134,7 @@ for key, int_key in zip(common_homes_keys, common_homes):
         temp = temp + df_res_kwh['air2']
 
 
+    temp_light = np.array([np.NaN]*12)
     if 'lights_plugs1' in df_res_kwh.columns:
         temp_light = df_res_kwh['lights_plugs1']
     if 'lights_plugs2' in df_res_kwh.columns:
@@ -128,9 +170,11 @@ for key, int_key in zip(common_homes_keys, common_homes):
         dr = df_res_kwh['drye1']
 
     out[int_key] = np.hstack([aggregate, daily_fraction.squeeze().values, hvac, fridge, wm, furnace, dw, dr, light, hvac_mins,
-                              autocorr, max_seasonal_daily, stdev_seasonal_daily, max_trend_daily, stdev_trend_daily,
+                              autocorr,
+                              max_seasonal_12, stdev_seasonal_12, max_trend_12, stdev_trend_12,
+                              max_seasonal_daily, stdev_seasonal_daily, max_trend_daily, stdev_trend_daily,
                               max_seasonal_weekly, stdev_seasonal_weekly, max_trend_weekly, stdev_trend_weekly,
-                              disag_fridge ])
+                              disag_fridge, cluster_small, cluster_big, lt_500, bet_500_1000, gt_1000, temperature_corr, e.flatten()])
 
 
 df = pd.DataFrame(out).T
@@ -145,6 +189,10 @@ df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
            ["light_%d" %i for i in range(1,13)],
         "mins_hvac",
         "autocorr",
+         "max_seasonal_12",
+        "stdev_seasonal_12",
+        "max_trend_12",
+        "stdev_trend_12",
         "max_seasonal_daily",
         "stdev_seasonal_daily",
         "max_trend_daily",
@@ -153,7 +201,14 @@ df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
         "stdev_seasonal_weekly",
         "max_trend_weekly",
         "stdev_trend_weekly",
-        "disag_fridge"
+        "disag_fridge",
+        "cluster_small",
+        "cluster_big",
+        "lt_500",
+        "bet_500_1000",
+        "gt_1000",
+        "temperature_corr",
+        ["daily_usage_%d" %i for i in range(1,8)]
 
            ])
 
