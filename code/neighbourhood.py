@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
-df = pd.read_csv("../main_15min_decomposition_12_daily_weekly_cluster_diff_frac_temp_weekday.csv_200",index_col=0)
+df = pd.read_csv("../main_15min_decomposition_12_daily_weekly_cluster_diff_frac_temp_weekday.csv",index_col=0)
 dfc = df.copy()
 
 df = df.drop(871)
@@ -100,38 +100,53 @@ appliance_fhmm = {'fridge': fridge_fhmm_pred,
 national_average = {"fridge": 0.07, "hvac": 0.18, 'wm': 0.01, 'furnace': 0.09, 'dw': 0.02, 'dr': 0.04, 'light': .11}
 
 
+def scale_0_1(ser, minimum=None, maximum=None):
+    if minimum is not None:
+        pass
+    else:
+        minimum = ser.min()
+        maximum = ser.max()
+    return (ser-minimum).div(maximum-minimum)
+
 #Normalising features
 max_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].max().max()
-df[["aggregate_%d" % i for i in range(1, 13)]] = df[["aggregate_%d" % i for i in range(1, 13)]].div(max_aggregate)
+min_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].min().min()
+df[["aggregate_%d" % i for i in range(1, 13)]] = scale_0_1(df[["aggregate_%d" % i for i in range(1, 13)]], min_aggregate, max_aggregate)
 
 
 max_weekly = df[["daily_usage_%d" % i for i in range(1, 8)]].max().max()
-df[["daily_usage_%d" % i for i in range(1, 8)]] = df[["daily_usage_%d" % i for i in range(1, 8)]].div(max_weekly)
+min_weekly = df[["daily_usage_%d" % i for i in range(1, 8)]].min().min()
+df[["daily_usage_%d" % i for i in range(1, 8)]] = scale_0_1(df[["daily_usage_%d" % i for i in range(1, 8)]], min_weekly, max_weekly)
 
-df['area'] = df['area'].div(df['area'].max())
+df['area'] = scale_0_1(df['area'])
 
-df['num_rooms'] = df['num_rooms'].div(df['num_rooms'].max())
-df['total_occupants'] = df['total_occupants'].div(df['total_occupants'].max())
-df['mins_hvac'] =  df['mins_hvac'].div(df['mins_hvac'].max())
-
-max_cols = {}
-for col in ["stdev_trend_12","stdev_seasonal_12","max_seasonal_12","max_trend_12",
-            "stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
-            "stdev_trend_weekly","stdev_seasonal_weekly","max_seasonal_weekly","max_trend_weekly","disag_fridge",
-            'stdev_trend','stdev_seasonal','max_seasonal','max_trend',
-            'cluster_small','cluster_big', 'temperature_corr']:
-    if col in df.columns:
-        max_cols[col] = dfc[col].max()
-        df[col] = df[col].div(df[col].max())
-
+df['num_rooms'] = scale_0_1(df['num_rooms'])
+df['total_occupants'] = scale_0_1(df['total_occupants'])
+df['mins_hvac'] =  scale_0_1(df['mins_hvac'])
 
 # Adding new feature
 aa = df[["aggregate_%d" % i for i in range(1, 13)]].copy()
 df['variance'] = df[["aggregate_%d" % i for i in range(1, 13)]].var(axis=1)
 df['ratio_min_max'] = aa.min(axis=1)/aa.max(axis=1)
 
+
 df['difference_min_max'] = aa.max(axis=1)-aa.min(axis=1)
 df['ratio_difference_min_max'] = (aa.max(axis=1)-aa.min(axis=1)).div(aa.max(axis=1))
+
+
+for col in ["stdev_trend_12","stdev_seasonal_12","max_seasonal_12","max_trend_12",
+            "stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
+            "stdev_trend_weekly","stdev_seasonal_weekly","max_seasonal_weekly","max_trend_weekly","disag_fridge",
+            'stdev_trend','stdev_seasonal','max_seasonal','max_trend',
+            'cluster_small','cluster_big', 'temperature_corr', 'variance',
+            'ratio_min_max','ratio_difference_min_max','seasonal_energy_5','seasonal_energy_6',
+            'seasonal_energy_7','seasonal_energy_8','seasonal_energy_9','seasonal_energy_10',
+            'fft_1','fft_2','fft_3','fft_4','fft_5']:
+    if col in df.columns:
+
+        df[col] = scale_0_1(df[col])
+
+
 
 dfs = {}
 total = features_dict.values()[np.array(map(len, features_dict.values())).argmax()]
@@ -173,6 +188,12 @@ all_homes['dw'] =  np.array(np.setdiff1d(all_homes['dw'],[2233, 7016]))
 
 all_homes['wm'] = np.array([  94,  370,  545,  624, 2156, 2242, 2470, 2814, 3367, 3456, 3723,
             3967, 5357, 7769, 9654, 9922, 9934])
+
+
+all_homes['light']=[624, 1334, 3367, 3456, 3723, 5814, 6072, 6910, 7769, 7866, 9654,
+            9922]
+
+
 
 
 def create_predictions(appliance="hvac", feature=['num_rooms', 'total_occupants'],k=2, weights='uniform'):

@@ -5,9 +5,18 @@ import os
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
-
+from copy import deepcopy
 import statsmodels.api as sm
 
+def scale_min_max(ser, minimum=-1, maximum=1):
+    ser_min = ser.min()
+    ser_max = ser.max()
+    return minimum + ((maximum-minimum)*(ser-ser_min))/(ser_max-ser_min)
+
+def compute_fft_aggregate(sig):
+    scaled = scale_min_max(sig)
+    ac_component = scaled - scaled.mean()
+    return np.fft.fft(ac_component)
 
 def decompose(df, freq=96):
     res = sm.tsa.seasonal_decompose(df.fillna(method='ffill').values, freq=freq)
@@ -109,6 +118,17 @@ for key, int_key in zip(common_homes_keys, common_homes):
     stdev_trend_daily = trend_daily.std()
 
     seasonal_weekly = decomposed_df_weekly.seasonal
+
+    fft_seasonal_weekly = abs(compute_fft_aggregate(seasonal_weekly.head(96*7)))
+
+    fft_components = fft_seasonal_weekly[[7, 14, 21, 28, 35]]
+
+    seasonal_weekly_copy = seasonal_weekly.copy()
+    seasonal_weekly_copy =seasonal_weekly_copy - seasonal_weekly_copy.min()
+    seasonal_weekly_copy = seasonal_weekly_copy.resample("1M", how="sum")
+    seasonal_weekly_copy.index = range(1, 13)
+    seasonal_weekly_copy = seasonal_weekly_copy[5:11]
+    seasonal_weekly_vals = seasonal_weekly_copy.values
     trend_weekly = decomposed_df_weekly.trend
 
     max_seasonal_weekly = seasonal_weekly.max()
@@ -154,7 +174,10 @@ for key, int_key in zip(common_homes_keys, common_homes):
     hourly_df = pd.DataFrame({"power":df["use"].resample("1H", how="mean")})
     hourly_df["hour"] = hourly_df.index.hour
     daily_means = pd.pivot_table(hourly_df, index=["hour"])
-    daily_fraction = daily_means.div(daily_means.max())
+    daily_means_min = daily_means.min()
+    daily_means_max = daily_means.max()
+
+    daily_fraction = (daily_means-daily_means_min).div(daily_means_max-daily_means_min)
 
 
     hvac = temp
@@ -174,7 +197,8 @@ for key, int_key in zip(common_homes_keys, common_homes):
                               max_seasonal_12, stdev_seasonal_12, max_trend_12, stdev_trend_12,
                               max_seasonal_daily, stdev_seasonal_daily, max_trend_daily, stdev_trend_daily,
                               max_seasonal_weekly, stdev_seasonal_weekly, max_trend_weekly, stdev_trend_weekly,
-                              disag_fridge, cluster_small, cluster_big, lt_500, bet_500_1000, gt_1000, temperature_corr, e.flatten()])
+                              disag_fridge, cluster_small, cluster_big, lt_500, bet_500_1000, gt_1000, temperature_corr,
+                              e.flatten(), seasonal_weekly_vals, fft_components])
 
 
 df = pd.DataFrame(out).T
@@ -208,7 +232,9 @@ df.columns = np.hstack([["aggregate_%d" %i for i in range(1,13)],
         "bet_500_1000",
         "gt_1000",
         "temperature_corr",
-        ["daily_usage_%d" %i for i in range(1,8)]
+        ["daily_usage_%d" %i for i in range(1,8)],
+        ["seasonal_energy_%d" %i for i in range(5,11)],
+        ["fft_%d" %i for i in range(1, 6)]
 
            ])
 
