@@ -336,5 +336,4 @@ def find_precision_recall_outlier(df, all_homes, optimal_dict):
         precision = len(intersection)*1./len(pred)
         recall = len(intersection)*1./len(true_outliers)
         out[appliance] = {"precision":precision, "recall":recall}
-        print precision, recall
     return out

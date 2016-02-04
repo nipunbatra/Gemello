@@ -2,13 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/energy_variance-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/best.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/best2.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/eco.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/energy_variance.ipynb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/complete_pipeline-Copy1-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/complete_pipeline-Copy2-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/complete_pipeline-Copy3-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/feature_distribution-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/parallel_sfs-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/complete_pipeline-Copy1.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/complete_pipeline-Copy2.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/complete_pipeline-Copy3.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/download.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/feature_distribution.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/parallel_sfs.ipynb" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/accuracy_store.h5" afterPath="$PROJECT_DIR$/code/accuracy_store.h5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fhmm_lbm.h5" afterPath="$PROJECT_DIR$/fhmm_lbm.h5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fhmm_out.h5" afterPath="$PROJECT_DIR$/fhmm_out.h5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/complete_pipeline-checkpoint.ipynb" afterPath="$PROJECT_DIR$/code/.ipynb_checkpoints/complete_pipeline-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/fhmm_lbm-checkpoint.ipynb" afterPath="$PROJECT_DIR$/code/.ipynb_checkpoints/fhmm_lbm-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/all_functions.py" afterPath="$PROJECT_DIR$/code/all_functions.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/complete_pipeline.ipynb" afterPath="$PROJECT_DIR$/code/complete_pipeline.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/fhmm_lbm.ipynb" afterPath="$PROJECT_DIR$/code/fhmm_lbm.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fhmm_model_all.p" afterPath="$PROJECT_DIR$/fhmm_model_all.p" />
     </list>
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,10 +58,20 @@
         <entry file="file://$PROJECT_DIR$/code/all_functions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="296" column="28" selection-start-line="296" selection-start-column="11" selection-end-line="296" selection-end-column="28" />
+              <caret line="129" column="52" selection-start-line="113" selection-start-column="4" selection-end-line="129" selection-end-column="52" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_functions.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/common_functions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.65134704">
+              <caret line="68" column="4" selection-start-line="68" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -99,10 +122,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="neighbourhood_sensitivity_neighbours.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="neighbourhood_sensitivity_neighbours.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.057052">
+            <state vertical-scroll-proportion="0.0">
               <caret line="128" column="38" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
               <folding>
                 <element signature="e#27#46#0" expanded="true" />
@@ -149,10 +172,10 @@
         <option value="$PROJECT_DIR$/code/features.py" />
         <option value="$PROJECT_DIR$/code/create_df.py" />
         <option value="$PROJECT_DIR$/code/neighbourhood.py" />
-        <option value="$PROJECT_DIR$/code/all_functions.py" />
         <option value="$USER_HOME$/Dropbox/Public/notebooks/misc/latent_Bayesian_melding.py" />
         <option value="$PROJECT_DIR$/code/latent_Bayesian_melding.py" />
         <option value="$USER_HOME$/Dropbox/Public/notebooks/misc/run_lbm.py" />
+        <option value="$PROJECT_DIR$/code/all_functions.py" />
       </list>
     </option>
   </component>
@@ -387,9 +410,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="726" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -667,13 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/common_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/oracle.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -766,23 +782,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="38" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
+          <folding>
+            <element signature="e#27#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/all_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="296" column="28" selection-start-line="296" selection-start-column="11" selection-end-line="296" selection-end-column="28" />
+          <caret line="129" column="52" selection-start-line="113" selection-start-column="4" selection-end-line="129" selection-end-column="52" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py">
+    <entry file="file://$PROJECT_DIR$/code/common_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.057052">
-          <caret line="128" column="38" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
-          <folding>
-            <element signature="e#27#46#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.65134704">
+          <caret line="68" column="4" selection-start-line="68" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
