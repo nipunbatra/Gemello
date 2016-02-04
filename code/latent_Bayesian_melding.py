@@ -106,22 +106,22 @@ class LatentBayesianMelding(object):
         self.mains_chunk = 0
         
         # sampling seconds of the mains readings - 2 minute here.
-        self.sample_seconds = 120
-        
+        self.sample_seconds = 15*60
+
         # number of iterations for updating noise variances and model variables.
         self.NosOfIters = 3
-        
+
         # shape and rate parameters for Gamma distributions for noise variances.
         self.alpha = 1 + 1e-6
         self.beta = 1e-6
-        
+
         # number of states of HMM, more could be better?
         self.numberOfStates = 3
-        
+
         # optimization objective values
         self.primalObjValue = 0.0
-        self.dualObjValue = 0.0        
-        
+        self.dualObjValue = 0.0
+
     def train(self, metergroup):
         """Trains the model given a metergroup containing appliance meters
         (supervised) or a site meter (unsupervised).  Will have a
@@ -169,7 +169,7 @@ class LatentBayesianMelding(object):
         import datetime
         warnings.filterwarnings("ignore", category=Warning)
         MIN_CHUNK_LENGTH =100
-        
+
         # Extract optional parameters from load_kwargs
         date_now = datetime.datetime.now().isoformat().split('.')[0]
         output_name = load_kwargs.pop('output_name', 'NILMTK_AFHMM_SAC_' + date_now)
@@ -177,32 +177,33 @@ class LatentBayesianMelding(object):
         self.sample_seconds = resample_seconds
 
         resample_rule = '{:d}S'.format(resample_seconds)
-        timeframes = []       
+        timeframes = []
 
         for chunk in mains.power_series(**load_kwargs):
 
             # Check that chunk is sensible size before resampling
             if len(chunk) < MIN_CHUNK_LENGTH:
                 continue
-            
+
             # Record metadata
             timeframes.append(chunk.timeframe)
             measurement = chunk.name
 
             chunk = chunk.resample(rule=resample_rule).dropna()
             chunk = chunk*(((self.sample_seconds/60.0)/60.0)*10.0)#For uk-dale data
-            
+
             # Check chunk size *again* after resampling
             if len(chunk) < MIN_CHUNK_LENGTH:
                 continue
-            
+
             # start doing disaggregation
             inferredVariables = self.disaggregate_chunk(chunk)
-            return inferredVariables        
-        
+            return inferredVariables
+
         raise NotImplementedError()
 
     def disaggregate_chunk(self, mains_chunk):
+        print("-----"*20)
         """In-memory disaggregation.
 
         Parameters
@@ -216,7 +217,7 @@ class LatentBayesianMelding(object):
         """
         '''
         perform disaggregation on a chunk data
-        
+
         Parameters:
         ------------
         mains_chunk: pandas.core.series.Series (time series)
@@ -236,26 +237,26 @@ class LatentBayesianMelding(object):
             self.varSac[appliance] = 1.0
             #self.varOffOnTran[appliance] = 1.0
             self.varPriorNosCycles[appliance] = 1.0
-        
+
         objectiveOptimized = []
         for iters in range(self.NosOfIters):
             print("*************Iteration: {}*****************".format(iters+1))
             # infer the model variables
             prediction = self.disaggregate_fixedPrecision(mains_chunk)
-            
+
             # estimate the regulation parameters - noise variance
             self.estimate_noisevariance(mains_chunk, prediction)
-            
+
             # compute the objective
             optimalObjective = self.objective(mains_chunk, prediction)
             objectiveOptimized.append(optimalObjective)
-            
+
             # check results
             # self.checkconstraints(prediction)
             computetime.append(prediction['time'])
-            
+
         print("*************Iteration: {}*****************".format(iters+2))
-        prediction = self.disaggregate_fixedPrecision(mains_chunk)     
+        prediction = self.disaggregate_fixedPrecision(mains_chunk)
         computetime.append(prediction['time'])
         # compute the objective
         optimalObjective = self.objective(mains_chunk, prediction)
@@ -263,80 +264,80 @@ class LatentBayesianMelding(object):
         prediction['optimized objective'] = objectiveOptimized
         prediction['time'] = computetime
         return prediction
-        
+
         raise NotImplementedError()
-        
+
     def disaggregate_fixedPrecision(self, mains_chunk):
         # This method is to disaggregate a chunk when fixing the precisions for
         # all the sub-models (constraints)
-    
+
         print("Employing the Mosek solver to solve the problem:\n")
         print("Declaring variables and constraints...\n")
         # Mosek fusion for second-oder cone programming
-        nosOfTimePoints = int(len(mains_chunk))       
+        nosOfTimePoints = int(len(mains_chunk))
         with Model("composite model") as M:
 
             # record computing time
-            start_time = timeit.default_timer()            
-            
+            start_time = timeit.default_timer()
+
             # define latent variable of appliance
             latentVariableOfAppliance = OrderedDict()
-            
+
             # define the variables of number of activity cycles
             variableOfNosOfCycles = OrderedDict()
-            
+
             # define state variables for each appliance
-            stateVariableOfAppliance = OrderedDict()            
+            stateVariableOfAppliance = OrderedDict()
 
             # define relaxed variables related to state transitions
             relaxedVariableOfAppliance = OrderedDict()
-            
+
             # define epigraph for latent variable term
             tauLatent = OrderedDict()
-            
+
             # define epigraph for sac term
             tauSac = OrderedDict()
-            
+
             # define epigraph for activity duration
             tauDuration = OrderedDict()
-            
+
             # define epigraph for number of OFF to ON variable
             tauOffOn = OrderedDict()
-            
+
             # declare the variables and the constraints
             nosOfVariables = 0
             nosOfConstrs = 0
             for i, appliance in enumerate(self.individual):
                 #print("\n Declare variables and constraints for appliance: '{}'"
                 #        .format(appliance))
-                        
-                nosOfStates = int(self.individual[appliance]['numberOfStates'])                
-                
+
+                nosOfStates = int(self.individual[appliance]['numberOfStates'])
+
                 ######### necessary constant matrix for the model #############
                 tempVector = np.zeros((nosOfStates,nosOfStates))
                 tempVector[:,0][1:]=1.0
                 constMatOffOn = np.kron(np.ones((1,nosOfTimePoints-1)),
                                         tempVector)
-                
+
                 ######### Declare the variables ###############################
-                # declare latent variables 
+                # declare latent variables
                 latentVariableOfAppliance[appliance] = \
                                 M.variable(NDSet(1, nosOfTimePoints),
                                             Domain.greaterThan(0.0))
-                                            
-                # declare the variable of number of cycles   
+
+                # declare the variable of number of cycles
                 nosOfMaxCycles = len(self.individual[appliance] \
                                     ['numberOfCyclesStats']['numberOfCycles'])
                 variableOfNosOfCycles[appliance] = \
                                 M.variable(NDSet(1, nosOfMaxCycles),
                                            Domain.inRange(0.0,1.0))
-                                           
+
                 # declare the state variables of HMMs
                 stateVariableOfAppliance[appliance] = \
                                 M.variable(NDSet(nosOfStates, nosOfTimePoints),
                                            Domain.inRange(0.0, 1.0))
-                
-                # declare the relaxed variables for state transitions of HMMs 
+
+                # declare the relaxed variables for state transitions of HMMs
                 # variable H_i = [H_{i1},H_{i2},...,H_{i,T-1}] for the ith HMM
                 relaxedVariableOfAppliance[appliance] = \
                 M.variable(NDSet(nosOfStates,nosOfStates*(nosOfTimePoints-1)),
@@ -345,21 +346,21 @@ class LatentBayesianMelding(object):
                 ############## Make constraints for variables #################
                 # make constraints on each appliance states
                 # sum over state variables at time t to 1
-                c_stateSumToOne = M.constraint( Expr.mul(np.ones(nosOfStates), 
-                                        stateVariableOfAppliance[appliance]), 
+                c_stateSumToOne = M.constraint( Expr.mul(np.ones(nosOfStates),
+                                        stateVariableOfAppliance[appliance]),
                                         Domain.equalsTo(1.0) )
-                                        
+
                 # make constraints on the relaxed variables and the state variables
                 # the relaxed variable should be constrained to match state variables
                 # For the summation of rows
                 c_relaxStateSumRow = M.constraint(
-                        Expr.sub( Expr.mul(np.ones((1,nosOfStates)), 
-                        relaxedVariableOfAppliance[appliance]), 
+                        Expr.sub( Expr.mul(np.ones((1,nosOfStates)),
+                        relaxedVariableOfAppliance[appliance]),
                         Variable.reshape(stateVariableOfAppliance[appliance].
-                        slice([0,0],[nosOfStates,nosOfTimePoints-1]).transpose(), 
-                        1, nosOfStates*(nosOfTimePoints-1)) ), 
+                        slice([0,0],[nosOfStates,nosOfTimePoints-1]).transpose(),
+                        1, nosOfStates*(nosOfTimePoints-1)) ),
                         Domain.equalsTo(0.0))
-                        
+
                 # For the summation of collumns
                 for j in range(nosOfStates):
                     row_relaxedV = relaxedVariableOfAppliance[appliance].\
@@ -372,19 +373,19 @@ class LatentBayesianMelding(object):
                         vtemp_hstack = Variable.hstack(vtemp_hstack,row_relaxedV)
                 vtemp = Variable.reshape(vtemp_hstack,
                                 nosOfStates*(nosOfTimePoints-1),nosOfStates)
-                c_relaxStateSumColumn = M.constraint( 
+                c_relaxStateSumColumn = M.constraint(
                         Expr.sub( Expr.mul(vtemp, np.ones((nosOfStates,1))),
                         Variable.reshape(stateVariableOfAppliance[appliance].
                         slice([0,1],[nosOfStates,nosOfTimePoints]).transpose(),
-                        1,nosOfStates*(nosOfTimePoints-1)).transpose()), 
+                        1,nosOfStates*(nosOfTimePoints-1)).transpose()),
                         Domain.equalsTo(0.0) )
-                    
+
                 # make constraint on the variable of number of cycles
                 c_nosCycleSumToOne = M.constraint(
                         Expr.sum(variableOfNosOfCycles[appliance]),
                         Domain.equalsTo(1.0))
-                
-                ######### Declare the rotated quadratic cone ##################                
+
+                ######### Declare the rotated quadratic cone ##################
                 # define the rotated quadratic cone for latent variables
                 # connected to the HMMs
                 tauLatent[appliance] = M.variable(1, Domain.greaterThan(0.0))
@@ -396,48 +397,48 @@ class LatentBayesianMelding(object):
                     Expr.constTerm(self.varLatentModel[appliance]),
                     tauLatent[appliance].asExpr(),
                     diffLatent), Domain.inRotatedQCone())
-                
+
                 # the rotated quadratic cone constrait for the signal aggregate
                 # declare the epigraph for the signal aggregate constraints
                 tauSac[appliance] = M.variable(1, Domain.greaterThan(0.0))
-                                   
-                # employing the induced density: 
+
+                # employing the induced density:
                 #   the difference between the estimated and trained sac values
-                jointVariance = 1/(1/self.varSac[appliance] - 
+                jointVariance = 1/(1/self.varSac[appliance] -
                     1/(self.individual[appliance]['induced density of sac'][1]**2))
                 densityMean = Expr.dot(variableOfNosOfCycles[appliance],
-                    np.array(self.individual[appliance] 
-                    ['numberOfCyclesStats']['numberOfCyclesEnergy']))
+                    np.array(self.individual[appliance]
+                    ['numberOfCyclesStats']['numberOfCyclesEnergy'], dtype=np.float64))
                 jointMean = Expr.sub(Expr.mul(1/self.varSac[appliance],densityMean),
                                      Expr.constTerm(
                     self.individual[appliance]['induced density of sac'][0]/
                     self.individual[appliance]['induced density of sac'][1]**2))
-                
+
                 diffSac = Expr.sub(Expr.sum(Expr.mul(
                   1.0*np.reshape(np.array(self.individual[appliance]['means']),
-                        (1,nosOfStates)),stateVariableOfAppliance[appliance])), 
+                        (1,nosOfStates)),stateVariableOfAppliance[appliance])),
                   Expr.mul(jointVariance,jointMean)  )
                 rqc_sac = M.constraint(Expr.vstack(
-                    Expr.constTerm(jointVariance), 
+                    Expr.constTerm(jointVariance),
                     tauSac[appliance].asExpr(), diffSac),
                     Domain.inRotatedQCone())
-                    
+
                 # the rotated quadratic cone constraint on activity duration
                 # declare the epigraph for the activity duration
                 tauDuration[appliance] = M.variable(1, Domain.greaterThan(0.0))
-                
+
                 # employing the induced density:
                 #    the difference between the estimated and expected duration
-                jointVarianceDur = 1/(1/self.varDuration[appliance] - 
+                jointVarianceDur = 1/(1/self.varDuration[appliance] -
                     1/(self.individual[appliance]['induced density of duration'][1]**2))
                 densityMeanDur = Expr.dot(variableOfNosOfCycles[appliance],
                     np.array(self.individual[appliance]
-                    ['numberOfCyclesStats']['numberOfCyclesDuration']))
+                    ['numberOfCyclesStats']['numberOfCyclesDuration'], dtype=np.float64))
                 jointMeanDur = Expr.sub(Expr.mul(1/self.varDuration[appliance],densityMeanDur),
                                      Expr.constTerm(
                     self.individual[appliance]['induced density of duration'][0]/
                     self.individual[appliance]['induced density of duration'][1]**2))
-                    
+
                 diffDuration = Expr.sub(Expr.mul(
                     self.sample_seconds/60.0,
                     Expr.sum(stateVariableOfAppliance[appliance].\
@@ -447,57 +448,57 @@ class LatentBayesianMelding(object):
                     Expr.constTerm(jointVarianceDur),
                     tauDuration[appliance].asExpr(), diffDuration),
                     Domain.inRotatedQCone())
-                    
-                # The hard constraints on the number of Off --> On                                
+
+                # The hard constraints on the number of Off --> On
                 # difference between the estimated and expected number of OFF->On
                 diffOffOn = Expr.sub(Expr.sum(Expr.mulElm(constMatOffOn,
                     relaxedVariableOfAppliance[appliance])),
                     Expr.dot(variableOfNosOfCycles[appliance],
                             np.array(self.individual[appliance]
-                            ['numberOfCyclesStats']['numberOfCycles'])))
+                            ['numberOfCyclesStats']['numberOfCycles'], dtype=np.float64)))
                 c_OffOn = M.constraint(diffOffOn,Domain.equalsTo(0.0))
-                
-                ############ The objective functions #########################                    
+
+                ############ The objective functions #########################
                 # objective function for the initial probability
                 if i == 0:
                     sumInitialProb = Expr.dot(stateVariableOfAppliance[appliance].
-                        slice([0,0],[nosOfStates,1]), 
+                        slice([0,0],[nosOfStates,1]),
                         -np.log(np.maximum(1e-300,
                     np.array(self.individual[appliance]['startprob']))).flatten())
                 else:
-                    sumInitialProb = Expr.add( sumInitialProb, 
+                    sumInitialProb = Expr.add( sumInitialProb,
                         Expr.dot(stateVariableOfAppliance[appliance].
-                        slice([0,0],[nosOfStates,1]), 
+                        slice([0,0],[nosOfStates,1]),
                         -np.log(np.maximum(1e-300,
                     np.array(self.individual[appliance]['startprob']))).flatten()))
-            
-                # objective function for the transition probability matrix            
+
+                # objective function for the transition probability matrix
                 if i == 0:
-                    sumTransProb = Expr.sum(Expr.mulElm( 
-                        relaxedVariableOfAppliance[appliance], 
+                    sumTransProb = Expr.sum(Expr.mulElm(
+                        relaxedVariableOfAppliance[appliance],
                         -np.log(np.maximum(1e-300,
-                                np.kron(np.ones((1,nosOfTimePoints-1)), 
+                                np.kron(np.ones((1,nosOfTimePoints-1)),
                                 self.individual[appliance]['transprob'])))) )
                 else:
-                    sumTransProb = Expr.add( sumTransProb,Expr.sum(Expr.mulElm( 
-                        relaxedVariableOfAppliance[appliance], 
+                    sumTransProb = Expr.add( sumTransProb,Expr.sum(Expr.mulElm(
+                        relaxedVariableOfAppliance[appliance],
                         -np.log(np.maximum(1e-300,
-                        np.kron(np.ones((1,nosOfTimePoints-1)), 
+                        np.kron(np.ones((1,nosOfTimePoints-1)),
                         self.individual[appliance]['transprob']))) ) ) )
-                                                             
+
                 # the log categorical distribution for the nos of activity cycles
                 if i == 0:
                     sumLogCatProb = Expr.dot(variableOfNosOfCycles[appliance],
                         -np.log(np.maximum(1e-300,
                         np.array(self.individual[appliance]
-                        ['numberOfCyclesStats']['numberOfCyclesProb']))))
+                        ['numberOfCyclesStats']['numberOfCyclesProb'], dtype=np.float64))))
                 else:
                     sumLogCatProb = Expr.add(sumLogCatProb,
                         Expr.dot(variableOfNosOfCycles[appliance],
                         -np.log(np.maximum(1e-300,
                         np.array(self.individual[appliance]
-                        ['numberOfCyclesStats']['numberOfCyclesProb'])))))
-                
+                        ['numberOfCyclesStats']['numberOfCyclesProb'], dtype=np.float64)))))
+
                 # Summation of the latent variables for all appliances accross time
                 if i == 0:
                     sumLatentVariable = latentVariableOfAppliance[appliance]
@@ -514,7 +515,7 @@ class LatentBayesianMelding(object):
                     sumTauLatent = Expr.add(sumTauLatent,tauLatent[appliance])
                     sumTauSac = Expr.add(sumTauSac,tauSac[appliance])
                     sumTauDuration = Expr.add(sumTauDuration,tauDuration[appliance])
-                       
+
                 ##### Counting the number of variables #######################
                 nosOfVariables = nosOfVariables \
                                 + stateVariableOfAppliance[appliance].size() \
@@ -524,8 +525,8 @@ class LatentBayesianMelding(object):
                                 + tauLatent[appliance].size()\
                                 + tauSac[appliance].size()\
                                 + tauDuration[appliance].size()
-                                
-                ##### Counting the number of constraints #####################             
+
+                ##### Counting the number of constraints #####################
                 nosOfConstrs = nosOfConstrs \
                                 + c_stateSumToOne.size() \
                                 + c_relaxStateSumRow.size() \
@@ -534,10 +535,10 @@ class LatentBayesianMelding(object):
                                 + rqc_latent.size()\
                                 + rqc_sac.size()\
                                 + rqc_duration.size()\
-                                + c_OffOn.size()            
-            
-            #################################################################            
-            ######### The variable of total variation regularization ######## 
+                                + c_OffOn.size()
+
+            #################################################################
+            ######### The variable of total variation regularization ########
             ######### or piece-wise variable ################################
             variableOfPiecewise = M.variable(NDSet(1, nosOfTimePoints),
                                             Domain.greaterThan(0.0))
@@ -545,25 +546,25 @@ class LatentBayesianMelding(object):
             # using quadratic cones
             tauPiecewise = M.variable(NDSet(1, nosOfTimePoints-1),
                                             Domain.greaterThan(0.0))
-            
+
             diffPiecewise = Expr.sub(
                 variableOfPiecewise.slice([0,1],[1,nosOfTimePoints]),
-                variableOfPiecewise.slice([0,0],[1,nosOfTimePoints-1]))  
+                variableOfPiecewise.slice([0,0],[1,nosOfTimePoints-1]))
             qc_piecewise = M.constraint(
                 Expr.hstack(Variable.reshape(tauPiecewise,nosOfTimePoints-1,1),
-                            Expr.reshape(diffPiecewise,NDSet(nosOfTimePoints-1,1))), 
+                            Expr.reshape(diffPiecewise,NDSet(nosOfTimePoints-1,1))),
                             Domain.inQCone(nosOfTimePoints-1,2))
 
             #################################################################
             nosOfVariables = nosOfVariables + variableOfPiecewise.size() \
                              + tauPiecewise.size()
             nosOfConstrs = nosOfConstrs + qc_piecewise.size()
-                
+
             sumTauPiecewise = Expr.sum(Expr.mul(1/(2.0*self.varPieceWiseNoise),
-                                                tauPiecewise))  
-                                                
+                                                tauPiecewise))
+
             ###################################################################
-            ###### The log data likelihood ###################################     
+            ###### The log data likelihood ###################################
             delta = M.variable('logdatalikelihood', 1, Domain.greaterThan(0.0))
             rqc_logDataLikelihood = M.constraint(
                 Expr.hstack(self.varModel,delta,
@@ -571,13 +572,13 @@ class LatentBayesianMelding(object):
                         mains_chunk.values.ravel().reshape(1,nosOfTimePoints)),
                              Expr.add(sumLatentVariable,variableOfPiecewise))),
                 Domain.inRotatedQCone())
-                
+
             nosOfVariables = nosOfVariables + delta.size()
             nosOfConstrs = nosOfConstrs + rqc_logDataLikelihood.size()
 
             ######### Performing the optimization ##########################
-            M.objective('objectiveFunction', 
-                        ObjectiveSense.Minimize, 
+            M.objective('objectiveFunction',
+                        ObjectiveSense.Minimize,
                         Expr.sum(Expr.vstack([sumInitialProb,
                                               sumTransProb,
                                               delta.asExpr(),
@@ -587,15 +588,15 @@ class LatentBayesianMelding(object):
                                               sumTauPiecewise,
                                               sumLogCatProb]
                                               )))
-            
+
             # solving the problem
             print("\n Solving the problem ...")
-            
-            # This defines which solution status values are accepted 
+
+            # This defines which solution status values are accepted
             # when fetching solution values
             M.acceptedSolutionStatus(AccSolutionStatus.Anything)
             M.solve()
-            
+
             ####### Print the optimization status ############################
             print("\n+++++++++++++++optimization status+++++++++++++++++++")
             print("Number of variables:{}".format(nosOfVariables))
@@ -607,13 +608,13 @@ class LatentBayesianMelding(object):
             print("Accepted solution status:{}".format(M.acceptedSolutionStatus()))
             print("+++++++++++++++optimization status+++++++++++++++++++")
             ###################################################################
-            
+
             self.primalObjValue = M.primalObjValue()
             self.dualObjValue = M.dualObjValue()
 
             # recording the computing time
             stop_time = timeit.default_timer()
-            print("Solving this problem took '{0}' seconds".format(stop_time-start_time))           
+            print("Solving this problem took '{0}' seconds".format(stop_time-start_time))
 
             ###### Reading the inference results ##############################
             inferred_appliance_mains_energy = pd.DataFrame(index=mains_chunk.index)
@@ -632,53 +633,53 @@ class LatentBayesianMelding(object):
                 tempVector[:,0][1:]=1.0
                 constMatOffOn = np.kron(np.ones((1,nosOfTimePoints-1)),
                                         tempVector)
-                                        
+
                 inferred_appliance_mains_energy[appliance] = \
-                    np.dot(np.array(self.individual[appliance]['means']).flatten(), 
+                    np.dot(np.array(self.individual[appliance]['means']).flatten(),
                     np.reshape(np.array(stateVariableOfAppliance[appliance].level()),
                                (nosOfStates,nosOfTimePoints)))
-                               
+
                 inferred_latent_energy[appliance] = \
                     latentVariableOfAppliance[appliance].level()
-                    
+
                 inferred_sac[appliance] = \
                     np.dot(np.array(variableOfNosOfCycles[appliance].level()),
-                           np.array(self.individual[appliance] 
-                           ['numberOfCyclesStats']['numberOfCyclesEnergy']))
-                           
+                           np.array(self.individual[appliance]
+                           ['numberOfCyclesStats']['numberOfCyclesEnergy'], dtype=np.float64))
+
                 inferred_duration[appliance] = \
                     np.dot(np.array(variableOfNosOfCycles[appliance].level()),
                            np.array(self.individual[appliance]
-                           ['numberOfCyclesStats']['numberOfCyclesDuration']))
-                           
+                           ['numberOfCyclesStats']['numberOfCyclesDuration'], dtype=np.float64))
+
                 inferred_nosOfCycle[appliance] = \
                     np.dot(np.array(variableOfNosOfCycles[appliance].level()),
                            np.array(self.individual[appliance]
-                           ['numberOfCyclesStats']['numberOfCycles']))
-                
+                           ['numberOfCyclesStats']['numberOfCycles'], dtype=np.float64))
+
                 # the inferred variables
                 inferred_states[appliance] = \
                     np.reshape(np.array(stateVariableOfAppliance[appliance].level()),
                                (nosOfStates,nosOfTimePoints))
-                    
+
                 inferred_relaxedStates[appliance] = \
                     np.reshape(np.array(relaxedVariableOfAppliance[appliance].level()),
                                constMatOffOn.shape)
-                     
+
                 inferred_variableOfNosOfCycles[appliance] = \
                     np.array(variableOfNosOfCycles[appliance].level())
-                        
+
             inferred_appliance_mains_energy['inferred mains'] = \
                 inferred_appliance_mains_energy.iloc[:,0:len(self.individual)].\
                 sum(axis=1).values
             inferred_appliance_mains_energy['mains'] = mains_chunk.values
-                            
+
             inferred_latent_energy['inferred mains'] = \
                 inferred_latent_energy.iloc[:,0:len(self.individual)].sum(axis=1).values
             inferred_latent_energy['mains'] = mains_chunk.values
             inferred_latent_energy['piecewise noise'] = \
-                variableOfPiecewise.level()                
-            
+                variableOfPiecewise.level()
+
             prediction['time'] = stop_time-start_time
             prediction['inferred appliance energy'] = inferred_appliance_mains_energy
             prediction['inferred latent energy'] = inferred_latent_energy
@@ -690,7 +691,7 @@ class LatentBayesianMelding(object):
             prediction['inferred variable for nos of cycles'] = \
                                                 inferred_variableOfNosOfCycles
             return prediction
-        
+
     def estimate_noisevariance(self, mains_chunk, prediction):
         # estimate the noise variances
         nosOfTimePoints = int(len(mains_chunk))
@@ -708,7 +709,7 @@ class LatentBayesianMelding(object):
             else:
                 sumAppliance = sumAppliance + \
                                     inferred_appliance_mains_energy[appliance]
-                
+
             self.varLatentModel[appliance] = (self.beta +
                 0.5*np.sum((inferred_latent_energy[appliance]
                 -inferred_appliance_mains_energy[appliance])**2))\
@@ -722,14 +723,14 @@ class LatentBayesianMelding(object):
                 np.sum(inferred_states[appliance][1:,:])
                 -inferred_duration[appliance])**2))/(0.5+self.alpha-1),
                 self.individual[appliance]['induced density of duration'][1]**2-1.0)
-                
+
         # Estimate the model noise variance
-        self.varModel = (self.beta + 
+        self.varModel = (self.beta +
            0.5*np.sum((mains_chunk.values.ravel().reshape(1,nosOfTimePoints)
-           - inferred_latent_energy['inferred mains'].values 
+           - inferred_latent_energy['inferred mains'].values
            - inferred_latent_energy['piecewise noise'].values )**2))\
            /(0.5*nosOfTimePoints+self.alpha-1)
-        
+
         # Estimate the noise variance for piecewise prior
         self.varPieceWiseNoise = (self.beta +
             0.5*np.sum(np.abs(inferred_latent_energy['piecewise noise'].\
@@ -758,7 +759,7 @@ class LatentBayesianMelding(object):
             else:
                 sumAppliance = sumAppliance + \
                                 inferred_appliance_mains_energy[appliance]
-                
+
             ############# latent variable objective #####################
             optimalObjective = optimalObjective\
                 -0.5*nosOfTimePoints*np.log(self.varLatentModel[appliance])\
@@ -775,8 +776,8 @@ class LatentBayesianMelding(object):
                         ((sum(inferred_appliance_mains_energy[appliance])
                 -inferred_sac[appliance])**2)\
                 -(self.alpha-1.0)*np.log(self.varSac[appliance])\
-                -self.beta*(1.0/self.varSac[appliance])              
-                
+                -self.beta*(1.0/self.varSac[appliance])
+
             ############# duration objective #######################
             optimalObjective = optimalObjective\
                 -0.5*np.log(self.varDuration[appliance])\
@@ -786,26 +787,26 @@ class LatentBayesianMelding(object):
                 -inferred_duration[appliance])**2)\
                 -(self.alpha-1.0)*np.log(self.varDuration[appliance])\
                 -self.beta*(1.0/self.varDuration[appliance])
-                
+
             ########## initial probability ################################
             optimalObjective = optimalObjective\
-                +np.dot(inferred_states[appliance][:,1].flatten(), 
+                +np.dot(inferred_states[appliance][:,1].flatten(),
                         np.log(np.maximum(1e-300,
                 np.array(self.individual[appliance]['startprob']))).flatten())
-                    
+
             ########## transition probabilities ##########################
             optimalObjective = optimalObjective\
-                +np.sum(np.multiply(inferred_relaxedStates[appliance], 
+                +np.sum(np.multiply(inferred_relaxedStates[appliance],
                         np.log(np.maximum(1e-300,
-                                np.kron(np.ones((1,nosOfTimePoints-1)), 
+                                np.kron(np.ones((1,nosOfTimePoints-1)),
                                 self.individual[appliance]['transprob'])))) )
-                                
+
             ########## nos of cycles prior ###############################
             optimalObjective = optimalObjective\
                 + np.dot(inferred_variableOfNosOfCycles[appliance],
                         np.log(np.maximum(1e-300,
                         np.array(self.individual[appliance]
-                        ['numberOfCyclesStats']['numberOfCyclesProb']))))
+                        ['numberOfCyclesStats']['numberOfCyclesProb'], dtype=np.float64))))
             
         # The data likelihood and prior
         optimalObjective = optimalObjective \

@@ -58,6 +58,8 @@ def create_predictions(df, dfc, all_homes, appliance_min, national_average, appl
 
                 if test_home_num in outlier_test_homes:
                     continue
+
+
             if train_outlier:
                 outlier_homes, inlier_homes = find_outlier_train(y3.ix[y3.index.values[train]])
 
@@ -121,11 +123,17 @@ def criterion_function(df, dfc, all_homes, appliance_min, national_average,
     accur_df[accur_df<0]=0
 
     tdf = accur_df
+    if appliance =="hvac":
+        for home in [624, 1953, 6636, 6836, 7769, 9922]:
+            tdf.loc[home, 5]=np.NaN
+            tdf.loc[home, 10]=np.NaN
     #print tdf.dropna().median().mean(), feature_set
     if metric=="median":
         return tdf.dropna().median().mean()
     else:
         return tdf.dropna().mean().mean()
+
+
 
 def seq_forw_select(df, dfc, all_homes, appliance_min, national_average,
                     appliance="hvac", features=['num_rooms', 'total_occupants'], NUM_NEIGHBOURS=2,
@@ -196,7 +204,7 @@ def find_outlier_train(ser, outliers_fraction=0.1, min_units=0.2):
     # Returns outlier, inliers
 
     X = ser[ser>min_units].reshape(-1,1)
-    is_normal_data = is_normal(ser)
+    #is_normal_data = is_normal(ser)
     # FOR NOW only using Robust estimator of Covariance
     is_normal_data = True
     if is_normal_data:
@@ -229,7 +237,8 @@ def remove_hvac_features(fe):
 
 def find_optimal_features(df, dfc, all_homes, appliance_min, national_average, appliance_list, feature_map,
                           NUM_NEIGHBOURS_MAX=7, F_length_max=6, metric="median",
-                          train_outlier=True, test_outlier=False, outlier_features=None, outlier_fraction=0.1):
+                          train_outlier=True, test_outlier=False, outlier_features=None, outlier_fraction=0.1,
+                          print_steps=True):
     from copy import deepcopy
 
 
@@ -261,7 +270,7 @@ def find_optimal_features(df, dfc, all_homes, appliance_min, national_average, a
                     appliance, ftc, NUM_NEIGHBOURS,
                     train_outlier, test_outlier, outlier_features, outlier_fraction,
                     metric,
-                    F_length_max, criterion_function, False)
+                    F_length_max, criterion_function, print_steps)
 
                 best_accur = 0.0
                 best_f = []
@@ -302,9 +311,30 @@ def find_outlier_test_homes(df,all_homes,  appliance, outlier_features, outliers
     return df.ix[all_homes[appliance]][~y_pred].index.tolist()
 
 
-def all_true_outliers(df, all_homes, appliance):
+def all_true_outliers(df, all_homes, appliance, outlier_fraction=0.2):
     o = np.array([])
-    for month in 5, 11:
+    if appliance=="hvac":
+        start, end = 5, 11
+    else:
+        start, end = 1, 13
+    for month in range(start, end):
         o = np.union1d(o, find_outlier_train(df.ix[all_homes[appliance]]["%s_%d" %(appliance, month)],
-                                             outliers_fraction=0.2)[0].index)
+                                             outliers_fraction=outlier_fraction)[0].index)
         return o
+
+def find_precision_recall_outlier(df, all_homes, optimal_dict):
+    out = {}
+    for appliance in all_homes.keys():
+        print appliance
+        true_outliers = all_true_outliers(df, all_homes, appliance, outlier_fraction=0.1)
+        optimal_feature = optimal_dict[appliance]['All']['f']
+        try:
+            pred = find_outlier_test_homes(df,all_homes, appliance, optimal_feature, outliers_fraction=0.1)
+        except:
+            pred = find_outlier_test_homes(df,all_homes, appliance, optimal_feature[:4], outliers_fraction=0.1)
+        intersection = np.intersect1d(true_outliers, pred)
+        precision = len(intersection)*1./len(pred)
+        recall = len(intersection)*1./len(true_outliers)
+        out[appliance] = {"precision":precision, "recall":recall}
+        print precision, recall
+    return out
