@@ -302,8 +302,22 @@ def find_outlier_test_homes(df,all_homes,  appliance, outlier_features, outliers
     from sklearn import svm
     from sklearn.covariance import EllipticEnvelope
     clf = EllipticEnvelope(contamination=.1)
-    X = df.ix[all_homes[appliance]][outlier_features].values
-    clf.fit(X)
+    try:
+        X = df.ix[all_homes[appliance]][outlier_features].values
+        clf.fit(X)
+    except:
+        try:
+            X = df.ix[all_homes[appliance]][outlier_features[:-1]].values
+            clf.fit(X)
+        except:
+            try:
+                X = df.ix[all_homes[appliance]][outlier_features[:-2]].values
+                clf.fit(X)
+            except:
+                print "outlier cannot be found"
+                return df.ix[all_homes[appliance]].index.tolist()
+
+
     y_pred = clf.decision_function(X).ravel()
     threshold = stats.scoreatpercentile(y_pred,
                                         100 * outliers_fraction)

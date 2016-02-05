@@ -69,6 +69,14 @@ only_monthly_features =  np.hstack([["aggregate_%d" %i for i in range(1,13)],
                                     ['ratio_min_max', 'difference_min_max',
                                         'ratio_difference_min_max']])
 
+static_features = np.hstack([
+
+        "area",
+        "num_rooms",
+        "total_occupants",
+
+               ])
+
 monthly_plus_static_features = np.hstack([["aggregate_%d" %i for i in range(1,13)],
 
         "area",
@@ -83,5 +91,6 @@ feature_map = {
     "15 min AMI": remove_hvac_features(ami_features.tolist()),
     "Monthly": remove_hvac_features(only_monthly_features.tolist()),
     "Monthly+Static":remove_hvac_features(monthly_plus_static_features.tolist()),
-    "All":remove_hvac_features(all_features.tolist())
+    "All":remove_hvac_features(all_features.tolist()),
+    "Static":static_features.tolist()
     }
