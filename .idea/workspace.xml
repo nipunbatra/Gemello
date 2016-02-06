@@ -2,23 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/Index-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/fridge_ipsn-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/furnace_ipsn-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/hes-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/hvac_ipsn-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/hvac_worst_homes-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/refit-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/Index.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/fridge_ipsn.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/furnace_ipsn.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/hes.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/hvac_ipsn.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/hvac_worst_homes.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/refit.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/hypothesis_testing_vac-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/hypothesis_testing_vac.ipynb" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/accuracy.h5" afterPath="$PROJECT_DIR$/code/accuracy.h5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/figures/new/hvac_max_seasonal_weekly.png" afterPath="$PROJECT_DIR$/figures/new/hvac_max_seasonal_weekly.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/figures/new/hvac_max_trend_weekly.png" afterPath="$PROJECT_DIR$/figures/new/hvac_max_trend_weekly.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/main.pdf" afterPath="$PROJECT_DIR$/results/main.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/main.png" afterPath="$PROJECT_DIR$/results/main.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/proportion_energy.pdf" afterPath="$PROJECT_DIR$/results/proportion_energy.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/proportion_energy.png" afterPath="$PROJECT_DIR$/results/proportion_energy.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity_num_homes.pdf" afterPath="$PROJECT_DIR$/results/sensitivity_num_homes.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity_num_homes.png" afterPath="$PROJECT_DIR$/results/sensitivity_num_homes.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/sensitivity-featureset-checkpoint.ipynb" afterPath="$PROJECT_DIR$/code/.ipynb_checkpoints/sensitivity-featureset-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/sensitivity-numhomes-checkpoint.ipynb" afterPath="$PROJECT_DIR$/code/.ipynb_checkpoints/sensitivity-numhomes-checkpoint.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/all_functions.py" afterPath="$PROJECT_DIR$/code/all_functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/features.py" afterPath="$PROJECT_DIR$/code/features.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/complete_pipeline.ipynb" afterPath="$PROJECT_DIR$/code/complete_pipeline.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/dataset_description.ipynb" afterPath="$PROJECT_DIR$/code/dataset_description.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/main-result.ipynb" afterPath="$PROJECT_DIR$/code/main-result.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/outlier_accuracy.ipynb" afterPath="$PROJECT_DIR$/code/outlier_accuracy.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-featureset.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-featureset.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-numhomes.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-numhomes.ipynb" />
     </list>
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,8 +58,8 @@
       <file leaf-file-name="all_functions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/all_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60413355">
-              <caret line="122" column="26" selection-start-line="110" selection-start-column="4" selection-end-line="122" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.730897">
+              <caret line="133" column="18" selection-start-line="133" selection-start-column="18" selection-end-line="133" selection-end-column="18" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -89,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/code/features.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="94" column="37" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="37" />
+              <caret line="90" column="26" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -798,16 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/features.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="94" column="37" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/neighbourhood_sensitivity_neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -818,10 +812,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="90" column="26" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/all_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60413355">
-          <caret line="122" column="26" selection-start-line="110" selection-start-column="4" selection-end-line="122" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.730897">
+          <caret line="133" column="18" selection-start-line="133" selection-start-column="18" selection-end-line="133" selection-end-column="18" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

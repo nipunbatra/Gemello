@@ -129,9 +129,9 @@ def criterion_function(df, dfc, all_homes, appliance_min, national_average,
             tdf.loc[home, 10]=np.NaN
     #print tdf.dropna().median().mean(), feature_set
     if metric=="median":
-        return tdf.dropna().median().mean()
+        return tdf.median().mean()
     else:
-        return tdf.dropna().mean().mean()
+        return tdf.mean().mean()
 
 
 
@@ -340,7 +340,7 @@ def find_precision_recall_outlier(df, all_homes, optimal_dict):
     out = {}
     for appliance in all_homes.keys():
         print appliance
-        true_outliers = all_true_outliers(df, all_homes, appliance, outlier_fraction=0.1)
+        true_outliers = all_true_outliers(df, all_homes, appliance, outlier_fraction=0.2)
         optimal_feature = optimal_dict[appliance]['All']['f']
         try:
             pred = find_outlier_test_homes(df,all_homes, appliance, optimal_feature, outliers_fraction=0.1)
@@ -349,5 +349,7 @@ def find_precision_recall_outlier(df, all_homes, optimal_dict):
         intersection = np.intersect1d(true_outliers, pred)
         precision = len(intersection)*1./len(pred)
         recall = len(intersection)*1./len(true_outliers)
-        out[appliance] = {"precision":precision, "recall":recall}
+        out[appliance] = {"precision":precision, "recall":recall,
+                          "true_outliers":true_outliers,"predicted_outliers":pred}
+
     return out
