@@ -1,10 +1,8 @@
 # NEED TO RUN ON CLUSTER
 import sys
-if '/usr/cs/lib/python2.7/site-packages' in sys.path:
-    sys.path.remove('/usr/cs/lib/python2.7/site-packages')
-if '/usr/cs/lib/python2.7/dist-packages' in sys.path:
-    sys.path.remove('/usr/cs/lib/python2.7/dist-packages')
-
+CLUSTER=True
+if CLUSTER:
+    sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
 
 
 import numpy as np
