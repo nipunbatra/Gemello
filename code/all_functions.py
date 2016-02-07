@@ -419,12 +419,12 @@ def find_outlier_train(ser, outliers_fraction=0.1, min_units=0.2):
 
 def remove_hvac_features(fe):
 
-    hvac_all_features = [x for x in fe if 'daily_usage' not in x]
+    hvac_all_features = [x for x in fe]
     hvac_all_features = [x for x in hvac_all_features if 'stdev_trend' not in x]
     hvac_all_features = [x for x in hvac_all_features if 'stdev_seasonal' not in x]
     hvac_all_features = [x for x in hvac_all_features if 'variance' not in x]
     hvac_all_features = [x for x in hvac_all_features if 'mins_hvac' not in x]
-    hvac_all_features = [x for x in hvac_all_features if 'fraction' not in x]
+    #hvac_all_features = [x for x in hvac_all_features if 'fraction' not in x]
     return hvac_all_features
 
 def find_optimal_features(df, dfc, all_homes, appliance_min, national_average, appliance_list, feature_map,
