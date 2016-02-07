@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="" />
+    <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/slurm_out/Readme" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bash/sensitivity_num_homes.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/sensitivity_num_homes.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-num-homes-1.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-num-homes-1.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-num-homes-2.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-num-homes-2.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-num-homes-3.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-num-homes-3.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-num-homes-4.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-num-homes-4.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-num-homes-5.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-num-homes-5.ipynb" />
+    </list>
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,11 +55,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create_df.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="create_df.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/create_df.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.06339144">
+            <state vertical-scroll-proportion="0.0">
               <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sensitivity_num_homes.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/sensitivity_num_homes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sensitivity_num_homes.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bash/sensitivity_num_homes.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7606973">
+              <caret line="24" column="121" selection-start-line="24" selection-start-column="121" selection-end-line="24" selection-end-column="121" />
               <folding />
             </state>
           </provider>
@@ -143,6 +175,8 @@
         <option value="$USER_HOME$/Dropbox/Public/notebooks/misc/run_lbm.py" />
         <option value="$PROJECT_DIR$/code/features.py" />
         <option value="$PROJECT_DIR$/code/all_functions.py" />
+        <option value="$PROJECT_DIR$/code/sensitivity_num_homes.py" />
+        <option value="$PROJECT_DIR$/bash/sensitivity_num_homes.sh" />
       </list>
     </option>
   </component>
@@ -193,20 +227,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="monthly-disaggregation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="monthly-disaggregation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="monthly-disaggregation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="code" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -418,26 +438,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#27#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="192" column="31" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="31" />
-          <folding>
-            <element signature="e#27#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/all_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -825,8 +825,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/create_df.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06339144">
+        <state vertical-scroll-proportion="0.0">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/sensitivity_num_homes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bash/sensitivity_num_homes.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7606973">
+          <caret line="24" column="121" selection-start-line="24" selection-start-column="121" selection-end-line="24" selection-end-column="121" />
           <folding />
         </state>
       </provider>
