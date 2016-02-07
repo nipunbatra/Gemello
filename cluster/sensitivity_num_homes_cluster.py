@@ -4,7 +4,7 @@ SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 
 for NUM_HOMES in range(7, 28, 3):
-    for START_SEED in range(0, 100, 4):
+    for START_SEED in range(0, 100, 1):
         STOP_SEED = START_SEED + 4
         for appliance in appliances:
             for feature in features:
@@ -19,7 +19,7 @@ for NUM_HOMES in range(7, 28, 3):
                 lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
                 lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
                 lines.append(CMD+'\n')
-               
+
                 with open(SLURM_SCRIPT, 'w') as f:
                    f.writelines(lines)
                 command = ['sbatch', SLURM_SCRIPT]
