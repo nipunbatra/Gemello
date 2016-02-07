@@ -37,7 +37,7 @@ for ((N_HOMES=7; N_HOMES<=28; N_HOMES+=3))
                 #echo 'cd $SLURM_SUBMIT_DIR' >> ${SLURM_SCRIPT}
                 echo ${CMD} >> ${SLURM_SCRIPT}
 
-                #cat ${SLURM_SCRIPT}
+                cat ${SLURM_SCRIPT}
                 sbatch ${SLURM_SCRIPT}
                 done
             done
