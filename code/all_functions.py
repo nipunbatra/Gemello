@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
 from copy import deepcopy
-import ipdb as pdb
+#import ipdb as pdb
 
 def create_predictions_subset(df, dfc, all_homes, appliance_min, national_average, appliance="hvac", feature=['num_rooms', 'total_occupants'], NUM_NEIGHBOURS=2,
                        train_outlier=True, test_outlier=False, outlier_features=None, outlier_fraction=0.1,
