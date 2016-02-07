@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/sensitivity-numhomes-checkpoint.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/code/sensitivity-numhomes.ipynb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/accuracy.h5" afterPath="$PROJECT_DIR$/code/accuracy.h5" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/features_sensitivity.pdf" afterPath="$PROJECT_DIR$/results/features_sensitivity.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/features_sensitivity.png" afterPath="$PROJECT_DIR$/results/features_sensitivity.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/proportion_energy.pdf" afterPath="$PROJECT_DIR$/results/proportion_energy.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/proportion_energy.png" afterPath="$PROJECT_DIR$/results/proportion_energy.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/all_functions.py" afterPath="$PROJECT_DIR$/code/all_functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/complete_pipeline-without-test-outlier.ipynb" afterPath="$PROJECT_DIR$/code/complete_pipeline-without-test-outlier.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/dataset_description.ipynb" afterPath="$PROJECT_DIR$/code/dataset_description.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/main-result.ipynb" afterPath="$PROJECT_DIR$/code/main-result.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/outlier_accuracy.ipynb" afterPath="$PROJECT_DIR$/code/outlier_accuracy.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sensitivity-featureset-without-test-outlier.ipynb" afterPath="$PROJECT_DIR$/code/sensitivity-featureset-without-test-outlier.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/without-test-optimal_dict.json" afterPath="$PROJECT_DIR$/code/without-test-optimal_dict.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/without-test-out.json" afterPath="$PROJECT_DIR$/code/without-test-out.json" />
-    </list>
+    <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="" />
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,14 +33,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="all_functions.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="all_functions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/all_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59800667">
-              <caret line="256" column="26" selection-start-line="252" selection-start-column="4" selection-end-line="256" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_df.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/create_df.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.06339144">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -156,7 +149,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="724" />
+    <option name="height" value="726" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -183,8 +176,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -383,7 +376,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="724" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="726" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -425,6 +418,16 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#27#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -738,31 +741,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/create_df.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="200" column="62" selection-start-line="200" selection-start-column="11" selection-end-line="200" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/Public/notebooks/misc/run_lbm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/oracle_new.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="635" column="12" selection-start-line="635" selection-start-column="12" selection-end-line="635" selection-end-column="12" />
-          <folding>
-            <element signature="e#27#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/common_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.933439">
@@ -777,12 +755,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="192" column="31" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="31" />
+          <folding>
+            <element signature="e#27#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/all_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/code/latent_Bayesian_melding.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="111" column="27" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/Public/notebooks/misc/run_lbm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/features.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -797,33 +813,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
+    <entry file="file://$PROJECT_DIR$/code/oracle_new.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="192" column="31" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="31" />
+          <caret line="635" column="12" selection-start-line="635" selection-start-column="12" selection-end-line="635" selection-end-column="12" />
           <folding>
             <element signature="e#27#46#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/features.py">
+    <entry file="file://$PROJECT_DIR$/code/create_df.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/all_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59800667">
-          <caret line="256" column="26" selection-start-line="252" selection-start-column="4" selection-end-line="256" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.06339144">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
