@@ -1,3 +1,12 @@
+# NEED TO RUN ON CLUSTER
+import sys
+if '/usr/cs/lib/python2.7/site-packages' in sys.path:
+    sys.path.remove('/usr/cs/lib/python2.7/site-packages')
+if '/usr/cs/lib/python2.7/dist-packages' in sys.path:
+    sys.path.remove('/usr/cs/lib/python2.7/dist-packages')
+
+
+
 import numpy as np
 import pandas as pd
 
