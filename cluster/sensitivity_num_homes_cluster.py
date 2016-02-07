@@ -10,7 +10,7 @@ for NUM_HOMES in range(7, 28, 3):
             for feature in features:
                 OFILE = "%s/A_%sN_%dS_%d_F%s.out" % (SLURM_OUT, appliance, NUM_HOMES, START_SEED, feature)
                 EFILE = "%s/A_%sN_%dS_%d_F%s.err" % (SLURM_OUT, appliance, NUM_HOMES, START_SEED, feature)
-                SLURM_SCRIPT = "A_%sN_%dS_%d_F%s.pbs" % (SLURM_OUT, appliance, NUM_HOMES, START_SEED, feature)
+                SLURM_SCRIPT = "A_%sN_%dS_%d_F%s.pbs" % (appliance, NUM_HOMES, START_SEED, feature)
                 CMD = 'python ../code/sensitivity_num_homes.py %s %d %d %d %s' % (appliance,NUM_HOMES,START_SEED,STOP_SEED,feature)
                 lines = []
                 lines.append("#!/bin/sh")
