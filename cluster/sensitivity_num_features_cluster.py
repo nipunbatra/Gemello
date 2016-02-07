@@ -7,9 +7,9 @@ from subprocess import Popen
 
 for appliance in appliances:
     for feature in features:
-        OFILE = "%s/A_%sN_%dS_%d_F%s.out" % (SLURM_OUT, appliance, feature)
-        EFILE = "%s/A_%sN_%dS_%d_F%s.err" % (SLURM_OUT, appliance, feature)
-        SLURM_SCRIPT = "A_%sN_%dS_%d_F%s.pbs" % (appliance, feature)
+        OFILE = "%s/A_%sF_%s.out" % (SLURM_OUT, appliance, feature)
+        EFILE = "%s/A_%sF_%s.err" % (SLURM_OUT, appliance, feature)
+        SLURM_SCRIPT = "A_%sF_%s.pbs" % (appliance, feature)
         CMD = 'python ../code/sensitivity_num_features.py %s %s' % (appliance,feature)
         lines = []
         lines.append("#!/bin/sh\n")
