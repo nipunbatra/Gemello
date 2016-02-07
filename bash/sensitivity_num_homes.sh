@@ -3,7 +3,7 @@
 
 source ~/.bashrc
 source ~/.profile
-echo $PATH
+
 declare -a appliances=("hvac")
 declare -a features=("Monthly" "Static")
 
