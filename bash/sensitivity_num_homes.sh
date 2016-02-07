@@ -12,16 +12,16 @@ for ((N_HOMES=7; N_HOMES<=28; N_HOMES+=3))
     do
     for ((START_SEED=0;START_SEED<100;START_SEED+=4))
         do
-        END_SEED = $START_SEED+4;
+        END_SEED=$((START_SEED+4))
         for((ii=0;ii<$num_appliances;ii+=1))
             do
             for((jj=0;jj<num_features;jj+=1))
                 do
                 appliance=${appliances[$ii]}
-                feature = ${features[$jj]}
+                feature=${features[$jj]}
                 OFILE=../slurm_out/N${N_HOMES}_K${START_SEED}_T"$feature"_"$appliance".out
                 EFILE=../slurm_out/N${N_HOMES}_K${START_SEED}_T"$feature"_"$appliance".err
-                SLURM_SCRIPT = A_"$appliance"_N_${N_HOMES}_S_${START_SEED}_F_"$feature".pbs
+                SLURM_SCRIPT=A_"$appliance"_N_${N_HOMES}_S_${START_SEED}_F_"$feature".pbs
                 CMD='python ../code/sensitivity_num_homes.py '$appliance' '$N_HOMES' '$START_SEED' '$END_SEED' '$feature''
                 echo $CMD
 
