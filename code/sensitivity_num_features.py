@@ -26,5 +26,5 @@ out_mean, optimal_dict_mean = find_optimal_features(df, dfc, all_homes, applianc
                             print_steps=False)
 
 import json
-json.dump(optimal_dict_mean, open("%s_%s" %(appliance, feature), 'r'))
+json.dump(optimal_dict_mean, open("%s_%s" %(appliance, feature), 'w'))
 
