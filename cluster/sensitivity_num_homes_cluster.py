@@ -5,7 +5,7 @@ from subprocess import Popen
 
 for NUM_HOMES in range(7, 28, 3):
     for START_SEED in range(0, 100, 1):
-        STOP_SEED = START_SEED + 4
+        STOP_SEED = START_SEED + 1
         for appliance in appliances:
             for feature in features:
                 OFILE = "%s/A_%sN_%dS_%d_F%s.out" % (SLURM_OUT, appliance, NUM_HOMES, START_SEED, feature)
