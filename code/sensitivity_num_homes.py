@@ -62,7 +62,10 @@ def _find_accuracy_num_homes(appliance, num_homes, start_seed, end_seed, feature
                 gt = df.ix[test_homes]['%s_%d' %(appliance, month)]
                 accur = 100-(pred-gt).abs().div(gt).mul(100)
                 accur[accur<0]=0
-                out[random_seed][month]=accur.mean().mean()
+                if type(accur)==pd.DataFrame:
+                    out[random_seed][month]=accur.mean().mean()
+                else:
+                    out[random_seed][month]=accur.mean()
     out_df = pd.DataFrame(out)
     return out_df
 
