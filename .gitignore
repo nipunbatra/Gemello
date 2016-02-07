@@ -58,4 +58,6 @@ docs/_build/
 # PyBuilder
 target/
 
+.pbs
+
 # Created by .ignore support plugin (hsz.mobi)
