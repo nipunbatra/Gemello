@@ -13,12 +13,13 @@ for NUM_HOMES in range(7, 28, 3):
                 SLURM_SCRIPT = "A_%sN_%dS_%d_F%s.pbs" % (appliance, NUM_HOMES, START_SEED, feature)
                 CMD = 'python ../code/sensitivity_num_homes.py %s %d %d %d %s' % (appliance,NUM_HOMES,START_SEED,STOP_SEED,feature)
                 lines = []
-                lines.append("#!/bin/sh")
-                lines.append('#SBATCH --time=1-02:0:00')
-                lines.append('#SBATCH --mem=16')
-                lines.append('#SBATCH -o '+'"' +OFILE+'"')
-                lines.append('#SBATCH -e '+'"' +EFILE+'"')
-                lines.append(CMD)
+                lines.append("#!/bin/sh\n")
+                lines.append('#SBATCH --time=1-02:0:00\n')
+                lines.append('#SBATCH --mem=16\n')
+                lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
+                lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
+                lines.append(CMD+'\n')
+               
                 with open(SLURM_SCRIPT, 'w') as f:
                    f.writelines(lines)
                 command = ['sbatch', SLURM_SCRIPT]
