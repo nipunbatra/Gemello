@@ -24,7 +24,7 @@ for ((N_HOMES=7; N_HOMES<=28; N_HOMES+=3))
                 OFILE=../slurm_out/N${N_HOMES}_K${START_SEED}_T"$feature"_"$appliance".out
                 EFILE=../slurm_out/N${N_HOMES}_K${START_SEED}_T"$feature"_"$appliance".err
                 SLURM_SCRIPT=A_"$appliance"_N_${N_HOMES}_S_${START_SEED}_F_"$feature".pbs
-                CMD='/if6/nb2cz/anaconda/bin/python ../code/sensitivity_num_homes.py '$appliance' '$N_HOMES' '$START_SEED' '$END_SEED' '$feature''
+                CMD='python ../code/sensitivity_num_homes.py '$appliance' '$N_HOMES' '$START_SEED' '$END_SEED' '$feature''
                 echo $CMD
 
                 #rm ${SLURM_SCRIPT}
