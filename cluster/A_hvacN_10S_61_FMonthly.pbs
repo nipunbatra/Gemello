@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_hvacN_10S_61_FMonthly.out"
+#SBATCH -e "../slurm_out/A_hvacN_10S_61_FMonthly.err"
+python ../code/sensitivity_num_homes.py hvac 10 61 62 Monthly

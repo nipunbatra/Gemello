@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_drN_25S_73_FStatic.out"
+#SBATCH -e "../slurm_out/A_drN_25S_73_FStatic.err"
+python ../code/sensitivity_num_homes.py dr 25 73 74 Static

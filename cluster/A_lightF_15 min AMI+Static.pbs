@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_lightF_15 min AMI+Static.out"
+#SBATCH -e "../slurm_out/A_lightF_15 min AMI+Static.err"
+python ../code/sensitivity_num_features.py light 15 min AMI+Static

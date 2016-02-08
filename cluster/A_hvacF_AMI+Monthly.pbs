@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_hvacF_AMI+Monthly.out"
+#SBATCH -e "../slurm_out/A_hvacF_AMI+Monthly.err"
+python ../code/sensitivity_num_features.py hvac AMI+Monthly

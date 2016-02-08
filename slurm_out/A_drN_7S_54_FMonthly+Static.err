@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "../code/sensitivity_num_homes.py", line 80, in <module>
+    out_df = _find_accuracy_num_homes(appliance, num_homes, start_seed, end_seed, feature)
+  File "../code/sensitivity_num_homes.py", line 54, in _find_accuracy_num_homes
+    print_steps=False)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 465, in find_optimal_features
+    F_length_max, criterion_function, print_steps)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 362, in seq_forw_select
+    metric)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 247, in criterion_function
+    outlier_fraction)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 175, in create_predictions
+    out_pred.append(clf.predict(df3[feature].values[test]))
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/neighbors/regression.py", line 144, in predict
+    neigh_dist, neigh_ind = self.kneighbors(X)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/neighbors/base.py", line 361, in kneighbors
+    (train_size, n_neighbors)
+ValueError: Expected n_neighbors <= n_samples,  but n_samples = 3, n_neighbors = 4

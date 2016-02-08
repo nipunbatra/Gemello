@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_drN_25S_87_FMonthly+Static.out"
+#SBATCH -e "../slurm_out/A_drN_25S_87_FMonthly+Static.err"
+python ../code/sensitivity_num_homes.py dr 25 87 88 Monthly+Static

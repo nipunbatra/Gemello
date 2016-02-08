@@ -1,0 +1,3 @@
+slurmd[hermes4]: *** JOB 100425 CANCELLED AT 2016-02-07T07:55:48 ***
+slurmd[hermes4]: unlink(/var/spool/slurmd/job100425/slurm_script): No such file or directory
+slurmd[hermes4]: rmdir(/var/spool/slurmd/job100425): No such file or directory

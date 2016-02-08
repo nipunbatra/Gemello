@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=1-02:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/A_hvacN_13S_48_FStatic.out"
+#SBATCH -e "../slurm_out/A_hvacN_13S_48_FStatic.err"
+python ../code/sensitivity_num_homes.py hvac 13 48 49 Static

@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "../code/sensitivity_num_homes.py", line 80, in <module>
+    out_df = _find_accuracy_num_homes(appliance, num_homes, start_seed, end_seed, feature)
+  File "../code/sensitivity_num_homes.py", line 54, in _find_accuracy_num_homes
+    print_steps=False)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 465, in find_optimal_features
+    F_length_max, criterion_function, print_steps)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 362, in seq_forw_select
+    metric)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 247, in criterion_function
+    outlier_fraction)
+  File "/net/if6/nb2cz/git/Neighbourhood-NILM/code/all_functions.py", line 173, in create_predictions
+    clf.fit(df3[feature].ix[inlier_homes.index], inlier_homes.values)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/neighbors/base.py", line 758, in fit
+    X, y = check_X_y(X, y, "csr", multi_output=True)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 510, in check_X_y
+    ensure_min_features, warn_on_dtype, estimator)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 407, in check_array
+    context))
+ValueError: Found array with 0 sample(s) (shape=(0, 1)) while a minimum of 1 is required.
