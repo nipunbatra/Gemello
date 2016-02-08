@@ -1,6 +1,8 @@
 appliances = ["hvac","light","fridge","dr","wm","dw"]
 features = ["Static", "Monthly+Static", "Monthly", "15 min AMI",
             "15 min AMI+Static", "All", "15 min AMI+Monthly"]
+features = [ "AMI",
+            "AMI+Static", "AMI+Monthly"]
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 

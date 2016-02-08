@@ -157,11 +157,11 @@ ami_plus_monthly = np.hstack([["aggregate_%d" %i for i in range(1,13)],
            ])
 
 feature_map = {
-    "15 min AMI": remove_hvac_features(ami_features.tolist()),
+    "AMI": remove_hvac_features(ami_features.tolist()),
     "Monthly": remove_hvac_features(only_monthly_features.tolist()),
     "Monthly+Static":remove_hvac_features(monthly_plus_static_features.tolist()),
     "All":remove_hvac_features(all_features.tolist()),
     "Static":static_features.tolist(),
-    "15 min AMI+Static":ami_plus_static.tolist(),
-    "15 min AMI+Monthly":ami_plus_monthly.tolist()
+    "AMI+Static":ami_plus_static.tolist(),
+    "AMI+Monthly":ami_plus_monthly.tolist()
     }
