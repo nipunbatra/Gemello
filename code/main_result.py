@@ -5,8 +5,10 @@ if CLUSTER:
     sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
 
 
+
 import numpy as np
 import pandas as pd
+
 
 from create_df import read_df
 df, dfc, all_homes, appliance_min, national_average = read_df()
