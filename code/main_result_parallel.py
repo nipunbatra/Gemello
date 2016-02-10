@@ -80,5 +80,5 @@ appliance, feature, home = sys.argv[1], sys.argv[2], sys.argv[3]
 home = int(home)
 
 out_df = _find_accuracy(home, appliance, feature)
-pd.Series(out_df).to_csv("../main-out/%s_%s_%d" %(appliance, feature, home))
+pd.Series(out_df).to_csv("../main-out/%s_%s_%d.csv" %(appliance, feature, home))
 #_save_csv(out_df, "../main-out", appliance, feature)
