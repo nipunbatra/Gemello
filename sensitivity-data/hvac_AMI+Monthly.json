@@ -1,0 +1,1 @@
+{"hvac": {"AMI+Monthly": {"k": 3, "f": ["aggregate_7", "aggregate_5", "aggregate_8", "difference_min_max", "daily_usage_7", "aggregate_5", "aggregate_6"], "accuracy": 80.08653876435147}}}

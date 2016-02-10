@@ -1,0 +1,1 @@
+{"fridge": {"AMI+Monthly": {"k": 4, "f": ["fft_3", "max_trend_daily", "fraction_8", "fraction_18", "gt_1000", "ratio_min_max", "fraction_16"], "accuracy": 81.59718160191348}}}
