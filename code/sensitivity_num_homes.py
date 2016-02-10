@@ -69,8 +69,7 @@ def _find_accuracy_num_homes(appliance, num_homes, start_seed, end_seed, feature
     out_df = pd.DataFrame(out)
     return out_df
 
-    out_df.T.to_csv("../sensitivity-data/%s_%d_%d_%d_%s.csv" %(appliance, num_homes, start_seed, end_seed, feature),
-                    index_label="Random seed")
+
 
 import sys
 appliance, num_homes, start_seed, end_seed, feature = sys.argv[1], sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5]

@@ -1,4 +1,4 @@
-appliances = ["hvac", "dr"]
+appliances = ["hvac", "dr","fridge","dw","dr"]
 features = ["Monthly+Static"]
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen

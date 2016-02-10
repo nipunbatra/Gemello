@@ -1,21 +1,19 @@
 appliances = ["hvac","light","fridge","dr","wm","dw"]
 features = ["Static", "Monthly+Static", "Monthly", "AMI",
             "AMI+Static", "All", "AMI+Monthly"]
-features = [ "AMI",
-            "AMI+Static", "AMI+Monthly"]
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 
 
-for appliance in appliances:
-    for feature in features:
-        OFILE = "%s/A_%sF_%s.out" % (SLURM_OUT, appliance, feature)
-        EFILE = "%s/A_%sF_%s.err" % (SLURM_OUT, appliance, feature)
-        SLURM_SCRIPT = "A_%sF_%s.pbs" % (appliance, feature)
-        CMD = 'python ../code/sensitivity_num_features.py %s %s' % (appliance,feature)
+for feature in features:
+    for appliance in appliances:
+        OFILE = "%s/%s_%s.out" % (SLURM_OUT, appliance, feature)
+        EFILE = "%s/%s_%s.err" % (SLURM_OUT, appliance,  feature)
+        SLURM_SCRIPT = "%s_%s.pbs" % (appliance,feature)
+        CMD = 'python ../code/main_result.py %s %s' % (appliance,feature)
         lines = []
         lines.append("#!/bin/sh\n")
-        lines.append('#SBATCH --time=1-02:0:00\n')
+        lines.append('#SBATCH --time=0-06:0:00\n')
         lines.append('#SBATCH --mem=16\n')
         lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
         lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
