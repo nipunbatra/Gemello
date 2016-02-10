@@ -54,7 +54,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
                                                   train_outlier=True, test_outlier=False, outlier_features=None, outlier_fraction=0.1,
                                                   print_steps=False)
 
-    json.dump(optimal_dict,open("../main-out/%s_%s_%d.json" %(appliance,feature, test_homes[0]),"w") )
+    json.dump(optimal_dict,open("../main-out/%s_%s_%d.json" %(appliance,feature, home),"w") )
     f = optimal_dict[appliance]['All']['f']
     k = optimal_dict[appliance]['All']['k']
     out = {}
@@ -77,6 +77,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
 
 import sys
 appliance, feature, home = sys.argv[1], sys.argv[2], sys.argv[3]
+home = int(home)
 
 out_df = _find_accuracy(home, appliance, feature)
 pd.Series(out_df).to_csv("../main-out/%s_%s_%d" %(appliance, feature, home))
