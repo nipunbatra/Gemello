@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=1-02:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/A_hvacN_22S_87_FAll.out"
-#SBATCH -e "../slurm_out/A_hvacN_22S_87_FAll.err"
-python ../code/sensitivity_num_homes.py hvac 22 87 88 All

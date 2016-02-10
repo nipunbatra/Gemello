@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=1-02:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/A_drN_16S_43_FMonthly.out"
-#SBATCH -e "../slurm_out/A_drN_16S_43_FMonthly.err"
-python ../code/sensitivity_num_homes.py dr 16 43 44 Monthly

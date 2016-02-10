@@ -1,15 +1,12 @@
 __author__ = 'nipunbatra'
 
-import pandas as pd
-import os
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.neighbors import KNeighborsRegressor
+import pandas as pd
 
 
 def read_df():
 
-    df = pd.read_csv("../main_15min_decomposition_12_daily_weekly_cluster_diff_frac_temp_weekday_hvac_energy_fft.csv",index_col=0)
+    df = pd.read_csv("../main-data/main-data.csv",index_col=0)
     dfc = df.copy()
 
     df = df.drop(871)
@@ -21,23 +18,7 @@ def read_df():
 
     df = df.ix[w[w>0].dropna().index]
 
-    """
-    features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
-                           'area': 'area',
-                           'autocorr':'autocorr',
-                           'month': ["aggregate_%d" % i for i in range(1, 13)],
-                           'occupants': 'total_occupants',
-                           'rooms': 'num_rooms',
-                           #'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
-                           #'trend_daily':['stdev_trend_daily','max_trend_daily'],
-                           'seasonal_weekly':['stdev_seasonal_weekly','max_seasonal_weekly'],
-                           'trend_weekly':['stdev_trend_weekly','max_trend_weekly'],}
-                           #'disag_fridge':'disag_fridge'}
-                           #'mins_hvac':'mins_hvac',}
-                           #'month_extract':['variance','ratio_min_max', 'difference_min_max',
-                            #                'ratio_difference_min_max']}
 
-    """
     features_individual = {'fraction':["fraction_%d" % i for i in range(1, 25)],
                            'area': 'area',
                            'autocorr':'autocorr',
@@ -61,30 +42,7 @@ def read_df():
                            'month_extract':['variance','ratio_min_max', 'difference_min_max',
                                             'ratio_difference_min_max']}
 
-    ### Monthly ONLY
-    """
-    features_individual = {#'fraction':["fraction_%d" % i for i in range(1, 25)],
-                           'area': 'area',
-                           #'autocorr':'autocorr',
-                           'month': ["aggregate_%d" % i for i in range(1, 13)],
-                           'occupants': 'total_occupants',
-                           'rooms': 'num_rooms',
-                           #'seasonal_12':['stdev_seasonal_12','max_seasonal_12'],
-                           #'trend_12':['stdev_trend_12','max_trend_12'],
-                           #'seasonal_daily':['stdev_seasonal_daily','max_seasonal_daily'],
-                           #'trend_daily':['stdev_trend_daily','max_trend_daily'],
-                           #'seasonal_weekly':['stdev_seasonal_weekly','max_seasonal_weekly'],
-                           #'trend_weekly':['stdev_trend_weekly','max_trend_weekly'],}
-                           #'disag_fridge':'disag_fridge'}
-                           #'mins_hvac':'mins_hvac',
-                           #'cluster_big':'cluster_big',
-                           #'diff':['lt_500','bet_500_1000','gt_1000'],
-                           'temp':'temperature_corr',
-                           'month_extract':['variance','ratio_min_max', 'difference_min_max',
-                                            'ratio_difference_min_max']}
 
-
-    """
 
     from itertools import combinations
     features_dict = {}
@@ -93,12 +51,6 @@ def read_df():
         for com in combinations_size_n:
             features_dict[com] = np.hstack([features_individual[x] for x in com]).tolist()
 
-
-
-    hvac_fhmm_pred = pd.read_csv("../fhmm_disag_new.csv", index_col=0)
-    fridge_fhmm_pred = pd.read_csv("../fridge_fhmm.csv", index_col=0)
-    appliance_fhmm = {'fridge': fridge_fhmm_pred,
-                      'hvac': hvac_fhmm_pred}
 
     national_average = {"fridge": 0.07, "hvac": 0.18, 'wm': 0.01, 'furnace': 0.09, 'dw': 0.02, 'dr': 0.04, 'light': .11}
 

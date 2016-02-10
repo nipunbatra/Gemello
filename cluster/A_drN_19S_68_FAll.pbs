@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=1-02:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/A_drN_19S_68_FAll.out"
-#SBATCH -e "../slurm_out/A_drN_19S_68_FAll.err"
-python ../code/sensitivity_num_homes.py dr 19 68 69 All

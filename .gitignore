@@ -59,5 +59,10 @@ docs/_build/
 target/
 
 .pbs
+.out
+.err
+.ipynb_checkpoints
+.idea/
+.DS_Store
 
 # Created by .ignore support plugin (hsz.mobi)

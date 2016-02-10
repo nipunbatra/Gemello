@@ -1,1 +1,0 @@
-slurmd[artemis3]: execve(): bad interpreter(/bin/sh#SBATCH --time=1-02:0:00#SBATCH --mem=16#SBATCH -o "../slurm_out/A_hvacN_19S_84_FMonthly.out"#SBATCH -e "../slurm_out/A_hvacN_19S_84_FMonthly.err"python ../code/sensitivity_num_homes.py hvac 19 84 88 Monthly@ßH>ý): No such file or directory

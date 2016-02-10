@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=1-02:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/A_fridgeF_15 min AMI+Monthly.out"
-#SBATCH -e "../slurm_out/A_fridgeF_15 min AMI+Monthly.err"
-python ../code/sensitivity_num_features.py fridge 15 min AMI+Monthly
