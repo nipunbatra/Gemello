@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/4767_dr_AMI+Monthly.out"
+#SBATCH -e "../slurm_out/4767_dr_AMI+Monthly.err"
+python ../code/main_result_parallel_new.py dr AMI+Monthly 4767

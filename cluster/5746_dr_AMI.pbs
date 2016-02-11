@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/5746_dr_AMI.out"
+#SBATCH -e "../slurm_out/5746_dr_AMI.err"
+python ../code/main_result_parallel_new.py dr AMI 5746

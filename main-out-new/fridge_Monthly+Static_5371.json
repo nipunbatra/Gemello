@@ -1,0 +1,1 @@
+{"k": 5, "accuracy": 68.93097571356543, "f": ["difference_min_max", "aggregate_5", "ratio_difference_min_max", "aggregate_4", "aggregate_6", "num_rooms", "aggregate_7"]}

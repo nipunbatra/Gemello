@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/5814_light_Monthly+Static.out"
+#SBATCH -e "../slurm_out/5814_light_Monthly+Static.err"
+python ../code/main_result_parallel_new.py light Monthly+Static 5814
