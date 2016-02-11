@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/9934_wm_AMI.out"
+#SBATCH -e "../slurm_out/9934_wm_AMI.err"
+python ../code/main_result_parallel.py wm AMI 9934

@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/2242_fridge_All.out"
+#SBATCH -e "../slurm_out/2242_fridge_All.err"
+python ../code/main_result_parallel.py fridge All 2242

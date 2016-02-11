@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/5814_hvac_All.out"
+#SBATCH -e "../slurm_out/5814_hvac_All.err"
+python ../code/main_result_parallel.py hvac All 5814

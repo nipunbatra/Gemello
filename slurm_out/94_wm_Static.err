@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "../code/main_result_parallel.py", line 82, in <module>
+    out_df = _find_accuracy(home, appliance, feature)
+  File "../code/main_result_parallel.py", line 64, in _find_accuracy
+    clf.fit(df.ix[train_homes][f], df.ix[train_homes]['%s_%d' %(appliance, month)])
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/neighbors/base.py", line 758, in fit
+    X, y = check_X_y(X, y, "csr", multi_output=True)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 510, in check_X_y
+    ensure_min_features, warn_on_dtype, estimator)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 398, in check_array
+    _assert_all_finite(array)
+  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 54, in _assert_all_finite
+    " or a value too large for %r." % X.dtype)
+ValueError: Input contains NaN, infinity or a value too large for dtype('float64').

@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/7866_light_Static.out"
+#SBATCH -e "../slurm_out/7866_light_Static.err"
+python ../code/main_result_parallel.py light Static 7866

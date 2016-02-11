@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/3967_hvac_AMI+Monthly.out"
+#SBATCH -e "../slurm_out/3967_hvac_AMI+Monthly.err"
+python ../code/main_result_parallel.py hvac AMI+Monthly 3967

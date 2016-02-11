@@ -1,0 +1,6 @@
+#!/bin/sh
+#SBATCH --time=0-06:0:00
+#SBATCH --mem=16
+#SBATCH -o "../slurm_out/7769_dw_AMI+Static.out"
+#SBATCH -e "../slurm_out/7769_dw_AMI+Static.err"
+python ../code/main_result_parallel.py dw AMI+Static 7769
