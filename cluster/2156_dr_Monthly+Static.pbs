@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=0-06:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/2156_dr_Monthly+Static.out"
-#SBATCH -e "../slurm_out/2156_dr_Monthly+Static.err"
-python ../code/main_result_parallel_new.py dr Monthly+Static 2156

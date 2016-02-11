@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=0-06:0:00
-#SBATCH --mem=16
-#SBATCH -o "../slurm_out/2156_hvac_AMI.out"
-#SBATCH -e "../slurm_out/2156_hvac_AMI.err"
-python ../code/main_result_parallel_new.py hvac AMI 2156

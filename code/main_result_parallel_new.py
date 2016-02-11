@@ -60,7 +60,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
         test_home_name = cv_test_home.index.values[0]
         #print cv_test_home
         out[test_home_name]={}
-        print cv_train, cv_test, test_home_name
+
 
         # Summing up energy across start to stop to get Y to learn optimum feature on
         Y = cv_train_home[['%s_%d' %(appliance, i) for i in range(start, stop)]].sum(axis=1).values
