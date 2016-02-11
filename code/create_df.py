@@ -89,6 +89,17 @@ def read_df():
     df['ratio_difference_min_max'] = (aa.max(axis=1)-aa.min(axis=1)).div(aa.max(axis=1))
 
 
+    # Adding skew and kurtosis on monthly aggregate
+    k = {}
+    s ={}
+    for home in df.index:
+        k[home] = df.ix[home][['aggregate_%d' %i for i in range(1, 13)]].kurtosis()
+        s[home] = df.ix[home][['aggregate_%d' %i for i in range(1, 13)]].skew()
+
+    df['skew'] = pd.Series(s)
+    df['kurtosis']=pd.Series(k)
+
+
     for col in ["stdev_trend_12","stdev_seasonal_12","max_seasonal_12","max_trend_12",
                 "stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
                 "stdev_trend_weekly","stdev_seasonal_weekly","max_seasonal_weekly","max_trend_weekly","disag_fridge",
@@ -96,7 +107,7 @@ def read_df():
                 'cluster_small','cluster_big', 'temperature_corr', 'variance',
                 'ratio_min_max','ratio_difference_min_max','seasonal_energy_5','seasonal_energy_6',
                 'seasonal_energy_7','seasonal_energy_8','seasonal_energy_9','seasonal_energy_10',
-               'fft_1','fft_2','fft_3','fft_4','fft_5']:
+               'fft_1','fft_2','fft_3','fft_4','fft_5','skew','kurtosis']:
         if col in df.columns:
 
             df[col] = scale_0_1(df[col])

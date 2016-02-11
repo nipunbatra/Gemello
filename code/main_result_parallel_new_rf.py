@@ -80,4 +80,4 @@ appliance, feature, home = sys.argv[1], sys.argv[2], sys.argv[3]
 home = int(home)
 
 out_df = _find_accuracy(home, appliance, feature)
-out_df.to_csv("../rf-out-200/%s_%s_%d.csv" %(appliance, feature, home))
+out_df.to_csv("../rf-out-200-skew/%s_%s_%d.csv" %(appliance, feature, home))

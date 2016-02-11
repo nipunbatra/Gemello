@@ -31,7 +31,9 @@ all_features = np.hstack([["aggregate_%d" %i for i in range(1,13)],
                ['ratio_min_max', 'difference_min_max',
                                         'ratio_difference_min_max'],
                ["seasonal_energy_%d" %i for i in range(5,11)],
-        ["fft_%d" %i for i in range(1, 6)]
+        ["fft_%d" %i for i in range(1, 6)],
+                          'skew',
+                          'kurtosis'
 
            ])
 
@@ -66,6 +68,7 @@ ami_features = np.hstack([["aggregate_%d" %i for i in range(1,13)],
            ])
 
 only_monthly_features =  np.hstack([["aggregate_%d" %i for i in range(1,13)],
+                                    'skew','kurtosis',
                                     ['ratio_min_max', 'difference_min_max',
                                         'ratio_difference_min_max']])
 
@@ -82,6 +85,7 @@ monthly_plus_static_features = np.hstack([["aggregate_%d" %i for i in range(1,13
         "area",
         "num_rooms",
         "mins_hvac",
+        'skew','kurtosis',
         "total_occupants",
                ['ratio_min_max', 'difference_min_max',
                                         'ratio_difference_min_max'],
@@ -128,6 +132,8 @@ ami_plus_monthly = np.hstack([["aggregate_%d" %i for i in range(1,13)],
         "max_trend_12",
 
         "max_seasonal_daily",
+        'skew',
+        'kurtosis',
 
         "max_trend_daily",
 
