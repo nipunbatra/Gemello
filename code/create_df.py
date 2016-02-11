@@ -92,13 +92,23 @@ def read_df():
     # Adding skew and kurtosis on monthly aggregate
     k = {}
     s ={}
+    p_25 ={}
+    p_75 = {}
+    p_50 = {}
     for home in df.index:
-        k[home] = df.ix[home][['aggregate_%d' %i for i in range(1, 13)]].kurtosis()
-        s[home] = df.ix[home][['aggregate_%d' %i for i in range(1, 13)]].skew()
+        signal = df.ix[home][['aggregate_%d' %i for i in range(1, 13)]]
+        k[home] = signal.kurtosis()
+        s[home] = signal.skew()
+        p_25[home] =np.percentile(signal, 25)
+        p_50[home] =np.percentile(signal, 50)
+        p_75[home] = np.percentile(signal, 75)
+
 
     df['skew'] = pd.Series(s)
     df['kurtosis']=pd.Series(k)
-
+    df['p_25']=pd.Series(p_25)
+    df['p_50'] =pd.Series(p_50)
+    df['p_75']=pd.Series(p_75)
 
     for col in ["stdev_trend_12","stdev_seasonal_12","max_seasonal_12","max_trend_12",
                 "stdev_trend_daily","stdev_seasonal_daily","max_seasonal_daily","max_trend_daily",
@@ -107,7 +117,7 @@ def read_df():
                 'cluster_small','cluster_big', 'temperature_corr', 'variance',
                 'ratio_min_max','ratio_difference_min_max','seasonal_energy_5','seasonal_energy_6',
                 'seasonal_energy_7','seasonal_energy_8','seasonal_energy_9','seasonal_energy_10',
-               'fft_1','fft_2','fft_3','fft_4','fft_5','skew','kurtosis']:
+               'fft_1','fft_2','fft_3','fft_4','fft_5','skew','kurtosis','p_25','p_50','p_75']:
         if col in df.columns:
 
             df[col] = scale_0_1(df[col])
