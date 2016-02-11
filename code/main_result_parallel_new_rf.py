@@ -60,7 +60,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
     pred_test = {}
     gt_test = {}
     for month in range(start, stop):
-        clf = RandomForestRegressor(n_estimators=100, min_samples_split=1)
+        clf = RandomForestRegressor(n_estimators=200, min_samples_split=1)
         clf.fit(train_homes_df[feature_map[feature]], train_homes_df['%s_%d' %(appliance, month)])
         pred_test[month] = clf.predict(test_homes_df[feature_map[feature]])
         gt_test[month] = test_homes_df['%s_%d' %(appliance, month)]
@@ -80,4 +80,4 @@ appliance, feature, home = sys.argv[1], sys.argv[2], sys.argv[3]
 home = int(home)
 
 out_df = _find_accuracy(home, appliance, feature)
-out_df.to_csv("../rf-out-100/%s_%s_%d.csv" %(appliance, feature, home))
+out_df.to_csv("../rf-out-200/%s_%s_%d.csv" %(appliance, feature, home))
