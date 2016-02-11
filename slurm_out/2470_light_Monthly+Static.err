@@ -1,16 +1,1 @@
-Traceback (most recent call last):
-  File "../code/main_result_parallel_new_rf.py", line 82, in <module>
-    out_df = _find_accuracy(home, appliance, feature)
-  File "../code/main_result_parallel_new_rf.py", line 65, in _find_accuracy
-    pred_test[month] = clf.predict(test_homes_df[feature_map[feature]])
-  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/ensemble/forest.py", line 649, in predict
-    X = self._validate_X_predict(X)
-  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/ensemble/forest.py", line 319, in _validate_X_predict
-    return self.estimators_[0]._validate_X_predict(X, check_input=True)
-  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/tree/tree.py", line 365, in _validate_X_predict
-    X = check_array(X, dtype=DTYPE, accept_sparse="csr")
-  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 398, in check_array
-    _assert_all_finite(array)
-  File "/if6/nb2cz/anaconda/lib/python2.7/site-packages/sklearn/utils/validation.py", line 54, in _assert_all_finite
-    " or a value too large for %r." % X.dtype)
-ValueError: Input contains NaN, infinity or a value too large for dtype('float32').
+slurmd[hermes4]: *** JOB 159154 CANCELLED AT 2016-02-11T11:33:25 ***
