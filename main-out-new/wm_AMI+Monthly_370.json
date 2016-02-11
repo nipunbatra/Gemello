@@ -1,0 +1,1 @@
+{"k": 1, "accuracy": 47.15338528602265, "f": ["cluster_big", "num_rooms", "max_seasonal_weekly", "skew", "gt_1000", "fraction_4", "fraction_12"]}
