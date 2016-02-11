@@ -1,0 +1,1 @@
+{"k": 5, "accuracy": 25.192130196422244, "f": ["max_seasonal_daily", "aggregate_5", "cluster_big", "max_seasonal_weekly", "fraction_9", "difference_min_max", "fraction_8"]}
