@@ -1,1 +1,1 @@
-{"light": {"All": {"k": 5, "f": ["area"], "accuracy": 49.04920397647857}}}
+{"light": {"All": {"k": 3, "f": ["area", "total_occupants"], "accuracy": 45.927798271234145}}}
