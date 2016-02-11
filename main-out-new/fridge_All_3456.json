@@ -1,0 +1,1 @@
+{"k": 2, "accuracy": 75.2587376103312, "f": ["lt_500", "max_seasonal_12", "fft_4", "fft_3", "max_trend_12"]}
