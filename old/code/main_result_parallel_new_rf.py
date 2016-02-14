@@ -10,13 +10,13 @@ import numpy as np
 import pandas as pd
 
 
-from create_df import read_df
+from code.create_df import read_df
 df, dfc, all_homes, appliance_min, national_average = read_df()
 K_min, K_max = 1,6
 F_min, F_max=1,8
 
-from all_functions import *
-from features import *
+from code.all_functions import *
+from code.features import *
 
 import sys
 
