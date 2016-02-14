@@ -9,9 +9,10 @@ Each folder in this repository has a Readme describing the contents of the folde
 
 First, links to the notebooks for the figures
 
-* Figure 1. [Approach](https://docs.google.com/drawings/d/1R68GnSezUbC-RiGcwy3E8cSYYHZAgf50YiYkTOqUWFg/edit?usp=sharing)
-* Figure 2. [Dataset description](https://github.com/nipunbatra/Gemello/blob/master/code/dataset_description.ipynb)
-* Figure 3. [Main result](https://github.com/nipunbatra/Gemello/blob/master/code/main-result.ipynb)
-
-* Figure 5 and Table 3. [Sensitivity analysis on features](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-features.ipynb)
-* Figure 6 [Sensitivity analysis on number of homes](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-numhomes.ipynb)
+| Figure/Table| Link |
+| --- | --- |
+| Figure 1 | [Approach](https://docs.google.com/drawings/d/1R68GnSezUbC-RiGcwy3E8cSYYHZAgf50YiYkTOqUWFg/edit?usp=sharing) |
+| Figure 2 | [Dataset description](https://github.com/nipunbatra/Gemello/blob/master/code/dataset_description.ipynb) |
+| Figure 3 | [Main result](https://github.com/nipunbatra/Gemello/blob/master/code/main-result.ipynb) |
+| Figure 5 and Table 3| [Sensitivity analysis on features](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-features.ipynb)|
+| Figure 6| [Sensitivity analysis on number of homes](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-numhomes.ipynb) |
