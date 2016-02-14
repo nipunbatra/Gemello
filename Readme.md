@@ -1,4 +1,4 @@
-Gemello
+Gemello: Creating a Detailed Energy Breakdown from just the Monthly Electricity Bill
 -------------------
 
 This repository contains code for Gemello: Creating a Detailed Energy Breakdown from just the Monthly Electricity Bill
