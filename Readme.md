@@ -8,4 +8,4 @@ This Readme gives a description of the repository structure and how one can repe
 First, links to the notebooks for the figures
 
 1. Figure 2. [Dataset description](https://github.com/nipunbatra/Gemello/blob/master/code/dataset_description.ipynb)
-2. Figure 3. [Main result]
+2. Figure 3. [Main result](https://github.com/nipunbatra/Gemello/blob/master/code/main-result.ipynb)
