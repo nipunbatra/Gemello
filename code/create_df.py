@@ -6,7 +6,7 @@ import pandas as pd
 
 def read_df():
 
-    df = pd.read_csv("../main-data/main-data.csv",index_col=0)
+    df = pd.read_csv("../data/input/main-data.csv",index_col=0)
     dfc = df.copy()
 
     df = df.drop(871)
