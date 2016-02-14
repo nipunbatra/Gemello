@@ -10,3 +10,5 @@ First, links to the notebooks for the figures
 1. Figure 1. [Approach](https://docs.google.com/drawings/d/1R68GnSezUbC-RiGcwy3E8cSYYHZAgf50YiYkTOqUWFg/edit?usp=sharing)
 2. Figure 2. [Dataset description](https://github.com/nipunbatra/Gemello/blob/master/code/dataset_description.ipynb)
 3. Figure 3. [Main result](https://github.com/nipunbatra/Gemello/blob/master/code/main-result.ipynb)
+
+5. Figure 5. [Sensitivity analysis on features](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-features.ipynb)
