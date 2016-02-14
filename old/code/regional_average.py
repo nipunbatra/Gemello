@@ -10,11 +10,11 @@ import numpy as np
 import pandas as pd
 
 
-from create_df import read_df
+from code.create_df import read_df
 df, dfc, all_homes, appliance_min, national_average = read_df()
 
-from all_functions import *
-from features import *
+from code.all_functions import *
+from code.features import *
 
 import sys
 
