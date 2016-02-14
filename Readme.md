@@ -14,3 +14,4 @@ First, links to the notebooks for the figures
 * Figure 3. [Main result](https://github.com/nipunbatra/Gemello/blob/master/code/main-result.ipynb)
 
 * Figure 5 and Table 3. [Sensitivity analysis on features](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-features.ipynb)
+* Figure 6 [Sensitivity analysis on number of homes](https://github.com/nipunbatra/Gemello/blob/master/code/sensitivity-numhomes.ipynb)
