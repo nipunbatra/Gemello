@@ -208,7 +208,7 @@ def compute_metrics(df):
             }
 
 
-from common_functions import *
+from code.common_functions import *
 
 
 def make_predict():
