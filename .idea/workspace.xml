@@ -2,10 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a61bb82-bc9f-4695-9b3d-b0fac12d4424" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster_new.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/sensitivity_num_homes_new.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/constants.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/regional_average.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/lbm-time.pdf" afterPath="$PROJECT_DIR$/results/lbm-time.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/lbm-time.png" afterPath="$PROJECT_DIR$/results/lbm-time.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/main_new.pdf" afterPath="$PROJECT_DIR$/results/main_new.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/main_new.png" afterPath="$PROJECT_DIR$/results/main_new.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity-features.pdf" afterPath="$PROJECT_DIR$/results/sensitivity-features.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity-features.png" afterPath="$PROJECT_DIR$/results/sensitivity-features.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity-num-homes.pdf" afterPath="$PROJECT_DIR$/results/sensitivity-num-homes.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/sensitivity-num-homes.png" afterPath="$PROJECT_DIR$/results/sensitivity-num-homes.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme.md" afterPath="$PROJECT_DIR$/Readme.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/.ipynb_checkpoints/dataset_description-checkpoint.ipynb" afterPath="$PROJECT_DIR$/code/.ipynb_checkpoints/dataset_description-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/cluster-sensitivity-features.ipynb" afterPath="$PROJECT_DIR$/code/cluster-sensitivity-features.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/cluster-sensitivity-numhomes.ipynb" afterPath="$PROJECT_DIR$/code/cluster-sensitivity-numhomes.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/dataset_description.ipynb" afterPath="$PROJECT_DIR$/code/dataset_description.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/generate-NNILM-main-result-cluster.ipynb" afterPath="$PROJECT_DIR$/code/generate-NNILM-main-result-cluster.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/lbm-2min-15min.ipynb" afterPath="$PROJECT_DIR$/code/lbm-2min-15min.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/main-result-new.ipynb" afterPath="$PROJECT_DIR$/code/main-result-new.ipynb" />
     </list>
     <ignored path="monthly-disaggregation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,10 +61,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sensitivity_num_homes_new.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sensitivity_num_homes_new.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/sensitivity_num_homes_new.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81072557">
+            <state vertical-scroll-proportion="0.0">
               <caret line="147" column="42" selection-start-line="147" selection-start-column="42" selection-end-line="147" selection-end-column="42" />
               <folding />
             </state>
@@ -70,17 +85,27 @@
         <entry file="file://$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster_new.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="63" selection-start-line="15" selection-start-column="63" selection-end-line="15" selection-end-column="63" />
+              <caret line="9" column="49" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_result.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/main_result.py">
+      <file leaf-file-name="main_result_parallel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/main_result_parallel.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
+              <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="regional_average.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/regional_average.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="59" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -90,37 +115,27 @@
         <entry file="file://$PROJECT_DIR$/code/main_result_parallel_new.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="134" column="36" selection-start-line="115" selection-start-column="4" selection-end-line="134" selection-end-column="36" />
+              <caret line="120" column="36" selection-start-line="120" selection-start-column="36" selection-end-line="120" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_result_parallel_new_rf.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/main_result_parallel_new_rf.py">
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/constants.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="82" column="33" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+              <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="features.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/features.py">
+      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Readme.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="137" column="29" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sensitivity_main_result_parallel.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cluster/sensitivity_main_result_parallel.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="22" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.3154574">
+              <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -180,6 +195,9 @@
         <option value="$PROJECT_DIR$/code/features.py" />
         <option value="$PROJECT_DIR$/code/sensitivity_num_homes_new.py" />
         <option value="$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster_new.py" />
+        <option value="$PROJECT_DIR$/code/regional_average.py" />
+        <option value="$PROJECT_DIR$/code/constants.py" />
+        <option value="$PROJECT_DIR$/Readme.md" />
       </list>
     </option>
   </component>
@@ -241,20 +259,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="code" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="monthly-disaggregation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="monthly-disaggregation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="cluster" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -280,8 +284,8 @@
       <recent name="$PROJECT_DIR$/cluster" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/cluster" />
       <recent name="$PROJECT_DIR$/code" />
+      <recent name="$PROJECT_DIR$/cluster" />
       <recent name="$PROJECT_DIR$/bash" />
       <recent name="$USER_HOME$/Dropbox/Public/notebooks/misc" />
     </key>
@@ -498,27 +502,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/code/oracle.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/regression.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="19" selection-start-line="9" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/clean_data_2013.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="341" column="0" selection-start-line="341" selection-start-column="0" selection-end-line="348" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/neighbourhood.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -751,14 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/main_result_parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/code/all_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.97791797">
@@ -847,22 +822,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/main_result_parallel_new.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="134" column="36" selection-start-line="115" selection-start-column="4" selection-end-line="134" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster_new.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="63" selection-start-line="15" selection-start-column="63" selection-end-line="15" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -873,8 +832,56 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/sensitivity_num_homes_new.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81072557">
+        <state vertical-scroll-proportion="0.0">
           <caret line="147" column="42" selection-start-line="147" selection-start-column="42" selection-end-line="147" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/regional_average.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="59" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster/sensitivity_num_homes_cluster_new.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="49" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/main_result_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/main_result_parallel_new.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="120" column="36" selection-start-line="120" selection-start-column="36" selection-end-line="120" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3154574">
+          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
           <folding />
         </state>
       </provider>
