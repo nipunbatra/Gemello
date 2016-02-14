@@ -1,6 +1,0 @@
-#!/bin/sh
-#SBATCH --time=1-02:0:00
-#SBATCH --mem=16
-#SBATCH -o "./../slurm_out/N28_K48_TStatic_hvac.out"
-#SBATCH -e "./../slurm_out/N28_K48_TStatic_hvac.err"
-python ../code/sensitivity_num_homes.py hvac 7 2 3 Static
