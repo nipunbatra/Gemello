@@ -73,7 +73,7 @@ class LatentBayesianMelding(object):
     #     In Advances in Neural Information Processing Systems 27, 2014.
     ##########################################################################
 
-    def __init__(self):
+    def __init__(self, sample_seconds=15*60):
         """ Initialize the parameters for the models and set some constant 
         values for the model.
         """
@@ -106,7 +106,8 @@ class LatentBayesianMelding(object):
         self.mains_chunk = 0
         
         # sampling seconds of the mains readings - 2 minute here.
-        self.sample_seconds = 15*60
+        self.sample_seconds = sample_seconds
+        #self.sample_seconds = 15*60
 
         # number of iterations for updating noise variances and model variables.
         self.NosOfIters = 3
