@@ -1,20 +1,7 @@
 from flask import Flask, render_template, json, request
 import numpy as np
 
-import matplotlib
-import json
-import random
 
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-plt.style.use('fivethirtyeight')
-plt.ioff()
-
-from threading import Lock
-lock = Lock()
-import datetime
-import mpld3
-from mpld3 import plugins
 
 import sys
 sys.path.append("../code/")
