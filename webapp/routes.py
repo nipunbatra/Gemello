@@ -1,7 +1,10 @@
 from flask import Flask, render_template, json, request
 import numpy as np
 
-
+import sys
+CLUSTER=True
+if CLUSTER:
+    sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
 
 import sys
 sys.path.append("../code/")
