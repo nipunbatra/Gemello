@@ -60,8 +60,8 @@ elif strategy=="median-aggregate":
 #Normalising features
 max_aggregate_train = train_dataset_df_transformed[["aggregate_%d" % i for i in range(start_month, end_month)]].max().max()
 min_aggregate_train = train_dataset_df_transformed[["aggregate_%d" % i for i in range(start_month, end_month)]].min().min()
-max_aggregate_test = unscaled_test_dataset_df.ix[home][["aggregate_%d" % i for i in range(start_month, end_month)]].max().max()
-min_aggregate_test = unscaled_test_dataset_df.ix[home][["aggregate_%d" % i for i in range(start_month, end_month)]].min().min()
+max_aggregate_test = unscaled_test_dataset_df.ix[home][["aggregate_%d" % i for i in range(start_month, end_month)]].max()
+min_aggregate_test = unscaled_test_dataset_df.ix[home][["aggregate_%d" % i for i in range(start_month, end_month)]].min()
 
 max_overall = max(max_aggregate_train, max_aggregate_test)
 min_overall = min(min_aggregate_train, min_aggregate_test)
