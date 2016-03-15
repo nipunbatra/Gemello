@@ -1,6 +1,10 @@
 import pandas as pd
 import os
 import numpy as np
+import sys
+CLUSTER=True
+if CLUSTER:
+    sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from copy import deepcopy
