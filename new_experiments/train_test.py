@@ -5,9 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from copy import deepcopy
 
-st = pd.HDFStore(os.path.expanduser("~/wiki-all.h5"))
 
-metadata_df = pd.read_csv("../data/input/dataport-metadata.csv",index_col=0)
 
 months=3
 start='7-1-2014'
@@ -19,7 +17,15 @@ sd_df = pd.read_csv("../data/input/san_diego_df.csv", index_col=0)
 bo_df = pd.read_csv("../data/input/boulder_df.csv", index_col=0)
 au_df = pd.read_csv("../data/input/austin_df.csv", index_col=0)
 
+unscaled_sd_df = pd.read_csv("../data/input/unscaled_san_diego_df.csv", index_col=0)
+unscaled_bo_df = pd.read_csv("../data/input/unscaled_boulder_df.csv", index_col=0)
+unscaled_au_df = pd.read_csv("../data/input/unscaled_austin_df.csv", index_col=0)
 
+cdd = {'Austin':{7:715, 8: 788, 9:588},
+      'SanDiego':{7:428, 8:433, 9:472}}
+
+
+cdd_df = pd.DataFrame(cdd)
 
 import json
 sd_homes = json.load(open("../data/input/san_diego_homes.json",'r'))
@@ -55,11 +61,21 @@ from collections import OrderedDict
 
 df_regions = {"Austin":au_df,
        "Boulder":bo_df,
-       "San Diego":sd_df}
+       "SanDiego":sd_df}
+
+unscaled_df_regions = {"Austin":unscaled_au_df,
+       "Boulder":unscaled_bo_df,
+       "SanDiego":unscaled_sd_df}
+
+median_aggregate = {}
+for region, region_df in unscaled_df_regions.iteritems():
+    median_aggregate[region] = {}
+    for month in range(start_month, end_month):
+        median_aggregate[region][month] = region_df['aggregate_'+str(month)].median()
 
 home_regions = {"Austin":au_homes,
        "Boulder":bo_homes,
-       "San Diego":sd_homes}
+       "SanDiego":sd_homes}
 
 def _find_accuracy(train_dataset_df, test_dataset_df,
                    train_all_homes, test_all_homes,
