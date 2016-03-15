@@ -1,6 +1,6 @@
 appliances = ["hvac"]
 features = ["Monthly"]
-strategy_list = ["None","CDD"]
+strategy_list = ["None","CDD","median-aggregate"]
 
 import sys
 CLUSTER=True

@@ -77,6 +77,8 @@ for region, region_df in unscaled_df_regions.iteritems():
     for month in range(start_month, end_month):
         median_aggregate[region][month] = region_df['aggregate_'+str(month)].median()
 
+median_aggregate_df = pd.DataFrame(median_aggregate)
+
 home_regions = {"Austin":au_homes,
        "Boulder":bo_homes,
        "SanDiego":sd_homes}
