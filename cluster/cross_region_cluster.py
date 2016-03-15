@@ -29,7 +29,7 @@ from subprocess import Popen
 
 for feature in features:
     for appliance in appliances:
-        for home in test_all_homes[appliance][:4]:
+        for home in test_all_homes[appliance][:]:
             for strategy in strategy_list:
 
                 OFILE = "%s/%d_%s_%s.out" % (SLURM_OUT, home, appliance, feature)
