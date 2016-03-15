@@ -35,7 +35,7 @@ for feature in features:
                 OFILE = "%s/%d_%s_%s.out" % (SLURM_OUT, home, appliance, feature)
                 EFILE = "%s/%d_%s_%s.err" % (SLURM_OUT, home, appliance,  feature)
                 SLURM_SCRIPT = "%d_%s_%s.pbs" % (home, appliance,feature)
-                CMD = 'python ../new_experiments/cross_region %s %s %s %s %d %s' % (train_region, test_region, appliance, strategy, home, feature)
+                CMD = 'python ../new_experiments/cross_region.py %s %s %s %s %d %s' % (train_region, test_region, appliance, strategy, home, feature)
                 lines = []
                 lines.append("#!/bin/sh\n")
                 lines.append('#SBATCH --time=0-06:0:00\n')
