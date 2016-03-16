@@ -1,7 +1,7 @@
 appliances = ["hvac"]
 features = ["Monthly"]
 strategy_list = ["None","CDD","median-aggregate"]
-strategy_list = ["None"]
+#strategy_list = ["None"]
 import sys
 CLUSTER=True
 if CLUSTER:
@@ -18,7 +18,7 @@ import pandas as pd
 
 
 train_regions = ["SanDiego", "Austin"]
-train_regions = [ "Austin"]
+#train_regions = [ "Austin"]
 
 test_region = "Austin"
 

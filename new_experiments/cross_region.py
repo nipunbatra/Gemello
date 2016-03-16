@@ -75,7 +75,7 @@ test_dataset_df_transformed_scaled[["aggregate_%d" % i for i in range(start_mont
 
 
 try:
-    pred, gt, out_df = _find_accuracy(train_dataset_df_transformed_scaled,
+    pred, gt, out_df, train_dict = _find_accuracy(train_dataset_df_transformed_scaled,
                                       test_dataset_df_transformed_scaled,
     train_all_homes, test_all_homes,
     home, appliance, feature="Monthly")
@@ -86,6 +86,7 @@ try:
     if not os.path.exists(directory):
         os.makedirs(directory)
     acc.to_csv(os.path.join(directory, "%d.csv" %home))
+    json.dump(train_dict, open(os.path.join(directory, "%d.json" %home),'w'))
 
 except Exception, e:
     print e

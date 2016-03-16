@@ -182,7 +182,7 @@ def _find_accuracy(train_dataset_df, test_dataset_df,
         pred_test[month] = clf.predict(test_overall[F_best])
         gt_test[month] = test_overall['%s_%d' %(appliance, month)]
 
-    #print {'f':F_best, 'k':K_best,'accuracy':accur_max}
+    train_dict= {'f':F_best, 'k':K_best,'accuracy':accur_max}
     #json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open("../main-out-new/%s_%s_%d.json" %(appliance,feature, home),"w") )
 
     pred_df = pd.DataFrame(pred_test)
@@ -192,4 +192,4 @@ def _find_accuracy(train_dataset_df, test_dataset_df,
     accuracy_test = 100-error
     accuracy_test[accuracy_test<0]=0
 
-    return pred_df, gt_df, accuracy_test.squeeze()
+    return pred_df, gt_df, accuracy_test.squeeze(), train_dict
