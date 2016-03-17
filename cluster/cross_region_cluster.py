@@ -17,10 +17,10 @@ import numpy as np
 import pandas as pd
 
 
-train_regions = ["SanDiego", "Austin"]
+train_regions = ["Austin"]
 #train_regions = [ "Austin"]
 
-test_region = "Austin"
+test_region = "SanDiego"
 
 test_all_homes = home_regions[test_region]
 

@@ -31,33 +31,33 @@ def _save_csv(out_df, path, appliance, feature):
     out_df.T.to_csv("%s/%s_%s_%s.csv" %(path, appliance, feature),
                     index_label="Home")
 
-res = {}
-for appliance in ["fridge","hvac","dw","dr","light","wm"]:
-    if appliance =="hvac":
-        start, stop=5, 11
-    else:
-        start, stop=1,13
-    appliance_df = df.ix[all_homes[appliance]]
-    leave_one_out = LeaveOneOut(len(appliance_df))
-    out = {}
-    res[appliance] = {}
-    for train_idx, test_idx in leave_one_out:
-        train_df = appliance_df.ix[appliance_df.index[train_idx]]
-        test_df = appliance_df.ix[appliance_df.index[test_idx]]
-        out[test_df.index.values[0]]={}
-        pred = {}
-        gt = {}
-        for month in range(start, stop):
-            appliance_prop = train_df['%s_%d' %(appliance, month)].div(train_df['%s_%d' %("aggregate", month)]).median()
-            pred[month]=test_df['aggregate_%d' % month].mul(appliance_prop).values[0]
-            gt[month]=test_df['%s_%d' %(appliance, month)].values[0]
-        rdf=pd.DataFrame({"gt":pd.Series(gt),"pred":pd.Series(pred)})
-        e=(rdf["gt"]-rdf["pred"]).abs().div(rdf["gt"]).mul(100)
-        acc = 100-e
+    res = {}
+    for appliance in ["fridge","hvac","dw","dr","light","wm"]:
+        if appliance =="hvac":
+            start, stop=5, 11
+        else:
+            start, stop=1,13
+        appliance_df = df.ix[all_homes[appliance]]
+        leave_one_out = LeaveOneOut(len(appliance_df))
+        out = {}
+        res[appliance] = {}
+        for train_idx, test_idx in leave_one_out:
+            train_df = appliance_df.ix[appliance_df.index[train_idx]]
+            test_df = appliance_df.ix[appliance_df.index[test_idx]]
+            out[test_df.index.values[0]]={}
+            pred = {}
+            gt = {}
+            for month in range(start, stop):
+                appliance_prop = train_df['%s_%d' %(appliance, month)].div(train_df['%s_%d' %("aggregate", month)]).median()
+                pred[month]=test_df['aggregate_%d' % month].mul(appliance_prop).values[0]
+                gt[month]=test_df['%s_%d' %(appliance, month)].values[0]
+            rdf=pd.DataFrame({"gt":pd.Series(gt),"pred":pd.Series(pred)})
+            e=(rdf["gt"]-rdf["pred"]).abs().div(rdf["gt"]).mul(100)
+            acc = 100-e
 
-        res[appliance][test_df.index.values[0]]=acc
-    res[appliance] = pd.DataFrame(res[appliance])
-    res[appliance][res[appliance]<0]=0
+            res[appliance][test_df.index.values[0]]=acc
+        res[appliance] = pd.DataFrame(res[appliance])
+        res[appliance][res[appliance]<0]=0
 
 
 def _find_accuracy(home, appliance, feature="Monthly"):
