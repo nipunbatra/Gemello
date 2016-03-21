@@ -20,12 +20,12 @@ import glob
 import os
 
 for home in all_homes_all_appliances:
-	print home
-	out = []
-	f = glob.glob("%s/%d_*.csv" %(lbm_path,home))
-	for day in f:
-	    df = pd.read_csv(day, index_col=0)
-	    out.append(df)
+    print home
+    out = []
+    f = glob.glob("%s/%d_*.csv" %(lbm_path,home))
+    for day in f:
+        df = pd.read_csv(day, index_col=0)
+        out.append(df)
     home_df = pd.concat(out)
     home_df.index = pd.to_datetime(home_df.index)
     home_df = home_df.sort()
