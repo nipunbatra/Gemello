@@ -1,4 +1,8 @@
 from __future__ import print_function, division
+CLUSTER=True
+if CLUSTER:
+    sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
+
 from datetime import datetime
 from nilmtk.timeframe import merge_timeframes, TimeFrame
 
