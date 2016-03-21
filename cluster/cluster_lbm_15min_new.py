@@ -3,7 +3,7 @@ from subprocess import Popen
 import time
 
 
-for NUM_HOMES in range(0, 650, 1):
+for NUM_HOMES in range(7, 650, 1):
 
     for DAY in range(182, 273):
 
@@ -24,4 +24,4 @@ for NUM_HOMES in range(0, 650, 1):
         command = ['sbatch', SLURM_SCRIPT]
         print Popen(command)
     print "Now sleeping.."
-    time.sleep(90)
+    time.sleep(30)
