@@ -16,7 +16,6 @@ import pandas as pd
 
 import sys
 K = int(sys.argv[1])
-DAY = int(sys.argv[2])
 data_path = '/if6/nb2cz/wiki_15min_mains'
 out_path = '/if6/nb2cz/wiki_15min_mains_out_fhmm'
 
