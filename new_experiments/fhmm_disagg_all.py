@@ -1,4 +1,10 @@
+import sys
+CLUSTER=True
+if CLUSTER:
+    sys.path.insert(0, '/if6/nb2cz/anaconda/lib/python2.7/site-packages')
+
 import pickle
+
 f = pickle.load(open('../data/model/fhmm_model_all.p','rb'))
 from nilmtk import *
 
