@@ -5,7 +5,7 @@ lbm = LatentBayesianMelding()
 meterlist = ['hvac','fridge','dw','dr','wm','light']
 import os, glob
 
-
+import pandas as pd
 
 import sys
 K = int(sys.argv[1])
