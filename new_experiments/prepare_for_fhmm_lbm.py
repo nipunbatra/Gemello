@@ -10,7 +10,7 @@ out_path = os.path.expanduser("~/wiki_15min_mains")
 csvs = glob.glob(data_path+"/*.csv")
 csvs_without_md = [x for x in csvs if "metadata" not in x]
 
-for c in csvs:
+for c in csvs[0]:
     print c
     home_num = int(c.split("/")[-1][:-4])
     try:
