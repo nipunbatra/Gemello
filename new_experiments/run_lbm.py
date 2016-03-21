@@ -17,7 +17,6 @@ out_path = '/if6/nb2cz/wiki_15min_mains_out'
 files = os.listdir(data_path)
 file_size= {x:os.path.getsize(data_path+"/"+x) for x in  files if '.csv' in x}
 file_series = pd.Series(file_size)
-file_series = file_series.drop("dataport-metadata.csv")
 fs = file_series[file_series>1000]
 
 all_homes_all_appliances = [int(x[:-4]) for x in fs.index]
