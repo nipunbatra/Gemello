@@ -58,10 +58,10 @@ docs/_build/
 # PyBuilder
 target/
 
-.pbs
-.out
-.err
-.ipynb_checkpoints
+*.pbs
+*.out
+*.err
+*.ipynb_checkpoints
 .idea/
 .DS_Store
 

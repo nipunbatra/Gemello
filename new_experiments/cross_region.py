@@ -56,6 +56,14 @@ elif strategy=="median-aggregate":
 
         #New aggregate will be removing old HVAC and adding new HVAC!
         #train_dataset_df_transformed['aggregate_%d' %month] = unscaled_train_dataset_df['aggregate_%d' %month] - train_dataset_df['hvac_%d' % month] + train_dataset_df_transformed['hvac_%d' % month]
+elif strategy=="median-aggregate":
+    for month in [7, 8, 9]:
+        median_month = median_aggregate_df.ix[month]
+        cols_to_transform = [x for x in train_dataset_df_transformed.columns if "_"+str(month) in x]
+        train_dataset_df_transformed[cols_to_transform] = unscaled_train_dataset_df[cols_to_transform] * median_month[test_region] / median_month[train_region]
+
+        #New aggregate will be removing old HVAC and adding new HVAC!
+        #train_dataset_df_transformed['aggregate_%d' %month] = unscaled_train_dataset_df['aggregate_%d' %month] - train_dataset_df['hvac_%d' % month] + train_dataset_df_transformed['hvac_%d' % month]
 
 
 #Normalising features

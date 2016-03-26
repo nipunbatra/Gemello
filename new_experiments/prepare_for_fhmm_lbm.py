@@ -18,7 +18,7 @@ for c in csvs:
 
 
         df.index = pd.to_datetime(df.local_15min)
-        df = df['2014-7-1':'2014-9-30']['use']*1000
+        df = df['2015']['use']*1000
         df.to_csv(os.path.join(out_path, home_num+".csv"))
     except:
         pass
