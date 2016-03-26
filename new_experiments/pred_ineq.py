@@ -26,37 +26,21 @@ ineq_path = os.path.join(ineq_base_path, "%s_%s_%s_%s_%d_%d.pkl" %(train_region,
 required_inequalities = pickle.load(open(ineq_path, 'r'))
 
 def solve_ilp(inequalities, time_limit=50):
-    from gurobipy import *
-    ids = list(set(np.array(inequalities).flatten().tolist()))
-    N = len(ids)
-    m = Model("ilp")
-    m.setParam(GRB.Param.TimeLimit, time_limit)
-    a = {}
-    binary = {}
-    for i in ids:
-        a[i] = m.addVar(vtype=GRB.INTEGER, name="a_{}".format(i))
-    m.update()
-    objective = 0
-    for inequality in inequalities:
-        objective = objective + (a[inequality[1]]-a[inequality[0]])
+    from collections import defaultdict
+    import pandas as pd
+    co = defaultdict(int)
+    for ineq in inequalities:
+        lt = ineq[0]
+        gt = ineq[1]
+        co[lt]-= 1
+        co[gt]+= 1
+    co_ser = pd.Series(co)
+    co_ser = co_ser.sort_values()
 
-        binary["{}_{}".format(inequality[0], inequality[1])] = m.addVar(vtype=GRB.BINARY, name="b_{}_{}".format(inequality[0], inequality[1]))
-        m.update()
-        m.addConstr((1-2*binary["{}_{}".format(inequality[0], inequality[1])])*(a[inequality[1]]-a[inequality[0]])>=1)
-    m.setObjective(objective, GRB.MAXIMIZE)
-    # Set constraints on a[i]>0 and a[i]<=N
-    for i in ids:
-        m.addConstr(a[i] <= N)
-        m.addConstr(a[i] >= 1)
-    m.optimize()
-    ranks = np.zeros(N)
-    for i in ids:
-        var_pos = int(m.getVarByName('a_%d' %i).x)-1
-        ranks[var_pos] = i
-    return ranks
+    return co_ser.index.values.tolist()
 
 ranks = solve_ilp(required_inequalities)
-pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month)].dropna().mean()
+pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
 import pickle
 pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                         test_region,
