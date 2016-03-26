@@ -35,7 +35,7 @@ def solve_ilp(inequalities, time_limit=50):
         co[lt]-= 1
         co[gt]+= 1
     co_ser = pd.Series(co)
-    co_ser = co_ser.sort_values()
+    co_ser = co_ser.sort()
 
     return co_ser.index.values.tolist()
 
