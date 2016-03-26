@@ -14,7 +14,7 @@ train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 transform = "None"
 
-for test_home in test_df.index:
+for test_home in test_df.index[:3]:
     for appliance in ["hvac","fridge","dr","wm"]:
         for month in range(1, 13):
             OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
