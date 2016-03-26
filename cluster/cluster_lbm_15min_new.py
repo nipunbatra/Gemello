@@ -24,4 +24,4 @@ for NUM_HOMES in range(81, 1264, 1):
         command = ['sbatch', SLURM_SCRIPT]
         print Popen(command)
     print "Now sleeping.."
-    time.sleep(90)
+    time.sleep(45)
