@@ -54,7 +54,6 @@ def find_distance_train_test(df_train, home_1, home_2, df_test, home_test, featu
                           'f':com_f}
 
 import pandas as pd
-overall_df = pd.concat([train_df, test_df])
 
 def scale_0_1(ser, minimum=None, maximum=None):
     if minimum is not None:
@@ -74,6 +73,17 @@ def normalise(df):
                'p_50','p_75']:
         new_df[col] = scale_0_1(df[col])
     return new_df
+
+if transform=="None":
+    pass
+elif transform=="CDD":
+    for month in [7, 8, 9]:
+        cdd_month = cdd_df.ix[month]
+        train_dataset_df_transformed['hvac_%d' % month] = train_dataset_df_transformed['hvac_%d' % month] * cdd_month[test_region] / cdd_month[train_region]
+
+        #New aggregate will be removing old HVAC and adding new HVAC!
+
+overall_df = pd.concat([train_df, test_df])
 
 normalised_df = normalise(overall_df)
 
@@ -125,6 +135,7 @@ for appliance in ["fridge","hvac","dw","wm"]:
                                                                         appliance,
                                                                         month_compute,
                                                                         test_home),'w'))
+
     else:
         # No need to predict
         pass
