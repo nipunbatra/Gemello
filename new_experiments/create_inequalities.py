@@ -1,5 +1,7 @@
 import numpy as np
 import pickle
+from degree_days import  dd
+import pandas as pd
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 import sys
@@ -10,6 +12,10 @@ month_compute = int(month_compute)
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
+
+train_dd = pd.DataFrame(dd[train_region])
+test_dd = pd.DataFrame(dd[test_region])
+
 
 from itertools import combinations
 
@@ -76,12 +82,16 @@ def normalise(df):
 
 if transform=="None":
     pass
-elif transform=="CDD":
-    for month in [7, 8, 9]:
-        cdd_month = cdd_df.ix[month]
-        train_dataset_df_transformed['hvac_%d' % month] = train_dataset_df_transformed['hvac_%d' % month] * cdd_month[test_region] / cdd_month[train_region]
+elif transform=="DD":
+    train_df_copy = train_df.copy()
+    for month in range(1, 13):
+        # index on 0, 11
+        train_dd_month = train_dd.ix[month-1]['Total']
+        test_dd_month = test_dd.ix[month-1]['Total']
+        train_df['hvac_%d' % month] = train_df_copy['hvac_%d' % month] * test_dd_month*1. / train_dd_month
 
         #New aggregate will be removing old HVAC and adding new HVAC!
+        train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
 
 overall_df = pd.concat([train_df, test_df])
 

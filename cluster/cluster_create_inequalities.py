@@ -35,5 +35,5 @@ for test_home in test_df.index:
             command = ['sbatch', SLURM_SCRIPT]
             print Popen(command)
             print "Now sleeping.."
-    time.sleep(5)
+    time.sleep(1)
 
