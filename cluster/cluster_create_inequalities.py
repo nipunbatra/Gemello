@@ -42,6 +42,7 @@ for transform in ["DD","None"]:
                    f.writelines(lines)
                 command = ['sbatch', SLURM_SCRIPT]
                 Popen(command)
-                print "Now sleeping.."
-        time.sleep(2)
+        print "Now sleeping.."
+        time.sleep(4)
+    time.sleep(240)
 
