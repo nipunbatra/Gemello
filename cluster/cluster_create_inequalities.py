@@ -18,7 +18,7 @@ for transform in ["median-aggregate"]:
     print transform
     print "*"*40
     count = 0
-    for test_home in test_df.index:
+    for test_home in test_df.index[170:]:
         count+= 1
         print test_home, count, len(test_df.index)
         for appliance in ["hvac","fridge","dr","wm"]:
@@ -43,6 +43,6 @@ for transform in ["median-aggregate"]:
                 command = ['sbatch', SLURM_SCRIPT]
                 Popen(command)
         print "Now sleeping.."
-        time.sleep(1)
+        time.sleep(5)
     time.sleep(30)
 
