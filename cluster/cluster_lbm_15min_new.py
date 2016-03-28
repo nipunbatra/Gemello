@@ -26,4 +26,4 @@ for NUM_HOMES in range(955, 1264, 1):
     print "*"*40
     print NUM_HOMES
     print "*"*40
-    time.sleep(60)
+    time.sleep(80)
