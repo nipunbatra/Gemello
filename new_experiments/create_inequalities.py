@@ -17,6 +17,14 @@ test_df = out_overall[test_region]
 train_dd = pd.DataFrame(dd[train_region])
 test_dd = pd.DataFrame(dd[test_region])
 
+median_aggregate = {}
+for region in [train_region, test_region]:
+    median_aggregate[region] = {}
+    for month in range(1, 13):
+        median_aggregate[region][month] = out_overall[region]['aggregate_'+str(month)].median()
+
+median_aggregate_df = pd.DataFrame(median_aggregate)
+
 
 from itertools import combinations
 
@@ -93,6 +101,12 @@ elif transform=="DD":
 
         #New aggregate will be removing old HVAC and adding new HVAC!
         train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
+elif transform=="median-aggregate":
+    train_df_copy = train_df.copy()
+    for month in range(1,13):
+        median_month = median_aggregate_df.ix[month]
+        cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
+        train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
 
 overall_df = pd.concat([train_df, test_df])
 
