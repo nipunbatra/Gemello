@@ -2,7 +2,7 @@ SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 import time
 
-for NUM_HOMES in range(955, 1264, 1):
+for NUM_HOMES in range(1067, 1264, 1):
 
     for DAY in range(1, 365):
 
@@ -26,4 +26,4 @@ for NUM_HOMES in range(955, 1264, 1):
     print "*"*40
     print NUM_HOMES
     print "*"*40
-    time.sleep(80)
+    time.sleep(10)
