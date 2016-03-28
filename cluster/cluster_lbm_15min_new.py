@@ -3,7 +3,7 @@ from subprocess import Popen
 import time
 
 
-for NUM_HOMES in range(563, 1264, 1):
+for NUM_HOMES in range(582, 1264, 1):
 
     for DAY in range(1, 365):
 
@@ -13,7 +13,7 @@ for NUM_HOMES in range(563, 1264, 1):
         CMD = 'python ../new_experiments/run_lbm.py %d %d' %(NUM_HOMES, DAY)
         lines = []
         lines.append("#!/bin/sh\n")
-        lines.append('#SBATCH --time=0-01:0:00\n')
+        lines.append('#SBATCH --time=0-00:10:00\n')
         lines.append('#SBATCH --mem=16\n')
         lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
         lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
