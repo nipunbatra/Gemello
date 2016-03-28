@@ -7,8 +7,8 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "SanDiego"
-test_region = "Austin"
+train_region = "Austin"
+test_region = "SanDiego"
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
@@ -18,7 +18,7 @@ for transform in ["median-aggregate"]:
     print transform
     print "*"*40
     count = 0
-    for test_home in test_df.index[170:]:
+    for test_home in test_df.index:
         count+= 1
         print test_home, count, len(test_df.index)
         for appliance in ["hvac","fridge","dr","wm"]:
