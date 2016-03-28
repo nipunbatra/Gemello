@@ -3,7 +3,7 @@ from subprocess import Popen
 import time
 
 
-for NUM_HOMES in range(340, 1264, 1):
+for NUM_HOMES in range(563, 1264, 1):
 
     for DAY in range(1, 365):
 
@@ -27,4 +27,4 @@ for NUM_HOMES in range(340, 1264, 1):
     print "*"*40
     print NUM_HOMES
     print "*"*40
-    time.sleep(120)
+    time.sleep(60)
