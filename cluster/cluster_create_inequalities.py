@@ -19,7 +19,7 @@ test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    for transform in ["DD-percentage","None-percentage","regional-percentage"]:
+    for transform in ["DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
         print transform
         print "*"*40
         count = 0
