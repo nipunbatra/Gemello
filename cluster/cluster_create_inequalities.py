@@ -23,7 +23,7 @@ for K in [1, 2, 4, 5]:
             count+= 1
             print test_home, count, len(test_df.index)
             #for appliance in ["hvac","fridge","dr","wm"]:
-            for appliance in ["fridge"]:
+            for appliance in ["hvac"]:
                 for month in range(1, 13):
                     OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
                     EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
@@ -45,6 +45,6 @@ for K in [1, 2, 4, 5]:
                     command = ['sbatch', SLURM_SCRIPT]
                     Popen(command)
             print "Now sleeping.."
-            time.sleep(0.4)
+            time.sleep(0.25)
         time.sleep(30)
 
