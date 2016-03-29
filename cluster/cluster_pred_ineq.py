@@ -7,8 +7,8 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "Austin"
-test_region = "SanDiego"
+train_region = "SanDiego"
+test_region = "Austin"
 K = 3
 
 train_df = out_overall[train_region]
@@ -16,7 +16,7 @@ test_df = out_overall[test_region]
 
 for transform in ["DD","None"]:
     for test_home in test_df.index[:]:
-        for appliance in ["hvac","fridge","dr","wm"]:
+        for appliance in ["hvac","fridge","wm"]:
             for month in range(1, 13):
                 OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
                 EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
