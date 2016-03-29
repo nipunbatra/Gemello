@@ -40,9 +40,12 @@ def solve_ilp(inequalities, time_limit=50):
     return co_ser.index.values.tolist()
 
 ranks = solve_ilp(required_inequalities)
-pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
+mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
+pred = test_df.ix[test_home]['aggregate_%d' %month_compute]*mean_proportion
+gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
+
 import pickle
-pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+pickle.dump(pred, open('../data/output/ineq_cross_proportion/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                         test_region,
                                                                         transform,
                                                                         appliance,

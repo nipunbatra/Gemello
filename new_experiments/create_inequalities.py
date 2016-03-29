@@ -108,6 +108,20 @@ elif transform=="median-aggregate":
         cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
         train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
 
+"""
+elif transform=="DD-fridge":
+    train_df_copy = train_df.copy()
+    for month in range(1, 13):
+        # index on 0, 11
+        ratiopickle.dump(out, open('../data/input/SanDiego_fridge_dd_coef.pkl','w'))
+        train_cdd_month = train_dd.ix[month-1]['Cooling']
+        test_cdd_month = test_dd.ix[month-1]['Cooling']
+        train_df['fridge_%d' % month] = train_df_copy['fridge_%d' % month] * test_cdd_month*1. / train_cdd_month
+        #New aggregate will be removing old HVAC and adding new HVAC!
+        train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
+        train_df['aggregate_%d' %month] = train_df['aggregate_%d' %month] - train_df_copy['fridge_%d' % month] + train_df['fridge_%d' % month]
+"""
+
 overall_df = pd.concat([train_df, test_df])
 
 normalised_df = normalise(overall_df)
