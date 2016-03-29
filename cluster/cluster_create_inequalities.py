@@ -1,3 +1,8 @@
+import time
+
+time.sleep(20*60)
+print "SLEPT for 20 mins"
+
 import pandas as pd
 import pickle
 
@@ -13,7 +18,7 @@ test_region = "Austin"
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 K=3
-for K in [3]:
+for K in [1, 2, 4, 5]:
 
     for transform in ["DD-percentage","None-percentage","regional-percentage"]:
         print transform
