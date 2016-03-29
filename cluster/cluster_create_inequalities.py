@@ -7,21 +7,22 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "Austin"
-test_region = "Boulder"
+train_region = "SanDiego"
+test_region = "Austin"
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 K=3
 
-for transform in ["None","median-aggregate","DD"]:
+for transform in ["DD-fridge"]:
     print transform
     print "*"*40
     count = 0
     for test_home in test_df.index:
         count+= 1
         print test_home, count, len(test_df.index)
-        for appliance in ["hvac","fridge","dr","wm"]:
+        #for appliance in ["hvac","fridge","dr","wm"]:
+        for appliance in ["fridge"]:
             for month in range(1, 13):
                 OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
                 EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
@@ -43,6 +44,6 @@ for transform in ["None","median-aggregate","DD"]:
                 command = ['sbatch', SLURM_SCRIPT]
                 Popen(command)
         print "Now sleeping.."
-        time.sleep(5)
+        time.sleep(1)
     time.sleep(30)
 

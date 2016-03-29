@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 from degree_days import  dd
+from regional_average_contribution import  contribution
 import pandas as pd
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
@@ -108,19 +109,26 @@ elif transform=="median-aggregate":
         cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
         train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
 
-"""
+elif transform=="regional":
+    train_df_copy = train_df.copy()
+    for month in range(1,13):
+        median_month = median_aggregate_df.ix[month]
+        cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
+        train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
+
+
+
 elif transform=="DD-fridge":
     train_df_copy = train_df.copy()
+    fridge_model = pickle.load(open('../data/input/SanDiego_fridge_dd_coef.pkl','r'))
     for month in range(1, 13):
         # index on 0, 11
-        ratiopickle.dump(out, open('../data/input/SanDiego_fridge_dd_coef.pkl','w'))
+
         train_cdd_month = train_dd.ix[month-1]['Cooling']
         test_cdd_month = test_dd.ix[month-1]['Cooling']
-        train_df['fridge_%d' % month] = train_df_copy['fridge_%d' % month] * test_cdd_month*1. / train_cdd_month
-        #New aggregate will be removing old HVAC and adding new HVAC!
-        train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
-        train_df['aggregate_%d' %month] = train_df['aggregate_%d' %month] - train_df_copy['fridge_%d' % month] + train_df['fridge_%d' % month]
-"""
+        for fridge_home, fridge_home_model in fridge_model.iteritems():
+            train_df.loc[fridge_home,'fridge_%d' % month] = fridge_home_model['baseline']+fridge_home_model['cdd']*test_cdd_month
+            train_df.loc[fridge_home,'aggregate_%d' %month] = train_df_copy.ix[fridge_home]['aggregate_%d' %month] - train_df_copy.ix[fridge_home]['fridge_%d' % month] + train_df.ix[fridge_home]['fridge_%d' % month]
 
 overall_df = pd.concat([train_df, test_df])
 
@@ -188,6 +196,7 @@ if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_comp
                                                                     test_home),'w'))
     ranks = solve_ilp(ineqs)
     pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
+    gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
     pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                     test_region,
                                                                     transform,
