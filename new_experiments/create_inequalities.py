@@ -90,9 +90,9 @@ def normalise(df):
         new_df[col] = scale_0_1(df[col])
     return new_df
 
-if transform=="None":
+if transform in ["None","None-percentage"]:
     pass
-elif transform=="DD":
+elif transform in ["DD","DD-percentage"]:
     train_df_copy = train_df.copy()
     for month in range(1, 13):
         # index on 0, 11
@@ -102,14 +102,14 @@ elif transform=="DD":
 
         #New aggregate will be removing old HVAC and adding new HVAC!
         train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
-elif transform=="median-aggregate":
+elif transform in ["median-aggregate","median-aggregate-percentage"]:
     train_df_copy = train_df.copy()
     for month in range(1,13):
         median_month = median_aggregate_df.ix[month]
         cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
         train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
 
-elif transform=="regional":
+elif transform in ["regional","regional-percentage"]:
     train_df_copy = train_df.copy()
     for month in range(1, 13):
 
@@ -206,7 +206,13 @@ if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_comp
                                                                     month_compute,
                                                                     test_home),'w'))
     ranks = solve_ilp(ineqs)
-    pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
+    if "percentage" in transform:
+        mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
+
+        pred = test_df.ix[test_home]['aggregate_%d' %month_compute]*mean_proportion
+
+    else:
+        pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
     gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
     pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                     test_region,
