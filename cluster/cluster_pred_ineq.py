@@ -38,8 +38,9 @@ for transform in ["DD","None"]:
                    f.writelines(lines)
                 command = ['sbatch', SLURM_SCRIPT]
                 Popen(command)
-    print "Now sleeping.."
-    print transform, test_home
+        time.sleep(4)
+        print "Now sleeping.."
+        print transform, test_home
     print "*"*80
-    time.sleep(6)
+
 
