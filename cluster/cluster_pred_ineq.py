@@ -41,5 +41,5 @@ for transform in ["DD","None"]:
     print "Now sleeping.."
     print transform, test_home
     print "*"*80
-    time.sleep(2)
+    time.sleep(5)
 
