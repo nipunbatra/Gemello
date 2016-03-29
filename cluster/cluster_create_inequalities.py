@@ -13,15 +13,15 @@ test_region = "Austin"
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 K=3
-for K in [1, 2, 4, 5]:
+for K in [1,3,  5]:
 
-    for transform in ["DD",'None']:
+    for transform in ["regional"]:
         print transform
         print "*"*40
         count = 0
         for test_home in test_df.index:
             count+= 1
-            print test_home, count, len(test_df.index)
+            print test_home, count, len(test_df.index), K
             #for appliance in ["hvac","fridge","dr","wm"]:
             for appliance in ["hvac"]:
                 for month in range(1, 13):

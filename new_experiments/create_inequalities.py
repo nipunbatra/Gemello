@@ -111,10 +111,21 @@ elif transform=="median-aggregate":
 
 elif transform=="regional":
     train_df_copy = train_df.copy()
-    for month in range(1,13):
-        median_month = median_aggregate_df.ix[month]
-        cols_to_transform = [x for x in train_df.columns if "_"+str(month) in x]
-        train_df[cols_to_transform] = train_df_copy[cols_to_transform] * median_month[test_region] / median_month[train_region]
+    for month in range(1, 13):
+
+        # index on 0, 11
+        if month in range(4,11):
+            mode='Cooling'
+        else:
+            mode='Heating'
+
+        train_dd_month = contribution[train_region][mode]['hvac']
+        test_dd_month = contribution[test_region][mode]['hvac']
+
+        train_df['hvac_%d' % month] = train_df_copy['hvac_%d' % month] * test_dd_month*1. / train_dd_month
+
+        #New aggregate will be removing old HVAC and adding new HVAC!
+        train_df['aggregate_%d' %month] = train_df_copy['aggregate_%d' %month] - train_df_copy['hvac_%d' % month] + train_df['hvac_%d' % month]
 
 
 
