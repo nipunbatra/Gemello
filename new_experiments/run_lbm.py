@@ -2,7 +2,8 @@ import sys
 sys.path.append("../code")
 from latent_Bayesian_melding import LatentBayesianMelding
 lbm = LatentBayesianMelding()
-meterlist = ['hvac','fridge','dw','dr','wm','light']
+meterlist = ['hvac','fridge','wm']
+import numpy as np
 import os, glob
 
 import pandas as pd
@@ -12,14 +13,21 @@ K = int(sys.argv[1])
 DAY = int(sys.argv[2])
 lbm_file = '../data/model/lbm_15min.json'
 data_path = '/if6/nb2cz/wiki_15min_mains'
-out_path = '/if6/nb2cz/wiki_15min_mains_out'
+out_path = '/if6/nb2cz/lbm_15min_raw'
 
-files = os.listdir(data_path)
-file_size= {x:os.path.getsize(data_path+"/"+x) for x in  files if '.csv' in x}
-file_series = pd.Series(file_size)
-fs = file_series[file_series>1000]
+import pickle
+test_region = "Austin"
+train_region = "SanDiego"
+out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-all_homes_all_appliances = [int(x[:-4]) for x in fs.index]
+train_df = out_overall[train_region]
+test_df = out_overall[test_region]
+
+
+
+
+
+all_homes_all_appliances = np.concatenate([train_df.index, test_df.index])
 NUM_PROCESS = len(all_homes_all_appliances)
 
 individual_model = lbm.import_model(meterlist,lbm_file)

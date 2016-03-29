@@ -11,7 +11,7 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "Austin"
+train_region = "Boulder"
 test_region = "SanDiego"
 
 train_df = out_overall[train_region]
@@ -19,7 +19,7 @@ test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    for transform in ["DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
+    for transform in ["None","DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
         print transform
         print "*"*40
         count = 0

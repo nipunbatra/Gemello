@@ -115,7 +115,7 @@ class LatentBayesianMelding(object):
         #self.sample_seconds = 15*60
 
         # number of iterations for updating noise variances and model variables.
-        self.NosOfIters = 3
+        self.NosOfIters = 2
 
         # shape and rate parameters for Gamma distributions for noise variances.
         self.alpha = 1 + 1e-6

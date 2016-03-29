@@ -2,7 +2,7 @@ SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 import time
 
-for NUM_HOMES in range(1140, 1264, 1):
+for NUM_HOMES in range(1, 628):
 
     for DAY in range(1, 365):
 
@@ -21,9 +21,10 @@ for NUM_HOMES in range(1140, 1264, 1):
         with open(SLURM_SCRIPT, 'w') as f:
            f.writelines(lines)
         command = ['sbatch', SLURM_SCRIPT]
-        print Popen(command)
-    print "Now sleeping.."
+        Popen(command)
+
     print "*"*40
     print NUM_HOMES
     print "*"*40
+    print "Now sleeping.."
     time.sleep(60)
