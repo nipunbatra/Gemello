@@ -21,7 +21,7 @@ for K in [3]:
         count = 0
         for test_home in test_df.index:
             count+= 1
-            print test_home, count, len(test_df.index), K
+            print test_home, count, len(test_df.index), K, transform
             #for appliance in ["hvac","fridge","dr","wm"]:
             for appliance in ["hvac"]:
                 for month in range(1, 13):
