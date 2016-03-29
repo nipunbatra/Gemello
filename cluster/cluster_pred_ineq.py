@@ -19,7 +19,7 @@ for transform in ["DD","None"]:
     for test_home in test_df.index[:]:
         count+= 1
         print test_home, count,total
-        for appliance in ["hvac","fridge","wm"]:
+        for appliance in ["hvac"]:
             for month in range(1, 13):
                 OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
                 EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
@@ -41,5 +41,5 @@ for transform in ["DD","None"]:
     print "Now sleeping.."
     print transform, test_home
     print "*"*80
-    time.sleep(5)
+    time.sleep(6)
 
