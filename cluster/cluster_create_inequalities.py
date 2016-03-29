@@ -13,7 +13,7 @@ test_region = "Austin"
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 K=3
-for K in [1,3,  5]:
+for K in [1,3]:
 
     for transform in ["regional"]:
         print transform
