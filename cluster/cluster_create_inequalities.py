@@ -1,7 +1,6 @@
 import time
 
-time.sleep(20*60)
-print "SLEPT for 20 mins"
+
 
 import pandas as pd
 import pickle
