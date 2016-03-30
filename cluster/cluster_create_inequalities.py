@@ -11,15 +11,16 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "Boulder"
-test_region = "SanDiego"
+train_region = "SanDiego"
+test_region = "Austin"
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    for transform in ["None","DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
+    #for transform in ["None","DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
+    for transform in ["median-aggregate-percentage"]:
         print transform
         print "*"*40
         count = 0
@@ -50,5 +51,5 @@ for K in [3]:
                     Popen(command)
             print "Now sleeping.."
             time.sleep(10)
-        time.sleep(180)
+        
 
