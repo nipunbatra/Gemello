@@ -28,7 +28,7 @@ for K in [3]:
             count+= 1
 
             #for appliance in ["hvac","fridge","dr","wm"]:
-            for appliance in ["fridge","wm"]:
+            for appliance in ["hvac","fridge","wm"]:
                 print appliance, test_home, count, len(test_df.index), K, transform
                 for month in range(1, 13):
                     OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
