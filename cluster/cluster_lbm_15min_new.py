@@ -27,4 +27,4 @@ for NUM_HOMES in range(398, 628):
     print NUM_HOMES
     print "*"*40
     print "Now sleeping.."
-    time.sleep(40)
+    time.sleep(60)
