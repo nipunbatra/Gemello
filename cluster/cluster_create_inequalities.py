@@ -13,6 +13,10 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 train_region = "Austin"
 test_region = "SanDiego"
+best_transform = {}
+
+best_transform['SanDiego']={'fridge': 'DD', 'hvac': 'DD-percentage', 'wm': 'median-aggregate-percentage'}
+best_transform['Austin']={'fridge': 'regional', 'hvac': 'DD-percentage', 'wm': 'regional'}
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
