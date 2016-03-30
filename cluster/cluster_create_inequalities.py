@@ -19,8 +19,8 @@ test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    #for transform in ["None","DD-percentage","None-percentage","regional-percentage","DD-fridge"]:
-    for transform in ["median-aggregate-percentage"]:
+    for transform in ["DD-percentage","regional","median-aggregate-percentage","regional-percentage"]:
+    #for transform in ["median-aggregate-percentage"]:
         print transform
         print "*"*40
         count = 0

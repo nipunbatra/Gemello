@@ -8,7 +8,7 @@ if CLUSTER:
 
 data_path = '/if6/nb2cz/wiki_15min_mains'
 lbm_path = '/if6/nb2cz/lbm_15min_raw'
-lbm_pred = '../data/output/lbm_15min_pred'
+lbm_pred = '../data/output/lbm_15min_pred_new'
 
 import pickle
 test_region = "Austin"
