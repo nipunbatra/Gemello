@@ -19,7 +19,7 @@ test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    for transform in ["regional","median-aggregate-percentage","regional-percentage"]:
+    for transform in ["median-aggregate-percentage","regional-percentage"]:
     #for transform in ["median-aggregate-percentage"]:
         print transform
         print "*"*40
@@ -50,6 +50,7 @@ for K in [3]:
                     command = ['sbatch', SLURM_SCRIPT]
                     Popen(command)
             print "Now sleeping.."
-            time.sleep(1)
+            time.sleep(1.25)
+        time.sleep(5*60)
 
 
