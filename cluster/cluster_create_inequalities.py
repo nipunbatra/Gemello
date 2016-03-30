@@ -51,7 +51,7 @@ for K in [3]:
                     command = ['sbatch', SLURM_SCRIPT]
                     Popen(command)
             print "Now sleeping.."
-            time.sleep(20)
+            time.sleep(10)
         time.sleep(2*60)
 
 
