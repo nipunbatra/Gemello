@@ -21,7 +21,8 @@ test_df = out_overall[test_region]
 K=3
 for K in [3]:
 
-    for transform in ["median-aggregate-percentage"]:
+    for transform in ["None","DD","DD-percentage","median-aggregate-percentage",
+                      "median-aggregate",'regional','regional-percentage']:
     #for transform in ["median-aggregate-percentage"]:
         print transform
         print "*"*40
@@ -30,7 +31,7 @@ for K in [3]:
             count+= 1
 
             #for appliance in ["hvac","fridge","dr","wm"]:
-            for appliance in ["hvac"]:
+            for appliance in ["dw"]:
                 print appliance, test_home, count, len(test_df.index), K, transform
                 for month in range(1, 13):
                     OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
