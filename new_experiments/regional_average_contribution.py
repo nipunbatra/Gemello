@@ -16,4 +16,15 @@ contribution = {
                      'hvac': .06,
                      'fridge': 0.15}
          }
+    ,
+    'Boulder':
+        {'Cooling':
+             {'wm': 0.01,
+              'hvac': 0.03,
+              'fridge': .15},
+         'Heating': {
+             'wm': 0.01,
+             'hvac': 0.06,
+             'fridge': .15
+         }}
 }
