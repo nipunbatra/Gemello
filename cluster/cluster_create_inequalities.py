@@ -11,7 +11,7 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-train_region = "Austin"
+train_region = "SanDiego"
 test_region = "Boulder"
 best_transform = {}
 
