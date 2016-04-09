@@ -13,7 +13,7 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 for train_region in ["Austin","Boulder","SanDiego"]:
     time.sleep(120)
-    for test_region in ["Asutin","Boulder","SanDiego"]:
+    for test_region in ["Austin","Boulder","SanDiego"]:
         time.sleep(120)
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
