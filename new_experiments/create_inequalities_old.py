@@ -170,18 +170,15 @@ ineq_dict = {}
 num_features_all[appliance] = {}
 ineq_dict[appliance] = {}
 
-#num_features_all[appliance][month_compute] = {}
+num_features_all[appliance][month_compute] = {}
 ineq_dict[appliance][month_compute] = {}
 
 candidate_homes = train_normalised_df['%s_%d' %(appliance, month_compute)].dropna().index.values
 
 
+ineqs = []
 
-#num_features_all[appliance][month_compute][test_home] = defaultdict(int)
-from collections import defaultdict
-import pandas as pd
-co = defaultdict(int)
-
+num_features_all[appliance][month_compute][test_home] = defaultdict(int)
 
 if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):
     # We need to predict this value!
@@ -196,14 +193,11 @@ if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_comp
             if is_common:
 
                 # Common between train and test. Can add this pair to inequalities
-                ineq=d['order']
-                lt = ineq[0]
-                gt = ineq[1]
-                co[lt]-= 1
-                co[gt]+= 1
-                #num_features_all[appliance][month_compute][test_home][d['num_f']]+= 1
+                ineqs.append(d['order'])
 
-    """
+                num_features_all[appliance][month_compute][test_home][d['num_f']]+= 1
+
+    ineq_dict[appliance][month_compute][test_home] = ineqs
     # Saving ineqs
     pickle.dump(ineqs, open('../data/model/inequalities/%s_%s_%s_%s_%d_%d.pkl' %(train_region,
                                                                     test_region,
@@ -211,10 +205,7 @@ if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_comp
                                                                     appliance,
                                                                     month_compute,
                                                                     test_home),'w'))
-    """
-    co_ser = pd.Series(co)
-    co_ser.sort()
-    ranks = co_ser.index.values.tolist()
+    ranks = solve_ilp(ineqs)
     if "percentage" in transform:
         mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
 
