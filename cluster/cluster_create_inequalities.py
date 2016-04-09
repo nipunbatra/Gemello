@@ -12,9 +12,8 @@ import time
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 for train_region in ["Austin","Boulder","SanDiego"]:
-    time.sleep(120)
+
     for test_region in ["Austin","Boulder","SanDiego"]:
-        time.sleep(120)
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
@@ -32,7 +31,7 @@ for train_region in ["Austin","Boulder","SanDiego"]:
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
                     for appliance in ["dw",'hvac','fridge','wm']:
-                        print appliance, test_home, count, len(test_df.index), K, transform
+                        print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
                             OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
                             EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
@@ -56,6 +55,7 @@ for train_region in ["Austin","Boulder","SanDiego"]:
                     print "Now sleeping.."
                     time.sleep(5)
                 time.sleep(120)
-                #time.sleep(2*60)
+            time.sleep(240)
+        time.sleep(240)
 
 
