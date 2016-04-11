@@ -11,14 +11,14 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-for train_region in ["Austin","Boulder","SanDiego"]:
+for train_region in ["Boulder","SanDiego","Austin"]:
 
-    for test_region in ["Austin","Boulder","SanDiego"]:
+    for test_region in ["Boulder","SanDiego","Austin"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
 
-        for K in range(6):
+        for K in [3]:
 
             for transform in ["None","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']:
@@ -53,7 +53,7 @@ for train_region in ["Austin","Boulder","SanDiego"]:
                             command = ['sbatch', SLURM_SCRIPT]
                             Popen(command)
                     print "Now sleeping.."
-                    time.sleep(5)
+                    time.sleep(1.5)
                 time.sleep(120)
             time.sleep(240)
         time.sleep(240)
