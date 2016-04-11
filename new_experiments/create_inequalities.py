@@ -6,6 +6,7 @@ import pandas as pd
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 import sys
+import os
 
 train_region, test_region, test_home, appliance, transform, K = sys.argv[1:]
 test_home = int(test_home)
@@ -182,6 +183,14 @@ for month_compute in range(1, 13):
     from collections import defaultdict
     import pandas as pd
     co = defaultdict(int)
+    store_path = '../../../output/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+                                                                        test_region,
+                                                                        transform,
+                                                                        appliance,
+                                                                        month_compute,
+                                                                        test_home, K)
+    if os.path.exists(store_path):
+        continue
 
 
     if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):
@@ -224,12 +233,7 @@ for month_compute in range(1, 13):
         else:
             pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
         gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
-        pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
-                                                                        test_region,
-                                                                        transform,
-                                                                        appliance,
-                                                                        month_compute,
-                                                                        test_home, K),'w'))
+        pickle.dump(pred, open(store_path,'w'))
 
 
     else:

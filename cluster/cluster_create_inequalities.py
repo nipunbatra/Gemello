@@ -12,8 +12,7 @@ import time
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 for train_region in ["Boulder","SanDiego","Austin"]:
-
-for test_region in ["Boulder","SanDiego","Austin"]:
+    for test_region in ["Boulder","SanDiego","Austin"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
@@ -54,7 +53,7 @@ for test_region in ["Boulder","SanDiego","Austin"]:
                             Popen(command)
                             os.remove(SLURM_SCRIPT)
                     print "Now sleeping.."
-                    time.sleep(1.5)
+                    time.sleep(4)
                 time.sleep(10)
             time.sleep(240)
         time.sleep(240)
