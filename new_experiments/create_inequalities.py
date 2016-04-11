@@ -7,9 +7,8 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 import sys
 
-train_region, test_region, test_home, appliance, month_compute, transform, K = sys.argv[1:]
+train_region, test_region, test_home, appliance, transform, K = sys.argv[1:]
 test_home = int(test_home)
-month_compute = int(month_compute)
 K = int(K)
 
 train_df = out_overall[train_region]
@@ -146,7 +145,7 @@ overall_df = pd.concat([train_df, test_df])
 normalised_df = normalise(overall_df)
 
 train_normalised_df = normalised_df.ix[train_df.index]
-test_normalised_df = normalised_df.ix[test_df.index]
+test_normalised_df = normalised_df.ix[test_df.index].drop_duplicates()
 
 
 def solve_ilp(inequalities, time_limit=50):
@@ -163,77 +162,79 @@ def solve_ilp(inequalities, time_limit=50):
 
     return co_ser.index.values.tolist()
 
-from collections import Counter, defaultdict
-num_features_all = {}
-ineq_dict = {}
+for month_compute in range(1, 13):
 
-num_features_all[appliance] = {}
-ineq_dict[appliance] = {}
+    from collections import Counter, defaultdict
+    num_features_all = {}
+    ineq_dict = {}
 
-#num_features_all[appliance][month_compute] = {}
-ineq_dict[appliance][month_compute] = {}
+    num_features_all[appliance] = {}
+    ineq_dict[appliance] = {}
 
-candidate_homes = train_normalised_df['%s_%d' %(appliance, month_compute)].dropna().index.values
+    #num_features_all[appliance][month_compute] = {}
+    ineq_dict[appliance][month_compute] = {}
 
-
-
-#num_features_all[appliance][month_compute][test_home] = defaultdict(int)
-from collections import defaultdict
-import pandas as pd
-co = defaultdict(int)
+    candidate_homes = train_normalised_df['%s_%d' %(appliance, month_compute)].dropna().index.values
 
 
-if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):
-    # We need to predict this value!
-    # Find candidate set, train homes which have not null for this month
-    # Now find features on pairs of homes in candidate homes
-    for a,b in combinations(candidate_homes, 2):
-        com_features = find_com_features_train(train_df, a, b, f_all)
 
-        if len(com_features):
-            # Consider a,b
-            is_common, d = find_distance_train_test(train_normalised_df, a, b, test_normalised_df, test_home, com_features, f_all)
-            if is_common:
+    #num_features_all[appliance][month_compute][test_home] = defaultdict(int)
+    from collections import defaultdict
+    import pandas as pd
+    co = defaultdict(int)
 
-                # Common between train and test. Can add this pair to inequalities
-                ineq=d['order']
-                lt = ineq[0]
-                gt = ineq[1]
-                co[lt]-= 1
-                co[gt]+= 1
-                #num_features_all[appliance][month_compute][test_home][d['num_f']]+= 1
 
-    """
-    # Saving ineqs
-    pickle.dump(ineqs, open('../data/model/inequalities/%s_%s_%s_%s_%d_%d.pkl' %(train_region,
-                                                                    test_region,
-                                                                    transform,
-                                                                    appliance,
-                                                                    month_compute,
-                                                                    test_home),'w'))
-    """
-    co_ser = pd.Series(co)
-    co_ser.sort()
-    ranks = co_ser.index.values.tolist()
-    if "percentage" in transform:
-        mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
+    if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):
+        # We need to predict this value!
+        # Find candidate set, train homes which have not null for this month
+        # Now find features on pairs of homes in candidate homes
+        for a,b in combinations(candidate_homes, 2):
+            com_features = find_com_features_train(train_df, a, b, f_all)
 
-        pred = test_df.ix[test_home]['aggregate_%d' %month_compute]*mean_proportion
+            if len(com_features):
+                # Consider a,b
+                is_common, d = find_distance_train_test(train_normalised_df, a, b, test_normalised_df, test_home, com_features, f_all)
+                if is_common:
+
+                    # Common between train and test. Can add this pair to inequalities
+                    ineq=d['order']
+                    lt = ineq[0]
+                    gt = ineq[1]
+                    co[lt]-= 1
+                    co[gt]+= 1
+                    #num_features_all[appliance][month_compute][test_home][d['num_f']]+= 1
+
+        """
+        # Saving ineqs
+        pickle.dump(ineqs, open('../data/model/inequalities/%s_%s_%s_%s_%d_%d.pkl' %(train_region,
+                                                                        test_region,
+                                                                        transform,
+                                                                        appliance,
+                                                                        month_compute,
+                                                                        test_home),'w'))
+        """
+        co_ser = pd.Series(co)
+        co_ser.sort()
+        ranks = co_ser.index.values.tolist()
+        if "percentage" in transform:
+            mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
+
+            pred = test_df.ix[test_home]['aggregate_%d' %month_compute]*mean_proportion
+
+        else:
+            pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
+        gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
+        pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+                                                                        test_region,
+                                                                        transform,
+                                                                        appliance,
+                                                                        month_compute,
+                                                                        test_home, K),'w'))
+
 
     else:
-        pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
-    gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
-    pickle.dump(pred, open('../data/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
-                                                                    test_region,
-                                                                    transform,
-                                                                    appliance,
-                                                                    month_compute,
-                                                                    test_home, K),'w'))
-
-
-else:
-    # No need to predict
-    pass
+        # No need to predict
+        pass
 
 
 
