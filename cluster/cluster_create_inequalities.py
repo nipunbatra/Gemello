@@ -51,7 +51,7 @@ for train_region in ["Boulder","SanDiego","Austin"]:
                                f.writelines(lines)
                             command = ['sbatch', SLURM_SCRIPT]
                             Popen(command)
-                            os.remove(SLURM_SCRIPT)
+                            #os.remove(SLURM_SCRIPT)
                     print "Now sleeping.."
                     time.sleep(4)
                 time.sleep(10)
