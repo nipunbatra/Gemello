@@ -4,7 +4,7 @@ import pickle
 
 #train_region = "Austin"
 #test_region = "SanDiego"
-test_region = "SanDiego"
+test_region = "Boulder"
 train_region = "SanDiego"
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
