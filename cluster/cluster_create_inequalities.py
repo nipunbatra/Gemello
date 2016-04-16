@@ -11,16 +11,17 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-for train_region in ["Boulder","SanDiego","Austin"]:
-    for test_region in ["Boulder","SanDiego","Austin"]:
+for train_region in ["SanDiego"]:
+    for test_region in ["SanDiego"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
 
         for K in [3]:
 
-            for transform in ["None","DD","DD-percentage","median-aggregate-percentage",
-                              "median-aggregate",'regional','regional-percentage']:
+            #for transform in ["None","DD","DD-percentage","median-aggregate-percentage",
+            #                  "median-aggregate",'regional','regional-percentage']:
+            for transform in ["None"]:
             #for transform in ["median-aggregate-percentage"]:
                 print transform
                 print "*"*40
