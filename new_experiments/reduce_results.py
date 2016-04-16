@@ -31,13 +31,16 @@ contri = {
 k=3
 transformations = ["None","DD","DD-percentage",'median-aggregate',"median-aggregate-percentage",'regional','regional-percentage']
 #transformations = ['DD','None',"DD-fridge"]
+count_absent = {}
 transformations = ["None"]
 
 out = {}
 for transform in transformations:
+    count_absent[transform] = {}
     out[transform] = {}
     #for appliance in ["hvac","fridge","dr","wm"]:
     for appliance in APPLIANCES:
+        count_absent[transform][appliance] = 0
         out[transform][appliance] = {}
         for month in range(1,13):
             print appliance, month, transform
@@ -59,9 +62,8 @@ for transform in transformations:
                     percentage_accuracy = 100-percentage_error
                     out[transform][appliance][month].append(percentage_accuracy)
                 except Exception, e:
-                    print e
+                    count_absent[transform][appliance]+= 1
 
-raw_input("Press key to proceed")
 acc = {tr:{} for tr in transformations}
 
 acc['Regional average']={}
