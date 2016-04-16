@@ -4,8 +4,9 @@ import pickle
 
 #train_region = "Austin"
 #test_region = "SanDiego"
-test_region = "Boulder"
-train_region = "Boulder"
+import sys
+
+train_region, test_region = sys.argv[1:]
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 train_df = out_overall[train_region]
