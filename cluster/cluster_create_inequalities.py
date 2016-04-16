@@ -37,8 +37,8 @@ for train_region in ["Austin"]:
                             EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
 
                             SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region, test_region, test_home, appliance, month, transform)
-                            CMD = 'python ../new_experiments/create_inequalities.py %s %s %d %s %d %s %d' % (train_region, test_region,
-                                                                                                             test_home, appliance, month,
+                            CMD = 'python ../new_experiments/create_inequalities.py %s %s %d %s %s %d' % (train_region, test_region,
+                                                                                                             test_home, appliance,
                                                                                                              transform, K)
                             lines = []
                             lines.append("#!/bin/sh\n")
