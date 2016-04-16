@@ -58,8 +58,9 @@ for transform in transformations:
                     percentage_accuracy = 100-percentage_error
                     out[transform][appliance][month].append(percentage_accuracy)
                 except Exception, e:
-                    pass
+                    print e
 
+raw_input("Press key to proceed")
 acc = {tr:{} for tr in transformations}
 
 acc['Regional average']={}
