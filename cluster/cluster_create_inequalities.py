@@ -11,8 +11,8 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-for train_region in ["SanDiego"]:
-    for test_region in ["SanDiego"]:
+for train_region in ["Austin"]:
+    for test_region in ["Austin"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
