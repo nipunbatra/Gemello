@@ -31,6 +31,7 @@ contri = {
 k=3
 transformations = ["None","DD","DD-percentage",'median-aggregate',"median-aggregate-percentage",'regional','regional-percentage']
 #transformations = ['DD','None',"DD-fridge"]
+transformations = ["None"]
 
 out = {}
 for transform in transformations:
