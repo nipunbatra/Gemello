@@ -176,7 +176,8 @@ for month_compute in range(1, 13):
     ineq_dict[appliance][month_compute] = {}
 
     candidate_homes = train_normalised_df['%s_%d' %(appliance, month_compute)].dropna().index.values
-
+    # Removing the actual test home!
+    candidate_homes = np.array(np.setdiff1d(candidate_homes, test_home))
 
 
     #num_features_all[appliance][month_compute][test_home] = defaultdict(int)

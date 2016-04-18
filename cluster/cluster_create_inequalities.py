@@ -26,11 +26,12 @@ for train_region in ["SanDiego"]:
                 print transform
                 print "*"*40
                 count = 0
-                for test_home in test_df.index[:5]:
+                for test_home in test_df.index[:2]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
                             OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
@@ -42,7 +43,7 @@ for train_region in ["SanDiego"]:
                                                                                                              transform, K)
                             lines = []
                             lines.append("#!/bin/sh\n")
-                            lines.append('#SBATCH --time=0-01:0:00\n')
+                            lines.append('#SBATCH --time=0-04:0:00\n')
                             lines.append('#SBATCH --mem=16\n')
                             lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
                             lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
