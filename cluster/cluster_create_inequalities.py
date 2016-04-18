@@ -30,8 +30,8 @@ for train_region in ["SanDiego"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
-                    for appliance in ["hvac"]:
+                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
                             OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
