@@ -11,8 +11,8 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-for train_region in ["SanDiego","Boulder","Austin"]:
-    for test_region in ["SanDiego","Boulder","Austin"]:
+for train_region in ["Austin","SanDiego","Boulder"]:
+    for test_region in ["Austin","SanDiego","Boulder"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']
@@ -41,16 +41,16 @@ for train_region in ["SanDiego","Boulder","Austin"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
-                            OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
-                            EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )
+                            OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region[0], test_region[0], test_home, appliance, month, transform )
+                            EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region[0], test_region[0], test_home, appliance, month, transform )
 
-                            SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region, test_region, test_home, appliance, month, transform)
+                            SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region[0], test_region[0], test_home, appliance[:2], month, transform)
                             CMD = 'python ../new_experiments/create_inequalities.py %s %s %d %s %s %d' % (train_region, test_region,
                                                                                                              test_home, appliance,
                                                                                                              transform, K)
                             lines = []
                             lines.append("#!/bin/sh\n")
-                            lines.append('#SBATCH --time=0-04:0:00\n')
+                            lines.append('#SBATCH --time=0-05:0:00\n')
                             lines.append('#SBATCH --mem=16\n')
                             lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
                             lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
