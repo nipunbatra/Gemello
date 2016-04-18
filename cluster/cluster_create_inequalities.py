@@ -62,9 +62,9 @@ for train_region in ["SanDiego","Boulder","Austin"]:
                             Popen(command)
                             #os.remove(SLURM_SCRIPT)
                     print "Now sleeping.."
-                    time.sleep(4)
-                time.sleep(10)
-            time.sleep(240)
-        time.sleep(240)
+                    time.sleep(1)
+                time.sleep(5)
+            time.sleep(120)
+        time.sleep(140)
 
 
