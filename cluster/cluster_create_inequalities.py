@@ -11,17 +11,24 @@ import time
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
-for train_region in ["Austin"]:
-    for test_region in ["SanDiego"]:
+for train_region in ["SanDiego","Boulder","Austin"]:
+    for test_region in ["SanDiego","Boulder","Austin"]:
+        if train_region!=test_region:
+            TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
+                              "median-aggregate",'regional','regional-percentage']
+        else:
+            TRANSFORMATIONS = ["None"]
+
+
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
 
         for K in [3]:
 
-            #for transform in ["None","DD","DD-percentage","median-aggregate-percentage",
-            #                  "median-aggregate",'regional','regional-percentage']:
-            for transform in ["None","DD","DD-percentage"]:
+
+            for transform in TRANSFORMATIONS:
+            #for transform in ["None","DD","DD-percentage"]:
             #for transform in ["median-aggregate-percentage"]:
                 print transform
                 print "*"*40
@@ -30,8 +37,8 @@ for train_region in ["Austin"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
-                    for appliance in ["hvac"]:
+                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
                             OFILE = "%s/%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, train_region, test_region, test_home, appliance, month, transform )

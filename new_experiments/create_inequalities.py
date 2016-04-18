@@ -163,7 +163,7 @@ def solve_ilp(inequalities, time_limit=50):
 
     return co_ser.index.values.tolist()
 
-for month_compute in range(10, 11):
+for month_compute in range(1, 13):
 
     from collections import Counter, defaultdict
     num_features_all = {}
@@ -193,7 +193,7 @@ for month_compute in range(10, 11):
     print store_path
     if os.path.exists(store_path):
         print "already exists"
-        #continue
+        continue
 
 
     if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):
