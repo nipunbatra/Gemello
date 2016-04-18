@@ -26,7 +26,7 @@ for train_region in ["SanDiego"]:
                 print transform
                 print "*"*40
                 count = 0
-                for test_home in test_df.index[:2]:
+                for test_home in test_df.index[2:4]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
