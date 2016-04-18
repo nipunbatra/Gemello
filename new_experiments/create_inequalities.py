@@ -189,7 +189,9 @@ for month_compute in range(1, 13):
                                                                         appliance,
                                                                         month_compute,
                                                                         test_home, K)
+    print store_path
     if os.path.exists(store_path):
+        print "already exists"
         continue
 
 
