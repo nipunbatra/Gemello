@@ -38,7 +38,8 @@ for train_region in ["Austin"]:
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
                     #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
-                    for appliance in ["dw","hvac","fridge"]:
+                    #for appliance in ["dw","hvac","fridge"]:
+                    for appliance in ["hvac"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
@@ -46,7 +47,7 @@ for train_region in ["Austin"]:
                             EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
 
                             SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region[0], test_region[0], test_home, appliance[:2], month, transform)
-                            CMD = 'python ../new_experiments/create_inequalities.py %s %s %d %s %s %d %d' % (train_region, test_region,
+                            CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
                                                                                                              test_home, appliance,
                                                                                                              transform, K, num_homes)
                             lines = []
