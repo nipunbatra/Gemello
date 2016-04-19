@@ -13,20 +13,7 @@ train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
 
-contri = {
-    'Austin':
-    {'Cooling':{'wm':0.01,
-    'hvac':0.29,
-    'fridge':0.09},
-    'Heating':
-    {'wm':.01,'hvac':0.07,'fridge':0.09}}
-
-    ,
-    'SanDiego':
-    {'wm':0.01,
-    'hvac':.16,
-    'fridge':0.15}
-}
+from regional_average_contribution import  contribution as contri
 
 k=3
 transformations = ["None","DD","DD-percentage",'median-aggregate',"median-aggregate-percentage",'regional','regional-percentage']
@@ -77,7 +64,7 @@ for transform in transformations:
 
 
 
-for appliance in ["hvac",'fridge','wm']:
+for appliance in APPLIANCES:
     acc['Regional average'][appliance] = {}
     for month in range(1,13):
         acc['Regional average'][appliance][month] = []
@@ -110,3 +97,19 @@ for appliance in APPLIANCES:
         if pd.DataFrame(acc[transform])[appliance][start:stop].mean()>best:
             best = pd.DataFrame(acc[transform])[appliance][start:stop].mean()
             best_transform[appliance] = transform
+
+results = {}
+results['EnerScale'] = {}
+results['Regional average'] = {}
+#results['NILM'] = {}
+
+for appliance in APPLIANCES:
+    try:
+        if appliance=="hvac":
+            start, stop=5, 11
+        else:
+            start, stop =1, 13
+        results['EnerScale'][appliance] = pd.Series(acc[best_transform[appliance]][appliance])[start:stop].mean()
+        results['Regional average'][appliance] = pd.Series(acc["Regional average"][appliance])[start:stop].mean()
+    except:
+        pass
