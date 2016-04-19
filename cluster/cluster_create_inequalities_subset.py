@@ -9,7 +9,10 @@ SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 import time
 
+print "a"
+
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
+print "b"
 K = 3
 for train_region in ["Austin"]:
     for test_region in ["SanDiego"]:
