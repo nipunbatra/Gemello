@@ -42,7 +42,7 @@ for train_region in ["Austin"]:
                     #for appliance in ["hvac","fridge","dr","wm"]:
                     #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
                     #for appliance in ["dw","hvac","fridge"]:
-                    for appliance in ["hvac"]:
+                    for appliance in ["dw","fridge"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
