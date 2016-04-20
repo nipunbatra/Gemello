@@ -66,7 +66,9 @@ for num_homes in range(5, 40, 5):
 acc = {}
 acc['Regional average']={}
 
+best_transform = {}
 for num_homes in range(5, 40, 5):
+    best_transform[num_homes] ={}
     acc[num_homes] = {}
     for transform in TRANSFORMATIONS:
         acc[num_homes][transform] = {}
@@ -75,6 +77,19 @@ for num_homes in range(5, 40, 5):
             acc[num_homes][transform][appliance] = {}
             for month in range(1,13):
                 acc[num_homes][transform][appliance][month] = pd.Series(out[num_homes][transform][appliance][month]).mean()
+
+
+    for appliance in APPLIANCES:
+        best_transform[num_homes][appliance] = {}
+        best = 0
+        if appliance=="hvac":
+            start, stop=5, 11
+        else:
+            start, stop =1, 13
+        for transform in TRANSFORMATIONS:
+            if pd.DataFrame(acc[num_homes][transform])[appliance][start:stop].mean()>best:
+                best = pd.DataFrame( acc[num_homes][transform])[appliance][start:stop].mean()
+                best_transform[num_homes][appliance] = transform
 
 
 
