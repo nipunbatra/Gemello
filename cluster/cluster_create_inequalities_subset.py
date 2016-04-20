@@ -14,7 +14,7 @@ print "a"
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 print "b"
 K = 3
-for train_region in ["SanDiego","Boulder"]:
+for train_region in ["Austin","SanDiego","Boulder"]:
     for test_region in ["SanDiego"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
@@ -27,7 +27,7 @@ for train_region in ["SanDiego","Boulder"]:
         test_df = out_overall[test_region]
 
 
-        for num_homes in range(5, 40, 5):
+        for num_homes in range(5, 45, 5):
 
 
             for transform in TRANSFORMATIONS:
@@ -42,7 +42,7 @@ for train_region in ["SanDiego","Boulder"]:
                     #for appliance in ["hvac","fridge","dr","wm"]:
                     #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
                     #for appliance in ["dw","hvac","fridge"]:
-                    for appliance in ["dw","fridge","hvac"]:
+                    for appliance in ["wm","fridge","hvac"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(1, 13):
@@ -69,7 +69,7 @@ for train_region in ["SanDiego","Boulder"]:
                     print "Now sleeping.."
                     time.sleep(1)
                 time.sleep(5)
-            time.sleep(120)
-        time.sleep(140)
+            time.sleep(60)
+        time.sleep(60)
 
 
