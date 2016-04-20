@@ -74,7 +74,7 @@ for num_homes in range(5, 40, 5):
         #for appliance in ["hvac"]:
             acc[num_homes][transform][appliance] = {}
             for month in range(1,13):
-                acc[num_homes][transform][appliance][month] = pd.Series(out[transform][appliance][month]).mean()
+                acc[num_homes][transform][appliance][month] = pd.Series(out[num_homes][transform][appliance][month]).mean()
 
 
 
