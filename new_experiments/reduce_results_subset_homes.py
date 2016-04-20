@@ -58,6 +58,7 @@ for num_homes in range(5, 40, 5):
                         percentage_accuracy = 100-percentage_error
                         out[num_homes][transform][appliance][month].append(percentage_accuracy)
                     except Exception, e:
+                        print e
                         count_absent[transform][appliance]+= 1
 
 #acc = {tr:{} for tr in transformations}
