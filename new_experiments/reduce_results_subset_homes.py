@@ -40,7 +40,7 @@ for num_homes in range(5, 40, 5):
                 out[num_homes][transform][appliance][month] = []
                 for test_home in test_df.index:
                     try:
-                        pred =  pickle.load(open('../../../output/output/ineq_cross_subset/%s_%s_%s_%s_%d_%d_%d.pkl' %(
+                        store_path = '../../../output/output/ineq_cross_subset/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(
                                                                                                     num_homes,
                                                                                                     train_region,
                                                                                                    test_region,
@@ -48,7 +48,8 @@ for num_homes in range(5, 40, 5):
                                                                                                    appliance,
                                                                                                    month,
                                                                                                    test_home,
-                                                                                                   k),'r'))
+                                                                                                   k)
+                        pred =  pickle.load(open(store_path,'r'))
                         gt = test_df.ix[test_home]['%s_%d' %(appliance, month)]
 
                         error = np.abs(gt-pred)
