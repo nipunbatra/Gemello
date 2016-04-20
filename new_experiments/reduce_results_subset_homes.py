@@ -11,20 +11,24 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
-APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
+#APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
+APPLIANCES=['hvac','fridge','wm']
 
 from regional_average_contribution import  contribution as contri
 
 k=3
-transformations = ["None","DD","DD-percentage",'median-aggregate',"median-aggregate-percentage",'regional','regional-percentage']
-#transformations = ['DD','None',"DD-fridge"]
+if train_region!=test_region:
+    TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
+                      "median-aggregate",'regional','regional-percentage']
+else:
+    TRANSFORMATIONS = ["None"]#transformations = ['DD','None',"DD-fridge"]
 count_absent = {}
 #transformations = ["None"]
 
 out = {}
 for num_homes in range(5, 40, 5):
     out[num_homes] = {}
-    for transform in transformations:
+    for transform in TRANSFORMATIONS:
         count_absent[transform] = {}
         out[num_homes][transform] = {}
         #for appliance in ["hvac","fridge","dr","wm"]:
@@ -46,6 +50,7 @@ for num_homes in range(5, 40, 5):
                                                                                                    test_home,
                                                                                                    k),'r'))
                         gt = test_df.ix[test_home]['%s_%d' %(appliance, month)]
+
                         error = np.abs(gt-pred)
                         percentage_error = error*100/gt
                         if percentage_error>100:
@@ -61,7 +66,7 @@ acc['Regional average']={}
 
 for num_homes in range(5, 40, 5):
     acc[num_homes] = {}
-    for transform in transformations:
+    for transform in TRANSFORMATIONS:
         acc[num_homes][transform] = {}
         for appliance in APPLIANCES:
         #for appliance in ["hvac"]:
