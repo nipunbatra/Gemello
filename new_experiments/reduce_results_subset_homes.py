@@ -67,8 +67,10 @@ acc = {}
 acc['Regional average']={}
 
 best_transform = {}
+best_accuracy = {}
 for num_homes in range(5, 40, 5):
     best_transform[num_homes] ={}
+    best_accuracy[num_homes] = {}
     acc[num_homes] = {}
     for transform in TRANSFORMATIONS:
         acc[num_homes][transform] = {}
@@ -81,6 +83,7 @@ for num_homes in range(5, 40, 5):
 
     for appliance in APPLIANCES:
         best_transform[num_homes][appliance] = {}
+        best_accuracy[num_homes][appliance] = {}
         best = 0
         if appliance=="hvac":
             start, stop=5, 11
@@ -90,6 +93,7 @@ for num_homes in range(5, 40, 5):
             if pd.DataFrame(acc[num_homes][transform])[appliance][start:stop].mean()>best:
                 best = pd.DataFrame( acc[num_homes][transform])[appliance][start:stop].mean()
                 best_transform[num_homes][appliance] = transform
+                best_accuracy[num_homes][appliance] = best
 
 
 

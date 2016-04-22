@@ -12,10 +12,18 @@ import time
 print "a"
 
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
+
 print "b"
 K = 3
 for train_region in ["Austin","SanDiego","Boulder"]:
-    for test_region in ["SanDiego","Boulder"]:
+    if train_region=="Austin":
+        NUM_HOMES_MAX = 100
+    elif train_region=="SanDiego":
+        NUM_HOMES_MAX = len(out_overall['SanDiego'])
+    else:
+        NUM_HOMES_MAX = len(out_overall['Boulder'])
+
+    for test_region in ["SanDiego","Boulder","Austin"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']
@@ -27,7 +35,7 @@ for train_region in ["Austin","SanDiego","Boulder"]:
         test_df = out_overall[test_region]
 
 
-        for num_homes in range(5, 45, 5):
+        for num_homes in range(5, NUM_HOMES_MAX, 5):
 
 
             for transform in TRANSFORMATIONS:
@@ -40,16 +48,20 @@ for train_region in ["Austin","SanDiego","Boulder"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                        if appliance=="hvac":
+                            month_min, month_max = 5, 11
+                        else:
+                            month_min, month_max = 1, 13
                     #for appliance in ["dw","hvac","fridge"]:
-                    for appliance in ["wm","fridge","hvac"]:
+                    #for appliance in ["wm","fridge","hvac"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
-                        for month in range(1, 13):
+                        for month in range(month_min, month_max):
                             OFILE = "%s/%d_%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
                             EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
 
-                            SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region[0], test_region[0], test_home, appliance[:2], month, transform)
+                            SLURM_SCRIPT = "%d_%s_%s_%d_%s_%d_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], month, transform)
                             CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
                                                                                                              test_home, appliance,
                                                                                                              transform, K, num_homes)
@@ -67,9 +79,9 @@ for train_region in ["Austin","SanDiego","Boulder"]:
                             Popen(command)
                             #os.remove(SLURM_SCRIPT)
                     print "Now sleeping.."
-                    time.sleep(4)
-                time.sleep(20)
-            time.sleep(160)
-        time.sleep(160)
+                    time.sleep(30)
+                time.sleep(60)
+            time.sleep(240)
+        time.sleep(480)
 
 
