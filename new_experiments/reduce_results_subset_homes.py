@@ -13,6 +13,7 @@ train_df = out_overall[train_region]
 test_df = out_overall[test_region]
 #APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
 APPLIANCES=['hvac','fridge','wm']
+APPLIANCES=["mw"]
 
 from regional_average_contribution import  contribution as contri
 
@@ -115,7 +116,7 @@ for appliance in APPLIANCES:
                 percentage_accuracy = 100-percentage_error
                 acc['Regional average'][appliance][month].append(percentage_accuracy)
             except Exception, e:
-                print e
+                pass
 
         acc['Regional average'][appliance][month] = pd.Series(acc['Regional average'][appliance][month]).mean()
 
