@@ -37,7 +37,7 @@ for num_homes in range(5, 50, 5):
             count_absent[transform][appliance] = 0
             out[num_homes][transform][appliance] = {}
             for month in range(1,13):
-                print appliance, month, transform
+                print appliance, month, transform, num_homes
                 out[num_homes][transform][appliance][month] = []
                 for test_home in test_df.index:
                     try:
@@ -60,7 +60,7 @@ for num_homes in range(5, 50, 5):
                         percentage_accuracy = 100-percentage_error
                         out[num_homes][transform][appliance][month].append(percentage_accuracy)
                     except Exception, e:
-                        
+
                         count_absent[transform][appliance]+= 1
 
 #acc = {tr:{} for tr in transformations}
@@ -69,7 +69,7 @@ acc['Regional average']={}
 
 best_transform = {}
 best_accuracy = {}
-for num_homes in range(5, 40, 5):
+for num_homes in range(5, 50, 5):
     best_transform[num_homes] ={}
     best_accuracy[num_homes] = {}
     acc[num_homes] = {}
