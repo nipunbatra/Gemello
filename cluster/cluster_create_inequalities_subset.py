@@ -5,6 +5,7 @@ import time
 import pandas as pd
 import pickle
 import os
+import numpy as np
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 import time
@@ -34,8 +35,12 @@ for train_region in ["Austin","SanDiego","Boulder"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
+        if train_region=="Austin" and test_region=="SanDiego":
+            NUM_HOMES_MIN=45
+        else:
+            NUM_HOMES_MIN=5
 
-        for num_homes in range(5, NUM_HOMES_MAX, 5):
+        for num_homes in range(NUM_HOMES_MIN, NUM_HOMES_MAX, 5):
 
 
             for transform in TRANSFORMATIONS:
@@ -58,6 +63,8 @@ for train_region in ["Austin","SanDiego","Boulder"]:
                     #for appliance in ["hvac"]:
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
                         for month in range(month_min, month_max):
+                            if np.isnan(test_df.ix[test_home]['%s_%d' %(appliance, month)]):
+                                continue
                             OFILE = "%s/%d_%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
                             EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
 
