@@ -18,7 +18,7 @@ print "b"
 K = 3
 for train_region in ["Austin","SanDiego","Boulder"]:
     if train_region=="Austin":
-        NUM_HOMES_MAX = 100
+        NUM_HOMES_MAX = 60
     elif train_region=="SanDiego":
         NUM_HOMES_MAX = len(out_overall['SanDiego'])
     else:
@@ -86,7 +86,7 @@ for train_region in ["Austin","SanDiego","Boulder"]:
                             Popen(command)
                             #os.remove(SLURM_SCRIPT)
                     print "Now sleeping.."
-                    time.sleep(30)
+                    time.sleep(num_homes)
                 time.sleep(60)
             time.sleep(240)
         time.sleep(480)
