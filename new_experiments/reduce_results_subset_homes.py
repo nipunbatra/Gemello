@@ -22,7 +22,7 @@ if train_region!=test_region:
     TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                       "median-aggregate",'regional','regional-percentage']
 else:
-    TRANSFORMATIONS = ["None"]#transformations = ['DD','None',"DD-fridge"]
+    TRANSFORMATIONS = ["None","None-percentage"]#transformations = ['DD','None',"DD-fridge"]
 count_absent = {}
 #transformations = ["None"]
 
