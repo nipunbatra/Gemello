@@ -65,10 +65,10 @@ for train_region in ["Austin","SanDiego","Boulder"]:
 
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
 
-                        OFILE = "%s/%d_%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
-                        EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
+                        OFILE = "%s/%d_%s_%s_%d_%s_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance[0], transform[0] )
+                        EFILE = "%s/%d_%s_%s_%d_%s_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance,  transform )
 
-                        SLURM_SCRIPT = "%d_%s_%s_%d_%s_%d_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], month, transform)
+                        SLURM_SCRIPT = "%d_%s_%s_%d_%s_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], transform)
                         CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
                                                                                                          test_home, appliance,
                                                                                                          transform, K, num_homes)
