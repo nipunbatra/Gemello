@@ -36,7 +36,7 @@ for train_region in ["Austin","SanDiego","Boulder"]:
         test_df = out_overall[test_region]
 
         if train_region=="Austin" and test_region=="SanDiego":
-            NUM_HOMES_MIN=NUM_HOMES_MAX
+            NUM_HOMES_MIN=55
         else:
             NUM_HOMES_MIN=5
 
@@ -58,37 +58,36 @@ for train_region in ["Austin","SanDiego","Boulder"]:
                             month_min, month_max = 5, 11
                         else:
                             month_min, month_max = 1, 13
-                    #for appliance in ["dw","hvac","fridge"]:
-                    #for appliance in ["wm","fridge","hvac"]:
-                    #for appliance in ["hvac"]:
+
+                        if len(test_df.ix[test_home][['%s_%d' %(appliance, m) for m in range(month_min, month_max)]].dropna())==0:
+                            # Appliance data not present for this homes..let's save some time
+                            continue
+
                         print appliance, test_home, count, len(test_df.index), K, transform, train_region, test_region
-                        for month in range(month_min, month_max):
-                            if np.isnan(test_df.ix[test_home]['%s_%d' %(appliance, month)]):
-                                continue
-                            OFILE = "%s/%d_%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
-                            EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
 
-                            SLURM_SCRIPT = "%d_%s_%s_%d_%s_%d_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], month, transform)
-                            CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
-                                                                                                             test_home, appliance,
-                                                                                                             transform, K, num_homes)
-                            lines = []
-                            lines.append("#!/bin/sh\n")
-                            lines.append('#SBATCH --time=0-05:0:00\n')
-                            lines.append('#SBATCH --mem=16\n')
-                            lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
-                            lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
-                            lines.append(CMD+'\n')
+                        OFILE = "%s/%d_%s_%s_%d_%s_%d_%s.out" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
+                        EFILE = "%s/%d_%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance, month, transform )
 
-                            with open(SLURM_SCRIPT, 'w') as f:
-                               f.writelines(lines)
-                            command = ['sbatch', SLURM_SCRIPT]
-                            Popen(command)
-                            #os.remove(SLURM_SCRIPT)
-                    print "Now sleeping.."
-                    time.sleep(num_homes)
-                time.sleep(60)
-            time.sleep(240)
-        time.sleep(480)
+                        SLURM_SCRIPT = "%d_%s_%s_%d_%s_%d_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], month, transform)
+                        CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
+                                                                                                         test_home, appliance,
+                                                                                                         transform, K, num_homes)
+                        lines = []
+                        lines.append("#!/bin/sh\n")
+                        lines.append('#SBATCH --time=0-05:0:00\n')
+                        lines.append('#SBATCH --mem=16\n')
+                        lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
+                        lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
+                        lines.append(CMD+'\n')
+
+                        with open(SLURM_SCRIPT, 'w') as f:
+                           f.writelines(lines)
+                        command = ['sbatch', SLURM_SCRIPT]
+                        Popen(command)
+                        #os.remove(SLURM_SCRIPT)
+                print "Now sleeping.."
+                time.sleep(num_homes)
+            time.sleep(120)
+        time.sleep(240)
 
 

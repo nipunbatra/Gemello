@@ -170,7 +170,12 @@ for random_seed in range(10):
 
         return co_ser.index.values.tolist()
 
-    for month_compute in range(1, 13):
+    if appliance=="hvac":
+        month_start, month_end = 5, 11
+    else:
+        month_start, month_end = 1, 13
+
+    for month_compute in range(month_start, month_end):
         out_pred[random_seed][month_compute] = 0
         out_count[random_seed][month_compute] = 0
 
@@ -256,14 +261,14 @@ for random_seed in range(10):
             pass
 
 pred_df = pd.DataFrame(out_pred).T.mean()
-for month in pred_df.index:
+for month_in_pred in pred_df.index:
     store_path = '../../../output/output/ineq_cross_subset/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
                                                                                           train_region,
                                                                             test_region,
                                                                             transform,
                                                                             appliance,
-                                                                            month,
+                                                                            month_in_pred,
                                                                             test_home, K)
-    pickle.dump(pred_df.ix[month], open(store_path,'w'))
+    pickle.dump(pred_df.ix[month_in_pred], open(store_path,'w'))
 
 
