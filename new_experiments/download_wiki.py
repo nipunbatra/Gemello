@@ -20,9 +20,9 @@ conn = db.connect('host=' + database_host +
                           ' password=' + database_password)
 metadata_df = pd.read_csv("dataport-metadata.csv", index_col=0)
 list_of_buildings =  metadata_df.index[19:]
-total = len(list_of_buildings)-700
+total = len(list_of_buildings)
 count = -1
-for building_id in list_of_buildings[:80]:
+for building_id in list_of_buildings[:]:
 	count = count+1
 	print count,"/",total
 	sql_query = """SELECT* FROM university.electricity_egauge_15min WHERE dataid=%d""" %int(building_id)

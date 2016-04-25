@@ -2,6 +2,15 @@ import pandas as pd
 import glob
 import os
 
+HOURLY = False
+
+if HOURLY:
+    TIME_FIELD = "localhour"
+else:
+    TIME_FIELD = "local_15min"
+
+FILES_PATH = "/if6/nb2cz/wiki_15min/"
+STORE_PATH = "/if6/nb2cz/wiki-15min.h5"
 
 # Dropping days when DST changed
 
@@ -22,24 +31,24 @@ dst_times.append(('2015-11-01 01:00:00', '2015-11-01 02:00:00'))
 feed_ignore = ['gen', 'grid']
 
 #list_of_buildings = glob.glob("/Users/nipunbatra/w/*.csv")
-files = os.listdir("/Users/nipunbatra/w/")
-file_size= {x:os.path.getsize("/Users/nipunbatra/w/"+x) for x in  files if '.csv' in x}
+files = os.listdir(FILES_PATH)
+file_size= {x:os.path.getsize(FILES_PATH+x) for x in  files if '.csv' in x}
 file_series = pd.Series(file_size)
 file_series = file_series.drop("dataport-metadata.csv")
 fs = file_series[file_series>1000]
 
-store = pd.HDFStore("/Users/nipunbatra/wiki-all.h5", mode='a', complevel=9, complib='blosc')
+store = pd.HDFStore(STORE_PATH, mode='a', complevel=9, complib='blosc')
 count = 0
 for building_number_csv in fs.index:
     print "Done %d of %d" %(count, len(fs))
     try:
-        building_path = os.path.join("/Users/nipunbatra/w/", building_number_csv)
+        building_path = os.path.join(FILES_PATH, building_number_csv)
         building_number = int(building_number_csv[:-4])
         if building_number in store.keys():
             continue
         df = pd.read_csv(building_path)
-        df.index = pd.to_datetime(df["localhour"])
-        df = df.drop("localhour", 1)
+        df.index = pd.to_datetime(df[TIME_FIELD])
+        df = df.drop(TIME_FIELD, 1)
         # Dropping feeds
         for feed in feed_ignore:
             if feed in df.columns:
