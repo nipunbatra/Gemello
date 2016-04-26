@@ -11,8 +11,8 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 train_df = out_overall[train_region]
 test_df = out_overall[test_region]
-#APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
-APPLIANCES=['hvac','fridge','wm']
+APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
+#APPLIANCES=['hvac','fridge','wm']
 #APPLIANCES=["hvac"]
 
 from regional_average_contribution import  contribution as contri
