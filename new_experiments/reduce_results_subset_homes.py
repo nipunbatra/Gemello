@@ -121,4 +121,11 @@ for appliance in APPLIANCES:
         acc['Regional average'][appliance][month] = pd.Series(acc['Regional average'][appliance][month]).mean()
 
 
+regional_average_results = {}
+for appliance in APPLIANCES:
+    if appliance=="hvac":
+        month_start, month_end = 5, 10
+    else:
+        month_start, month_end=1,12
+    regional_average_results[appliance] = pd.Series(acc['Regional average'][appliance]).ix[month_start:month_end].mean()
 
