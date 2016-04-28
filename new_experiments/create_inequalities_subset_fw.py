@@ -291,7 +291,7 @@ for random_seed in range(10):
 
 pred_df = pd.DataFrame(out_pred).T.mean()
 for month_in_pred in pred_df.index:
-    store_path = '../../../output/output/ineq_cross_subset/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
+    store_path = '../../../output/output/ineq_cross_subset_fw/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
                                                                                           train_region,
                                                                             test_region,
                                                                             transform,

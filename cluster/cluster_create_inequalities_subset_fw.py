@@ -89,3 +89,5 @@ for train_region in ["Austin","SanDiego"]:
         time.sleep(240)
 
 
+#nohup python cluster_create_inequalities_subset_fw.py &
+
