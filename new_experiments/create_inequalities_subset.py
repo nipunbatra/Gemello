@@ -175,7 +175,8 @@ for random_seed in range(10):
     else:
         month_start, month_end = 1, 13
 
-    for month_compute in range(month_start, month_end):
+    #for month_compute in range(month_start, month_end):
+    for month_compute in range(10, 11):
         out_pred[random_seed][month_compute] = 0
         out_count[random_seed][month_compute] = 0
 
@@ -242,6 +243,7 @@ for random_seed in range(10):
             co_ser = pd.Series(co)
             co_ser.sort()
             ranks = co_ser.index.values.tolist()
+            print train_df.ix[ranks[:K]].index
             if "percentage" in transform:
                 mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
 
@@ -252,7 +254,7 @@ for random_seed in range(10):
             out_pred[random_seed][month_compute]+= pred
             out_count[random_seed][month_compute]+= 1
             gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
-
+            print pred, gt
 
 
 
@@ -261,6 +263,7 @@ for random_seed in range(10):
             pass
 
 pred_df = pd.DataFrame(out_pred).T.mean()
+gt_df = test_df.ix[test_home][['%s_%d' %(appliance, month_compute) for month_compute in range(month_start, month_end)]]
 for month_in_pred in pred_df.index:
     store_path = '../../../output/output/ineq_cross_subset/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
                                                                                           train_region,
