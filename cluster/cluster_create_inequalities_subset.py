@@ -35,10 +35,8 @@ for train_region in ["Austin","SanDiego","Boulder"]:
         train_df = out_overall[train_region]
         test_df = out_overall[test_region]
 
-        if train_region=="Austin" and test_region=="SanDiego":
-            NUM_HOMES_MIN=55
-        else:
-            NUM_HOMES_MIN=5
+
+        NUM_HOMES_MIN=5
 
         for num_homes in range(NUM_HOMES_MIN, NUM_HOMES_MAX, 5):
 
