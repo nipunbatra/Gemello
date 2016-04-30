@@ -14,11 +14,12 @@ num_homes = int(num_homes)
 K = int(K)
 out_pred = {}
 out_count = {}
+rs = 100
 for random_seed in range(100):
     print random_seed
     out_pred[random_seed] = {}
     out_count[random_seed] = {}
-    np.random.seed(random_seed)
+    np.random.seed(rs+random_seed)
     train_df = out_overall[train_region].sample(n=num_homes)
     test_df = out_overall[test_region]
 
@@ -199,7 +200,7 @@ for random_seed in range(100):
         from collections import defaultdict
         import pandas as pd
         co = defaultdict(int)
-        store_path = '../../../output/output/ineq_cross_subset/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+        store_path = '../../../output/output/ineq_cross_subset_%d/%s_%s_%s_%s_%d_%d_%d.pkl' %(rs, train_region,
                                                                             test_region,
                                                                             transform,
                                                                             appliance,
@@ -265,7 +266,7 @@ for random_seed in range(100):
 pred_df = pd.DataFrame(out_pred).T.mean()
 gt_df = test_df.ix[test_home][['%s_%d' %(appliance, month_compute) for month_compute in range(month_start, month_end)]]
 for month_in_pred in pred_df.index:
-    store_path = '../../../output/output/ineq_cross_subset/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
+    store_path = '../../../output/output/ineq_cross_subset_%d/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(rs, num_homes,
                                                                                           train_region,
                                                                             test_region,
                                                                             transform,

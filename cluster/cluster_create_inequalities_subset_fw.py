@@ -90,4 +90,6 @@ for train_region in ["Austin","SanDiego"]:
 
 
 #nohup python cluster_create_inequalities_subset_fw.py &
+#nohup python cluster_create_inequalities_subset.py &
+
 
