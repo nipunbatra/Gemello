@@ -177,7 +177,7 @@ for random_seed in range(100):
         month_start, month_end = 1, 13
 
     #for month_compute in range(month_start, month_end):
-    for month_compute in range(10, 11):
+    for month_compute in range(month_start, month_end):
         out_pred[random_seed][month_compute] = 0
         out_count[random_seed][month_compute] = 0
 
