@@ -18,13 +18,13 @@ print "b"
 K = 3
 for train_region in ["Austin","SanDiego"]:
     if train_region=="Austin":
-        NUM_HOMES_MAX = 50
+        NUM_HOMES_MAX = 45
     elif train_region=="SanDiego":
         NUM_HOMES_MAX = len(out_overall['SanDiego'])
     else:
         NUM_HOMES_MAX = len(out_overall['Boulder'])
 
-    for test_region in ["SanDiego","Austin"]:
+    for test_region in ["SanDiego"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","None-percentage","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']
@@ -51,7 +51,8 @@ for train_region in ["Austin","SanDiego"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    for appliance in ["mw"]:
                         if appliance=="hvac":
                             month_min, month_max = 5, 11
                         else:
