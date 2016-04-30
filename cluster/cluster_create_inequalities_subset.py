@@ -16,7 +16,7 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 print "b"
 K = 3
-for train_region in ["Austin","SanDiego","Boulder"]:
+for train_region in ["Austin","SanDiego"]:
     if train_region=="Austin":
         NUM_HOMES_MAX = 60
     elif train_region=="SanDiego":
@@ -24,7 +24,7 @@ for train_region in ["Austin","SanDiego","Boulder"]:
     else:
         NUM_HOMES_MAX = len(out_overall['Boulder'])
 
-    for test_region in ["SanDiego","Boulder","Austin"]:
+    for test_region in ["SanDiego","Austin"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']
