@@ -135,7 +135,7 @@ e = {}
 best_transform = {}
 num_homes_data = {}
 #for appliance in APPLIANCES:
-for appliance in ["wm"]:
+for appliance in ["mw"]:
 
     w[appliance] = {}
     e[appliance] = {}
@@ -157,11 +157,3 @@ for appliance in ["wm"]:
         best_transform[appliance]=t
         num_homes_data[appliance]=pd.DataFrame(w[appliance][t]).mean()
 
-
-
-for num_homes in range(5, 45, 5):
-    w[num_homes] = {}
-    transform="DD"
-    appliance="oven"
-    for month in range(1, 13):
-        w[num_homes][month] = pd.Series(out[num_homes][transform][appliance][month]).dropna().mean()
