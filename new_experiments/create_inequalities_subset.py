@@ -14,7 +14,7 @@ num_homes = int(num_homes)
 K = int(K)
 out_pred = {}
 out_count = {}
-rs = 10
+rs = 20
 for random_seed in range(10):
     print random_seed
     out_pred[random_seed] = {}
