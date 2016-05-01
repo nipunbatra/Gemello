@@ -4,7 +4,6 @@ from degree_days import  dd
 from regional_average_contribution import  contribution
 import pandas as pd
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
-out_fw = pickle.load(open('../data/input/feature_weight.pkl','rb'))
 
 import sys
 import os
@@ -15,39 +14,12 @@ num_homes = int(num_homes)
 K = int(K)
 out_pred = {}
 out_count = {}
-appliance_fw = out_fw[train_region][appliance]
-
-
-
-def find_distance_train_test_dot(df_train, home_1, home_2, df_test, home_test, featureset_train, featureset_max):
-    f_test = df_test.ix[home_test][featureset_max].dropna()
-    com_f =  np.intersect1d(f_test.index, featureset_train)
-    if len(com_f):
-        is_common = True
-    else:
-        is_common = False
-        return is_common, None
-
-    if len(com_f):
-        fw = pd.Series({f:appliance_fw[f] for f in com_f})
-        a = np.linalg.norm((df_train.ix[home_1][com_f]- df_test.ix[home_test][com_f]).dot(fw))
-        b = np.linalg.norm((df_train.ix[home_2][com_f]- df_test.ix[home_test][com_f]).dot(fw))
-        if a<=b:
-            order = [home_1, home_2]
-        else:
-            order = [home_2, home_1]
-        return is_common, {'order':order,
-                    'num_f':len(com_f),
-                    'dist_a':a,
-                    'dist_b':b,
-                          'f':com_f}
-
-
-for random_seed in range(10):
+rs = 0
+for random_seed in range(100):
     print random_seed
     out_pred[random_seed] = {}
     out_count[random_seed] = {}
-    np.random.seed(random_seed)
+    np.random.seed(rs+random_seed)
     train_df = out_overall[train_region].sample(n=num_homes)
     test_df = out_overall[test_region]
 
@@ -204,6 +176,7 @@ for random_seed in range(10):
     else:
         month_start, month_end = 1, 13
 
+    #for month_compute in range(month_start, month_end):
     for month_compute in range(month_start, month_end):
         out_pred[random_seed][month_compute] = 0
         out_count[random_seed][month_compute] = 0
@@ -227,7 +200,7 @@ for random_seed in range(10):
         from collections import defaultdict
         import pandas as pd
         co = defaultdict(int)
-        store_path = '../../../output/output/ineq_cross_subset_fw/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+        store_path = '../../../output/output/ineq_cross_subset_median_%d/%s_%s_%s_%s_%d_%d_%d.pkl' %(rs, train_region,
                                                                             test_region,
                                                                             transform,
                                                                             appliance,
@@ -248,7 +221,7 @@ for random_seed in range(10):
 
                 if len(com_features):
                     # Consider a,b
-                    is_common, d = find_distance_train_test_dot(train_normalised_df, a, b, test_normalised_df, test_home, com_features, f_all)
+                    is_common, d = find_distance_train_test(train_normalised_df, a, b, test_normalised_df, test_home, com_features, f_all)
                     if is_common:
 
                         # Common between train and test. Can add this pair to inequalities
@@ -271,18 +244,18 @@ for random_seed in range(10):
             co_ser = pd.Series(co)
             co_ser.sort()
             ranks = co_ser.index.values.tolist()
+            print train_df.ix[ranks[:K]].index
             if "percentage" in transform:
-                mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).mean()
+                mean_proportion = (train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)]/ train_df.ix[ranks[:K]]['aggregate_%d' %(month_compute)]).median()
 
                 pred = test_df.ix[test_home]['aggregate_%d' %month_compute]*mean_proportion
 
             else:
-                pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().mean()
+                pred = train_df.ix[ranks[:K]]['%s_%d' %(appliance, month_compute)].dropna().median()
             out_pred[random_seed][month_compute]+= pred
             out_count[random_seed][month_compute]+= 1
             gt = test_df.ix[test_home]['%s_%d' %(appliance, month_compute)]
             print pred, gt
-
 
 
 
@@ -291,8 +264,10 @@ for random_seed in range(10):
             pass
 
 pred_df = pd.DataFrame(out_pred).T.mean()
+gt_df = test_df.ix[test_home][['%s_%d' %(appliance, month_compute) for month_compute in range(month_start, month_end)]]
+gt_df.index = range(month_start, month_end)
 for month_in_pred in pred_df.index:
-    store_path = '../../../output/output/ineq_cross_subset_fw/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
+    store_path = '../../../output/output/ineq_cross_subset_median_%d/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(rs, num_homes,
                                                                                           train_region,
                                                                             test_region,
                                                                             transform,

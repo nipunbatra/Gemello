@@ -16,7 +16,7 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 print "b"
 K = 3
-for train_region in ["SanDiego"]:
+for train_region in ["SanDiego","Austin"]:
     if train_region=="Austin":
         NUM_HOMES_MAX = 45
     elif train_region=="SanDiego":
@@ -51,8 +51,8 @@ for train_region in ["SanDiego"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
-                    for appliance in ["mw"]:
+                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["mw"]:
                         if appliance=="hvac":
                             month_min, month_max = 5, 11
                         else:
@@ -68,7 +68,7 @@ for train_region in ["SanDiego"]:
                         EFILE = "%s/%d_%s_%s_%d_%s_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance,  transform )
 
                         SLURM_SCRIPT = "%d_%s_%s_%d_%s_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], transform)
-                        CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
+                        CMD = 'python ../new_experiments/create_inequalities_subset_median.py %s %s %d %s %s %d %d' % (train_region, test_region,
                                                                                                          test_home, appliance,
                                                                                                          transform, K, num_homes)
                         lines = []
