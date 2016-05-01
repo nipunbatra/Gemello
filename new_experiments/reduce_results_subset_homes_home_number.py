@@ -42,7 +42,7 @@ for num_homes in range(5, 50, 5):
                 out[num_homes][transform][appliance][month] = {}
                 for test_home in test_df.index:
                     try:
-                        store_path = '../../../output/output/ineq_cross_subset_100/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(
+                        store_path = '../../../output/output/ineq_cross_subset_10/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(
                                                                                                     num_homes,
                                                                                                     train_region,
                                                                                                    test_region,
