@@ -16,7 +16,7 @@ out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 print "b"
 K = 3
-for train_region in ["Austin","SanDiego"]:
+for train_region in ["SanDiego"]:
     if train_region=="Austin":
         NUM_HOMES_MAX = 45
     elif train_region=="SanDiego":
@@ -51,8 +51,8 @@ for train_region in ["Austin","SanDiego"]:
                     count+= 1
 
                     #for appliance in ["hvac","fridge","dr","wm"]:
-                    #for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
-                    for appliance in ["mw"]:
+                    for appliance in ["dw",'hvac','fridge','wm','mw','ec','wh','oven']:
+                    #for appliance in ["mw"]:
                         if appliance=="hvac":
                             month_min, month_max = 5, 11
                         else:

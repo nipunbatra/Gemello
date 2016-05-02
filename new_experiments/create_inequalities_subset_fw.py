@@ -16,7 +16,8 @@ K = int(K)
 out_pred = {}
 out_count = {}
 appliance_fw = out_fw[train_region][appliance]
-
+appliance_fw = appliance_fw.sort_values(ascending=False)
+good_features = appliance_fw[appliance_fw>appliance_fw.head(1).values[0]/2].index.values
 
 
 def find_distance_train_test_dot(df_train, home_1, home_2, df_test, home_test, featureset_train, featureset_max):
@@ -29,6 +30,20 @@ def find_distance_train_test_dot(df_train, home_1, home_2, df_test, home_test, f
         return is_common, None
 
     if len(com_f):
+        # Find if "good" features exist
+        intersection = np.intersect1d(com_f, good_features)
+        if len(intersection):
+            com_f = intersection
+        else:
+            # Need to choose best few features from the list of features. For now,
+            #  choosing the best feature ONLY
+            for feat in good_features:
+                if feat in com_f:
+                    break
+            com_f = np.array([feat])
+
+
+        print com_f
         fw = pd.Series({f:appliance_fw[f] for f in com_f})
         a = np.linalg.norm((df_train.ix[home_1][com_f]- df_test.ix[home_test][com_f]).dot(fw))
         b = np.linalg.norm((df_train.ix[home_2][com_f]- df_test.ix[home_test][com_f]).dot(fw))
@@ -291,6 +306,8 @@ for random_seed in range(10):
             pass
 
 pred_df = pd.DataFrame(out_pred).T.mean()
+gt_df = test_df.ix[test_home][['%s_%d' %(appliance, month_compute) for month_compute in range(month_start, month_end)]]
+gt_df.index = range(month_start, month_end)
 for month_in_pred in pred_df.index:
     store_path = '../../../output/output/ineq_cross_subset_fw/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(num_homes,
                                                                                           train_region,
