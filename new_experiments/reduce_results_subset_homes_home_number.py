@@ -157,9 +157,3 @@ for appliance in APPLIANCES:
 
 
 
-for num_homes in range(5, 45, 5):
-    w[num_homes] = {}
-    transform="DD"
-    appliance="oven"
-    for month in range(1, 13):
-        w[num_homes][month] = pd.Series(out[num_homes][transform][appliance][month]).dropna().mean()

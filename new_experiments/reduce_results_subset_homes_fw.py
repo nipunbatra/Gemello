@@ -34,14 +34,15 @@ for num_homes in range(5, 50, 5):
         out[num_homes][transform] = {}
         #for appliance in ["hvac","fridge","dr","wm"]:
         for appliance in APPLIANCES:
+        #for appliance in ["mw"]:
             count_absent[transform][appliance] = 0
             out[num_homes][transform][appliance] = {}
             for month in range(1,13):
                 print appliance, month, transform, num_homes
-                out[num_homes][transform][appliance][month] = []
+                out[num_homes][transform][appliance][month] = {}
                 for test_home in test_df.index:
                     try:
-                        store_path = '../../../output/output/ineq_cross_subset_fw/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(
+                        store_path = '../../../output/output/ineq_cross_subset_fw_new/%d_%s_%s_%s_%s_%d_%d_%d.pkl' %(
                                                                                                     num_homes,
                                                                                                     train_region,
                                                                                                    test_region,
@@ -58,7 +59,7 @@ for num_homes in range(5, 50, 5):
                         if percentage_error>100:
                             percentage_error=100
                         percentage_accuracy = 100-percentage_error
-                        out[num_homes][transform][appliance][month].append(percentage_accuracy)
+                        out[num_homes][transform][appliance][month][test_home] = percentage_accuracy
                     except Exception, e:
 
                         count_absent[transform][appliance]+= 1
@@ -67,7 +68,6 @@ for num_homes in range(5, 50, 5):
 acc = {}
 acc['Regional average']={}
 
-"""
 best_transform = {}
 best_accuracy = {}
 for num_homes in range(5, 50, 5):
@@ -97,32 +97,7 @@ for num_homes in range(5, 50, 5):
                 best_transform[num_homes][appliance] = transform
                 best_accuracy[num_homes][appliance] = best
 
-"""
 
-w = {}
-e = {}
-best_transform = {}
-num_homes_data = {}
-for appliance in APPLIANCES:
-
-    w[appliance] = {}
-    e[appliance] = {}
-    for transform in TRANSFORMATIONS:
-        w[appliance][transform]={}
-        for num_homes in range(5, 45, 5):
-            w[appliance][transform][num_homes] = {}
-            if appliance=="hvac":
-                month_start, month_end = 5, 11
-            else:
-                month_start, month_end=1,13
-            for month in range(month_start, month_end):
-                    w[appliance][transform][num_homes][month]=pd.Series(out[num_homes][transform][appliance][month]).dropna().mean()
-
-        e[appliance][transform] =  pd.DataFrame(w[appliance][transform]).mean().mean()
-    t = pd.DataFrame(e)[appliance].argmax()
-    if t is not np.NaN:
-        best_transform[appliance]=t
-        num_homes_data[appliance]=pd.DataFrame(w[appliance][t]).mean()
 
 for appliance in APPLIANCES:
     acc['Regional average'][appliance] = {}
@@ -154,4 +129,31 @@ for appliance in APPLIANCES:
     else:
         month_start, month_end=1,12
     regional_average_results[appliance] = pd.Series(acc['Regional average'][appliance]).ix[month_start:month_end].mean()
+
+w = {}
+e = {}
+best_transform = {}
+num_homes_data = {}
+for appliance in APPLIANCES:
+
+    w[appliance] = {}
+    e[appliance] = {}
+    for transform in TRANSFORMATIONS:
+        w[appliance][transform]={}
+        for num_homes in range(5, 45, 5):
+            w[appliance][transform][num_homes] = {}
+            if appliance=="hvac":
+                month_start, month_end = 5, 11
+            else:
+                month_start, month_end=1,13
+            for month in range(month_start, month_end):
+                    w[appliance][transform][num_homes][month]=pd.Series(out[num_homes][transform][appliance][month]).dropna().mean()
+
+        e[appliance][transform] =  pd.DataFrame(w[appliance][transform]).mean().mean()
+    t = pd.DataFrame(e)[appliance].argmax()
+    if t is not np.NaN:
+        best_transform[appliance]=t
+        num_homes_data[appliance]=pd.DataFrame(w[appliance][t]).mean()
+
+
 
