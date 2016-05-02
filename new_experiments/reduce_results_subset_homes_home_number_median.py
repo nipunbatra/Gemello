@@ -17,7 +17,7 @@ APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
 
 from regional_average_contribution import  contribution as contri
 
-k=3
+k=5
 if train_region!=test_region:
     TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                       "median-aggregate",'regional','regional-percentage']
