@@ -242,7 +242,7 @@ for random_seed in range(10):
         from collections import defaultdict
         import pandas as pd
         co = defaultdict(int)
-        store_path = '../../../output/output/ineq_cross_subset_fw/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
+        store_path = '../../../output/output/ineq_cross_subset_fw_new/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                             test_region,
                                                                             transform,
                                                                             appliance,
