@@ -15,7 +15,7 @@ print "a"
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 print "b"
-K = 3
+K = 5
 for train_region in ["SanDiego","Austin"]:
     if train_region=="Austin":
         NUM_HOMES_MAX = 45
