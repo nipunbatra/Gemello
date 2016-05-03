@@ -59,7 +59,7 @@ for num_homes in range(5, 50, 5):
                         if percentage_error>100:
                             percentage_error=100
                         percentage_accuracy = 100-percentage_error
-                        out[num_homes][transform][appliance][month][test_home] = percentage_accuracy
+                        out[num_homes][transform][appliance][month][test_home] = error
                     except Exception, e:
 
                         count_absent[transform][appliance]+= 1
