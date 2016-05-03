@@ -15,11 +15,12 @@ K = int(K)
 out_pred = {}
 out_count = {}
 rs = 0
+np.random.seed(rs)
 for random_seed in range(100):
     print random_seed
     out_pred[random_seed] = {}
     out_count[random_seed] = {}
-    np.random.seed(rs+random_seed)
+
     train_df = out_overall[train_region].sample(n=num_homes)
     test_df = out_overall[test_region]
 
@@ -209,7 +210,7 @@ for random_seed in range(100):
         print store_path
         if os.path.exists(store_path):
             print "already exists"
-            continue
+            #continue
 
 
         if not np.isnan(test_normalised_df.ix[test_home]['%s_%d' %(appliance, month_compute)]):

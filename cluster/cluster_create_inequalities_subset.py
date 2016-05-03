@@ -15,7 +15,7 @@ print "a"
 out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 print "b"
-K = 5
+K = 3
 for train_region in ["SanDiego","Austin"]:
     if train_region=="Austin":
         NUM_HOMES_MAX = 45
@@ -24,7 +24,7 @@ for train_region in ["SanDiego","Austin"]:
     else:
         NUM_HOMES_MAX = len(out_overall['Boulder'])
 
-    for test_region in ["SanDiego"]:
+    for test_region in ["SanDiego","Austin"]:
         if train_region!=test_region:
             TRANSFORMATIONS = ["None","DD","DD-percentage","median-aggregate-percentage",
                               "median-aggregate",'regional','regional-percentage']
@@ -68,7 +68,7 @@ for train_region in ["SanDiego","Austin"]:
                         EFILE = "%s/%d_%s_%s_%d_%s_%s.err" % (SLURM_OUT, num_homes, train_region[0], test_region[0], test_home, appliance,  transform )
 
                         SLURM_SCRIPT = "%d_%s_%s_%d_%s_%s.pbs" % (num_homes, train_region[0], test_region[0], test_home, appliance[:2], transform)
-                        CMD = 'python ../new_experiments/create_inequalities_subset_median.py %s %s %d %s %s %d %d' % (train_region, test_region,
+                        CMD = 'python ../new_experiments/create_inequalities_subset.py %s %s %d %s %s %d %d' % (train_region, test_region,
                                                                                                          test_home, appliance,
                                                                                                          transform, K, num_homes)
                         lines = []
@@ -85,8 +85,8 @@ for train_region in ["SanDiego","Austin"]:
                         Popen(command)
                         #os.remove(SLURM_SCRIPT)
                 print "Now sleeping.."
-                time.sleep(num_homes)
-            time.sleep(120)
-        time.sleep(240)
+                time.sleep(num_homes/2)
+            time.sleep(80)
+        time.sleep(120)
 
 
