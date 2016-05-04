@@ -46,6 +46,7 @@ for feature in ["Static"]:
             pred_df = pd.read_csv(out_path+"%s_%s_%d.csv" %(appliance, feature, home), index_col=0).squeeze()
             gt_df = df.ix[home][["%s_%d" %(appliance,month) for month in range(month_start, month_end)]]
             gt_df.index = range(month_start, month_end)
+            pred_df.index = range(month_start, month_end)
             error = (gt_df-pred_df).abs()
             out[feature][appliance][home] = error
 
