@@ -39,7 +39,7 @@ for feature in ["Static"]:
         else:
             month_start, month_end = 1, 13
         for home in all_homes[appliance][:2]:
-            pred_df = pd.read_csv(out_path+"%s_%s_%d.csv" %(appliance, feature, home), index_col=0)
+            pred_df = pd.read_csv(out_path+"%s_%s_%d.csv" %(appliance, feature, home), index_col=0).squeeze()
             gt_df = df.ix[home][["%s_%d" %(appliance,month) for month in range(month_start, month_end)]]
             gt_df.index = range(month_start, month_end)
 """
