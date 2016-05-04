@@ -135,7 +135,8 @@ for appliance in APPLIANCES:
 w = {}
 e = {}
 best_transform = {}
-num_homes_data = {}
+num_homes_mean = {}
+num_homes_sem = {}
 for appliance in APPLIANCES:
 
     w[appliance] = {}
@@ -155,7 +156,8 @@ for appliance in APPLIANCES:
     t = pd.DataFrame(e)[appliance].argmin()
     if t is not np.NaN:
         best_transform[appliance]=t
-        num_homes_data[appliance]=pd.DataFrame(w[appliance][t]).mean()
+        num_homes_mean[appliance]=pd.DataFrame(w[appliance][t]).mean()
+        num_homes_sem[appliance] = pd.DataFrame(w[appliance][t]).sem()
 
 
 
