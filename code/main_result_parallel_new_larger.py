@@ -129,7 +129,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
         gt_test[month] = test_overall['%s_%d' %(appliance, month)]
 
 
-    json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open(os.path.expanduser("~/main-out-new-larger/%s_%s_%d.json" %(appliance,feature, home),"w") ))
+    json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open(os.path.expanduser("~/main-out-new-larger/%s_%s_%d.json" %(appliance,feature, home)),"w") )
 
     pred_df = pd.DataFrame(pred_test)
     pred_df.index = [home]
