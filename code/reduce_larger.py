@@ -32,21 +32,26 @@ F_MAX = 6
 import json
 APPLIANCES=["hvac"]
 out_path = os.path.expanduser("~/main-out-new-larger/")
+out = {}
 for feature in ["Static"]:
+    out[feature] = {}
     for appliance in APPLIANCES:
+        out[feature][appliance] = {}
         if appliance =="hvac":
             month_start, month_end = 5, 11
         else:
             month_start, month_end = 1, 13
-        for home in all_homes[appliance][:2]:
+        for home in all_homes[appliance][:3]:
+
             pred_df = pd.read_csv(out_path+"%s_%s_%d.csv" %(appliance, feature, home), index_col=0).squeeze()
             gt_df = df.ix[home][["%s_%d" %(appliance,month) for month in range(month_start, month_end)]]
             gt_df.index = range(month_start, month_end)
-"""
+            error = (gt_df-pred_df).abs()
+            out[feature][appliance][home] = error
 
-    #gt_df = pd.DataFrame(gt_test)
-    #print pred_df, gt_df
-    #error = (gt_df-pred_df).abs().div(gt_df).mul(100)
+
+
+    #.div(gt_df).mul(100)
     #print error
     #accuracy_test = 100-error
     #accuracy_test[accuracy_test<0]=0
