@@ -30,10 +30,11 @@ NUM_NEIGHBOUR_MAX = 6
 F_MAX = 6
 
 import json
-APPLIANCES=["hvac"]
+APPLIANCES= ["hvac","fridge","wm","dw"]
+
 out_path = os.path.expanduser("~/main-out-new-larger/")
 out = {}
-for feature in ["Static"]:
+for feature in ["Static","Monthly","Monthly+Static"]:
     out[feature] = {}
     for appliance in APPLIANCES:
         out[feature][appliance] = {}
@@ -41,7 +42,7 @@ for feature in ["Static"]:
             month_start, month_end = 5, 11
         else:
             month_start, month_end = 1, 13
-        for home in all_homes[appliance][:3]:
+        for home in all_homes[appliance][:]:
 
             pred_df = pd.read_csv(out_path+"%s_%s_%d.csv" %(appliance, feature, home), index_col=0).squeeze()
             gt_df = df.ix[home][["%s_%d" %(appliance,month) for month in range(month_start, month_end)]]
