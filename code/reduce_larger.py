@@ -49,7 +49,7 @@ for feature in ["Static"]:
             error = (gt_df-pred_df).abs()
             out[feature][appliance][home] = error
 
-
+"""
 
     #.div(gt_df).mul(100)
     #print error
