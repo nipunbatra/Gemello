@@ -48,7 +48,7 @@ for feature in ["Static"]:
             gt_df.index = range(month_start, month_end)
             pred_df.index = range(month_start, month_end)
             error = (gt_df-pred_df).abs()
-            out[feature][appliance][home] = error
+            out[feature][appliance][home] = error.mean()
 
 """
 
