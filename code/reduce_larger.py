@@ -30,7 +30,7 @@ NUM_NEIGHBOUR_MAX = 6
 F_MAX = 6
 
 import json
-APPLIANCES= ["hvac","fridge","wm","dw"]
+APPLIANCES= ["hvac","fridge","wm","dw","ec","mw","oven","wh"]
 
 out_path = os.path.expanduser("~/main-out-new-larger/")
 out = {}
