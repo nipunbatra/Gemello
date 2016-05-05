@@ -52,4 +52,5 @@ for feature in features:
             with open(SLURM_SCRIPT, 'w') as f:
                f.writelines(lines)
             command = ['sbatch', SLURM_SCRIPT]
-            print Popen(command)
+            Popen(command)
+            print appliance, home, feature
