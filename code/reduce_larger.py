@@ -48,8 +48,12 @@ for feature in ["Static","Monthly","Monthly+Static"]:
             gt_df = df.ix[home][["%s_%d" %(appliance,month) for month in range(month_start, month_end)]]
             gt_df.index = range(month_start, month_end)
             pred_df.index = range(month_start, month_end)
-            error = (gt_df-pred_df).abs()/gt_df
-            out[feature][appliance][home] = error.mean()
+            error = (gt_df-pred_df).abs()*100/gt_df
+            if error>100:
+                p = 0
+            else:
+                p = 100-error
+            out[feature][appliance][home] = p
 
 """
 
