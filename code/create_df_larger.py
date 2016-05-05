@@ -4,12 +4,36 @@ import numpy as np
 import pandas as pd
 import  pickle
 APPLIANCES=["dw",'hvac','fridge','wm','mw','ec','wh','oven']
+
+def scale_0_1(ser, minimum=None, maximum=None):
+    if minimum is not None:
+        pass
+    else:
+        minimum = ser.min()
+        maximum = ser.max()
+    return (ser-minimum).div(maximum-minimum)
+
+def normalise(df):
+    new_df = df.copy()
+    max_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].max().max()
+    min_aggregate = df[["aggregate_%d" % i for i in range(1, 13)]].min().min()
+    new_df[["aggregate_%d" % i for i in range(1, 13)]] = scale_0_1(df[["aggregate_%d" % i for i in range(1, 13)]], min_aggregate, max_aggregate)
+    for col in ['area','num_occupants','house_num_rooms','ratio_min_max',
+                'skew','kurtosis','variance','difference_ratio_min_max','p_25',
+               'p_50','p_75']:
+        new_df[col] = scale_0_1(df[col])
+    print new_df.area
+    return new_df
+
 def read_df_larger():
     out_overall = pickle.load(open('../data/input/all_regions.pkl','r'))
 
 
 
     df=out_overall['Austin'].query('full_agg_available>0 & md_available>0')
+
+    df = normalise(df)
+
     dfc = df.copy()
     features_individual = {'fraction':["fraction_%d" % i for i in range(1, 25)],
                            'area': 'area',
