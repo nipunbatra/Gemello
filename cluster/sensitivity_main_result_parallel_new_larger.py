@@ -1,4 +1,4 @@
-appliances = ["hvac","fridge","wm","dw"]
+appliances = ["hvac","fridge","wm","dw","ec","mw","oven","wh"]
 features = ["Static", "Monthly+Static", "Monthly"]
 
 import sys
