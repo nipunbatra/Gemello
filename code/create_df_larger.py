@@ -62,7 +62,7 @@ def read_df_larger():
     for appliance in APPLIANCES:
         all_homes[appliance] = df[['%s_%d' %(appliance, month) for month in range(1,13)]].dropna().index
 
-
+    all_homes['fridge']=np.setdiff1d(all_homes['fridge'], [59, 3893, 222, 5371])
     appliance_min=None
     national_average = None
 

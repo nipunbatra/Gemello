@@ -1,5 +1,6 @@
 appliances = ["hvac","fridge","wm","dw","ec","mw","oven","wh"]
 features = ["Static", "Monthly+Static", "Monthly"]
+appliances=['fridge']
 
 import sys
 CLUSTER=True
