@@ -85,7 +85,7 @@ monthly_plus_static_features = np.hstack([["aggregate_%d" %i for i in range(1,13
 
         "area",
         "num_rooms",
-        "mins_hvac",
+
         'skew','kurtosis','p_25','p_50','p_75',
         "total_occupants",
                ['ratio_min_max',

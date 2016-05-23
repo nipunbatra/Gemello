@@ -22,7 +22,6 @@ def normalise(df):
                 'skew','kurtosis','variance','difference_ratio_min_max','p_25',
                'p_50','p_75']:
         new_df[col] = scale_0_1(df[col])
-    print new_df.area
     return new_df
 
 def read_df_larger():

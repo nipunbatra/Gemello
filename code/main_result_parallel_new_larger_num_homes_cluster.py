@@ -40,7 +40,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from collections import OrderedDict
 
-def _find_accuracy(home, appliance, feature="Monthly"):
+def _find_accuracy(home, appliance, feature="Monthly", num_homes=5):
     np.random.seed(42)
     appliance_df = df.ix[all_homes[appliance]]
     if appliance=="hvac":
@@ -49,7 +49,28 @@ def _find_accuracy(home, appliance, feature="Monthly"):
         start, stop=1, 13
 
     test_homes = [home]
-    train_homes = appliance_df[~appliance_df.index.isin([home])].index
+    train_d = appliance_df[~appliance_df.index.isin([home])]
+    train_d_index = train_d[['%s_%d' %(appliance, i) for i in range(start, stop)]].dropna().index
+    train_d_feature = train_d.ix[train_d_index][feature_map[feature]].dropna()
+
+    from sklearn.cluster import KMeans
+    c = KMeans(n_clusters=num_homes)
+    c.fit(train_d_feature)
+    to_use = []
+    for i in range(num_homes):
+        d = c.transform(train_d_feature)[:, i]
+        ind = np.argsort(d)[::-1][:num_homes]
+        flag=False
+        start = 0
+        while flag is False:
+
+            if train_d_feature.index.values[ind[start]] not in to_use:
+                to_use.append(train_d_feature.index.values[ind[start]])
+                flag=True
+            else:
+                start = start+1
+
+    train_homes = np.array(to_use)
     all_home_appliance = deepcopy(all_homes)
     all_home_appliance[appliance] = train_homes
 
@@ -60,6 +81,8 @@ def _find_accuracy(home, appliance, feature="Monthly"):
     for cv_train, cv_test in l:
 
         cv_train_home=appliance_df.ix[train_homes[cv_train]]
+        cv_train_index = cv_train_home[['%s_%d' %(appliance, i) for i in range(start, stop)]].dropna().index
+        cv_train_home = cv_train_home.ix[cv_train_index]
         cv_test_home = appliance_df.ix[train_homes[cv_test]]
         test_home_name = cv_test_home.index.values[0]
         #print cv_test_home
@@ -86,6 +109,7 @@ def _find_accuracy(home, appliance, feature="Monthly"):
                 for month in range(start, stop):
                     clf = KNeighborsRegressor(n_neighbors=K)
                     clf.fit(cv_train_home[top_n_features], cv_train_home['%s_%d' %(appliance, month)])
+                    #print clf.predict(cv_test_home[top_n_features]), month
                     out[test_home_name][K][top_n].append(clf.predict(cv_test_home[top_n_features]))
 
         # Now, finding the (K, top_n) combination that gave us best accuracy on CV test homes
@@ -126,13 +150,11 @@ def _find_accuracy(home, appliance, feature="Monthly"):
         clf = KNeighborsRegressor(n_neighbors=K_best)
         clf.fit(train_overall[F_best], train_overall['%s_%d' %(appliance, month)])
         pred_test[month] = clf.predict(test_overall[F_best])
-        neighbours = train_overall.index[clf.kneighbors(test_overall[F_best])[1]]
-        print month, neighbours
         gt_test[month] = test_overall['%s_%d' %(appliance, month)]
 
 
-    json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open(os.path.expanduser("~/main-out-new-larger/%s_%s_%d.json" %(appliance,feature, home)),"w") )
-    print F_best, K_best, accur_max
+    json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open(os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.json" %(num_homes, appliance,feature, home)),"w") )
+
     pred_df = pd.DataFrame(pred_test)
     pred_df.index = [home]
     #gt_df = pd.DataFrame(gt_test)
@@ -148,9 +170,10 @@ def _find_accuracy(home, appliance, feature="Monthly"):
 
 
 import sys
-appliance, feature, home = sys.argv[1], sys.argv[2], sys.argv[3]
+appliance, feature, home, num_homes = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 home = int(home)
+num_homes = int(num_homes)
 
-out_df = _find_accuracy(home, appliance, feature)
-out_df.to_csv(os.path.expanduser("~/main-out-new-larger/%s_%s_%d.csv" %(appliance, feature, home)))
+out_df = _find_accuracy(home, appliance, feature, num_homes)
+out_df.to_csv(os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home)))
 #_save_csv(out_df, "../main-out", appliance, feature)
