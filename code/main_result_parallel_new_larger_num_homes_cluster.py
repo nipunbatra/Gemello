@@ -61,14 +61,14 @@ def _find_accuracy(home, appliance, feature="Monthly", num_homes=5):
         d = c.transform(train_d_feature)[:, i]
         ind = np.argsort(d)[::-1][:num_homes]
         flag=False
-        start = 0
+        start_index = 0
         while flag is False:
 
-            if train_d_feature.index.values[ind[start]] not in to_use:
-                to_use.append(train_d_feature.index.values[ind[start]])
+            if train_d_feature.index.values[ind[start_index]] not in to_use:
+                to_use.append(train_d_feature.index.values[ind[start_index]])
                 flag=True
             else:
-                start = start+1
+                start_index = start_index+1
 
     train_homes = np.array(to_use)
     all_home_appliance = deepcopy(all_homes)
