@@ -51,7 +51,7 @@ for num_homes in range(6, 50, 5):
                 try:
                     store_path = os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home))
                     store_path_mean = os.path.expanduser("~/main-out-new-larger-num-homes-mean/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home))
-                    pred_mean = pd.DataFrame({home:pd.read_csv(store_path_mean,index_col=0,squeeze=True).squeeze()}).T
+                    pred_mean = pd.read_csv(store_path_mean,index_col=0,squeeze=True).squeeze()
                     pred = pd.read_csv(store_path, index_col=0).squeeze()
                     gt = appliance_df.ix[home][['%s_%d' %(appliance, month) for month in range(start, stop)]].squeeze()
                     gt.index = pred.index
