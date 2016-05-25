@@ -1,7 +1,7 @@
 appliances = ["hvac"]
 features = ["Static","Monthly","Monthly+Static"]
 features=["Monthly","Monthly+Static","Static"]
-appliances=["hvac","fridge"]
+appliances=["hvac","fridge","wm"]
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 
@@ -57,6 +57,7 @@ for num_homes in range(6, 50, 5):
 
                     percentage_accuracy = 100-percentage_error
                     #print error.mean()
-                    out[num_homes][feature][appliance][home] = error.mean()
+                    #out[num_homes][feature][appliance][home] = error.mean()
+                    out[num_homes][feature][appliance][home] = percentage_error.mean()
                 except Exception, e:
                     pass
