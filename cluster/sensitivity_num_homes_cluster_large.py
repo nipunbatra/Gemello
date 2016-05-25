@@ -40,7 +40,7 @@ for appliance in appliances:
                 OFILE = "%s/A_%sN_%dH_%d_F%s.out" % (SLURM_OUT, appliance, num_homes, home, feature)
                 EFILE = "%s/A_%sN_%dH_%d_F%s.err" % (SLURM_OUT, appliance, num_homes, home, feature)
                 SLURM_SCRIPT = "A_%sN_%dH_%d_F%s.pbs" % (appliance, num_homes, home, feature)
-                CMD = 'python ../code/main_result_parallel_new_larger_num_homes_cluster.py %s %s %d %d' % (appliance,feature, home, num_homes)
+                CMD = 'python ../code/main_result_parallel_new_larger_num_homes_cluster_median.py %s %s %d %d' % (appliance,feature, home, num_homes)
                 lines = []
                 lines.append("#!/bin/sh\n")
                 lines.append('#SBATCH --time=1-02:0:00\n')
