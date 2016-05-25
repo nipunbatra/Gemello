@@ -156,6 +156,7 @@ def _find_accuracy(home, appliance, feature="Monthly", num_homes=5):
     json.dump({'f':F_best, 'k':K_best,'accuracy':accur_max},open(os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.json" %(num_homes, appliance,feature, home)),"w") )
 
     pred_df = pd.DataFrame(pred_test)
+    pred_mean = df.ix[train_homes][['%s_%d' %(appliance, month) for month in range(start, stop)]].mean()
     pred_df.index = [home]
     #gt_df = pd.DataFrame(gt_test)
     #print pred_df, gt_df
@@ -163,9 +164,11 @@ def _find_accuracy(home, appliance, feature="Monthly", num_homes=5):
     #print error
     #accuracy_test = 100-error
     #accuracy_test[accuracy_test<0]=0
-
+    gt_df =df.ix[home][['%s_%d' %(appliance, month) for month in range(start, stop)]]
+    gt_df.index = pred_df.columns
+    pred_mean.index = pred_df.columns
     #return accuracy_test.squeeze()
-    return pred_df
+    return pred_df, pred_mean,gt_df
 
 
 
@@ -174,6 +177,6 @@ appliance, feature, home, num_homes = sys.argv[1], sys.argv[2], sys.argv[3], sys
 home = int(home)
 num_homes = int(num_homes)
 
-out_df = _find_accuracy(home, appliance, feature, num_homes)
-out_df.to_csv(os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home)))
-#_save_csv(out_df, "../main-out", appliance, feature)
+pred_df, mean_df, gt_df = _find_accuracy(home, appliance, feature, num_homes)
+pred_df.to_csv(os.path.expanduser("~/main-out-new-larger-num-homes/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home)))
+mean_df.to_csv(os.path.expanduser("~/main-out-new-larger-num-homes-mean/%d_%s_%s_%d.csv" %(num_homes, appliance,feature, home)))
