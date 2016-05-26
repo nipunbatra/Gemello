@@ -61,7 +61,7 @@ for num_homes in range(6, 50, 5):
                     error_mean = (gt-pred_mean).abs()
                     #print error
                     percentage_error = error*100/gt
-                    percentage_accuracy_mean=error_mean*100/gt
+                    percentage_error_mean=error_mean*100/gt
                     #print percentage_error
                     percentage_error[percentage_error>100]=100
 
@@ -70,6 +70,6 @@ for num_homes in range(6, 50, 5):
                     #print error.mean()
                     #out[num_homes][feature][appliance][home] = error.mean()
                     out[num_homes][feature][appliance][home] = percentage_error.mean()
-                    out_mean[num_homes][feature][appliance][home]=percentage_accuracy_mean.mean()
+                    out_mean[num_homes][feature][appliance][home]=percentage_error_mean.mean()
                 except Exception, e:
                     pass
