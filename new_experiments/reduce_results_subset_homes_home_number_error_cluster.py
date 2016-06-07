@@ -1,8 +1,8 @@
 appliances = ["hvac"]
 features = ["Static","Monthly","Monthly+Static"]
 features=["Monthly","Monthly+Static","Static"]
-appliances=["hvac","fridge","wm"]
-appliance=["hvac","fridge"]
+appliances=["hvac","fridge","wm","dw","mw"]
+#appliance=["hvac","fridge"]
 SLURM_OUT = "../slurm_out"
 from subprocess import Popen
 
@@ -73,3 +73,13 @@ for num_homes in range(6, 50, 5):
                     out_mean[num_homes][feature][appliance][home]=percentage_error_mean.mean()
                 except Exception, e:
                     pass
+
+o = {}
+om = {}
+appliance='mw'
+for feature in features:
+    o[feature]={}
+    om[feature]={}
+    for home in range(6, 50, 5):
+        o[feature][home]=pd.DataFrame(out[home][feature])[appliance].dropna().median()
+        om[feature][home]=pd.DataFrame(out_mean[home][feature])[appliance].dropna().median()

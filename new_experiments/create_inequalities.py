@@ -184,6 +184,9 @@ for month_compute in range(1, 13):
     from collections import defaultdict
     import pandas as pd
     co = defaultdict(int)
+    store_path_base = '../../../output/output/ineq_cross/'
+    if not os.path.exists(store_path_base):
+		os.makedirs(store_path_base)
     store_path = '../../../output/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
                                                                         test_region,
                                                                         transform,
