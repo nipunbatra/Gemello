@@ -31,12 +31,12 @@ from itertools import combinations
 
 start_month, end_month = 1,12
 agg_features = np.hstack([['aggregate_'+str(month) for month in range(start_month, end_month+1)],
-                         'ratio_min_max','difference_ratio_min_max','p_25','p_50','p_75','skew','kurtosis'])
+                          'ratio_min_max','difference_ratio_min_max','p_25','p_50','p_75','skew','kurtosis'])
 md_features = ['area','house_num_rooms']
 features = {'md_agg':np.hstack([
-            agg_features,
-            md_features
-            ]).tolist()}
+    agg_features,
+    md_features
+]).tolist()}
 
 f_all = features['md_agg']
 
@@ -64,10 +64,10 @@ def find_distance_train_test(df_train, home_1, home_2, df_test, home_test, featu
         else:
             order = [home_2, home_1]
         return is_common, {'order':order,
-                    'num_f':len(com_f),
-                    'dist_a':a,
-                    'dist_b':b,
-                          'f':com_f}
+                           'num_f':len(com_f),
+                           'dist_a':a,
+                           'dist_b':b,
+                           'f':com_f}
 
 import pandas as pd
 
@@ -86,7 +86,7 @@ def normalise(df):
     new_df[["aggregate_%d" % i for i in range(1, 13)]] = scale_0_1(df[["aggregate_%d" % i for i in range(1, 13)]], min_aggregate, max_aggregate)
     for col in ['area','num_occupants','house_num_rooms','ratio_min_max',
                 'skew','kurtosis','variance','difference_ratio_min_max','p_25',
-               'p_50','p_75']:
+                'p_50','p_75']:
         new_df[col] = scale_0_1(df[col])
     return new_df
 
@@ -186,13 +186,13 @@ for month_compute in range(1, 13):
     co = defaultdict(int)
     store_path_base = '../../../output/output/ineq_cross/'
     if not os.path.exists(store_path_base):
-		os.makedirs(store_path_base)
+        os.makedirs(store_path_base)
     store_path = '../../../output/output/ineq_cross/%s_%s_%s_%s_%d_%d_%d.pkl' %(train_region,
-                                                                        test_region,
-                                                                        transform,
-                                                                        appliance,
-                                                                        month_compute,
-                                                                        test_home, K)
+                                                                                test_region,
+                                                                                transform,
+                                                                                appliance,
+                                                                                month_compute,
+                                                                                test_home, K)
     print store_path
     if os.path.exists(store_path):
         print "already exists"
