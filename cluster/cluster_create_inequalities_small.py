@@ -38,19 +38,8 @@ EFILE = "%s/%s_%s_%d_%s_%d_%s.err" % (SLURM_OUT, train_region[0], test_region[0]
 SLURM_SCRIPT = "%s_%s_%d_%s_%d_%s.pbs" % (train_region[0], test_region[0], test_home, appliance[:2], month, transform)
 CMD = 'python ../new_experiments/create_inequalities.py %s %s %d %s %s %d' % (train_region, test_region,
                                                                              test_home, appliance,
-                                                                             transform, K)
-lines = []
-lines.append("#!/bin/sh\n")
-lines.append('#SBATCH --time=0-05:0:00\n')
-lines.append('#SBATCH --mem=16\n')
-lines.append('#SBATCH -o '+'"' +OFILE+'"\n')
-lines.append('#SBATCH -e '+'"' +EFILE+'"\n')
-lines.append(CMD+'\n')
-
-with open(SLURM_SCRIPT, 'w') as f:
-    f.writelines(lines)
-command = ['sbatch', SLURM_SCRIPT]
-Popen(command)
+                                                                            transform, K)
+Popen(CMD)
 
 
 
