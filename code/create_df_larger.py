@@ -30,10 +30,10 @@ def read_df_larger():
 
 
     df=out_overall['Austin'].query('full_agg_available>0 & md_available>0')
-
+    dfc = df.copy()
     df = normalise(df)
 
-    dfc = df.copy()
+
     features_individual = {'fraction':["fraction_%d" % i for i in range(1, 25)],
                            'area': 'area',
                            'autocorr':'autocorr',
