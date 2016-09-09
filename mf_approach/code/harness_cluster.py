@@ -80,6 +80,7 @@ for appliance in ['hvac','fridge','dw','wm','mw','oven']:
         with open(SLURM_SCRIPT, 'w') as f:
            f.writelines(lines)
         command = ['sbatch', SLURM_SCRIPT]
+        time.sleep(10)
         print Popen(command)
     print "Now sleeping.."
-    time.sleep(15)
+
