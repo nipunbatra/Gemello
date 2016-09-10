@@ -44,7 +44,7 @@ df = df.rename(columns={'house_num_rooms':'num_rooms',
                         'num_occupants':'total_occupants',
                         'difference_ratio_min_max':'ratio_difference_min_max'})
 
-if ALL_HOMES:
+if not ALL_HOMES:
     df = df[(df.full_agg_available == 1) & (df.md_available == 1)]
     dfc = dfc.ix[df.index]
 
