@@ -68,6 +68,7 @@ for appliance in ['hvac','fridge','dw','wm','mw','oven']:
     else:
         start, end=1,13
     X_matrix, X_normalised, col_max, col_min, appliance_cols, aggregate_cols = preprocess(df, dfc, appliance)
+    print len(X_matrix)
     static_features= get_static_features(dfc, X_normalised)
     from copy import deepcopy
     all_cols = deepcopy(appliance_cols)
