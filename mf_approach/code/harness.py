@@ -11,7 +11,7 @@ from features import feature_map
 import subprocess
 
 def _save_results(appliance, lat, feature_comb, test_home, pred_df):
-    pred_df.to_csv(os.path.expanduser("~/collab/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
+    pred_df.to_csv(os.path.expanduser("~/collab_subset/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
 
 out_overall = pickle.load(open('../../data/input/all_regions.pkl', 'r'))
 
