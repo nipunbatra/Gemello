@@ -161,3 +161,56 @@ def get_static_features(dfc, X_normalised):
     occ = dfc.ix[X_normalised.index].num_occupants.div(dfc.ix[X_normalised.index].num_occupants.max()).values
     rooms = dfc.ix[X_normalised.index].house_num_rooms.div(dfc.ix[X_normalised.index].house_num_rooms.max())
     return {"area":area,"occ": occ,"rooms": rooms}
+
+def preprocess_all_appliances(df, dfc):
+
+    all_appliances = ['mw','oven','hvac','fridge','dw','wm']
+    all_appliance_cols = []
+    for appliance in all_appliances:
+        if appliance=="hvac":
+            #start, end=5, 11
+            start, end=1,13
+        else:
+            start, end = 1, 13
+
+        appliance_cols = ['%s_%d' %(appliance, month) for month in range(start, end)]
+        all_appliance_cols.append(appliance_cols)
+
+    aggregate_cols = ['aggregate_%d' %month for month in range(1, 13)]
+
+    all_appliance_cols_flat = []
+    for y in all_appliance_cols:
+        for x in y:
+            all_appliance_cols_flat.append(x)
+    all_cols = deepcopy(all_appliance_cols_flat)
+    all_cols.extend(aggregate_cols)
+    X_matrix = dfc[all_cols]
+
+
+    columns_max = {}
+    columns_min = {}
+    col_max = X_matrix.max()
+    columns_max[appliance]=col_max
+    col_min = X_matrix.min()
+    columns_min[appliance]=col_min
+    X_normalised = X_matrix.copy()
+    #for col in X_matrix.columns:
+    #    X_normalised[col] = (X_matrix[col]-col_min[col])/(col_max[col]-col_min[col])
+    for col in X_matrix.columns:
+        X_normalised[col] = (X_matrix[col]-col_min.min())/(col_max.max()-col_min.min())
+    df = pd.DataFrame(X_normalised)
+    return X_matrix, X_normalised, col_max, col_min, appliance_cols, aggregate_cols, all_appliance_cols, all_appliance_cols_flat
+
+def transform_all_appliances(pred_df,all_appliances,  col_max, col_min):
+    pred_df_copy = pred_df.copy()
+
+    for appliance in all_appliances:
+
+        if appliance=="hvac":
+            start, stop=5, 11
+        else:
+            start, stop=1, 13
+
+        for month in range(start, stop):
+            pred_df_copy['%s_%d' %(appliance,month)] = (col_max.max()-col_min.min())*pred_df['%s_%d'%(appliance,month)] +col_min.min()
+    return pred_df_copy

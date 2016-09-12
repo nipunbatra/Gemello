@@ -1,3 +1,5 @@
+ALL_HOMES = True
+
 from matrix_factorisation import nmf_features, transform, transform_2, preprocess, get_static_features
 import  os
 
@@ -8,8 +10,13 @@ import sys
 sys.path.append("../../code")
 from features import feature_map
 
+
 def _save_results(appliance, lat, feature_comb, test_home, pred_df):
-    pred_df.to_csv(os.path.expanduser("~/collab_subset/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
+    if ALL_HOMES:
+        pred_df.to_csv(os.path.expanduser("~/collab_all_homes/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
+    else:
+        pred_df.to_csv(os.path.expanduser("~/collab_subset/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
+
 
 out_overall = pickle.load(open('../../data/input/all_regions.pkl', 'r'))
 
@@ -33,7 +40,9 @@ df = df.rename(columns={'house_num_rooms':'num_rooms',
                         'num_occupants':'total_occupants',
                         'difference_ratio_min_max':'ratio_difference_min_max'})
 
-
+if not ALL_HOMES:
+    df = df[(df.full_agg_available == 1) & (df.md_available == 1)]
+    dfc = dfc.ix[df.index]
 
 
 from all_functions import *

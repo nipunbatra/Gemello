@@ -1,4 +1,4 @@
-ALL_HOMES = False
+ALL_HOMES = True
 
 SLURM_OUT = "../../slurm_out"
 from subprocess import Popen
@@ -17,7 +17,7 @@ import subprocess
 
 def _save_results(appliance, lat, feature_comb, test_home, pred_df):
     if ALL_HOMES:
-        pred_df.to_csv(os.path.expanduser("~/collab/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
+        pred_df.to_csv(os.path.expanduser("~/collab_all_homes/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
     else:
         pred_df.to_csv(os.path.expanduser("~/collab_subset/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
 

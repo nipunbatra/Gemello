@@ -1,6 +1,6 @@
 import os, glob
 import pandas as pd
-path = os.path.expanduser('~/collab/')
+path = os.path.expanduser('~/collab_subset/')
 
 
 def compute_prediction(appliance, feature, k):
@@ -52,3 +52,20 @@ def find_optimal(appliance):
             except Exception, e:
                 print e
     return pd.DataFrame(o)
+
+def create_overall_dict():
+    out = {}
+    for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+        out[appliance]={}
+        for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+            out[appliance][feature]={}
+            for k in range(1, 10):
+                try:
+                    print feature, k, appliance
+                    pred_df = compute_prediction(appliance, feature, k)
+
+                    out[appliance][feature][k] = pred_df
+                except:
+                    pass
+    return out
+
