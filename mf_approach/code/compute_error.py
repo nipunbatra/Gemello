@@ -1,6 +1,6 @@
 import os, glob
 import pandas as pd
-path = os.path.expanduser('~/collab_subset/')
+path = os.path.expanduser('~/collab_all_homes/')
 
 
 def compute_prediction(appliance, feature, k):

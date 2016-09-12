@@ -1,5 +1,3 @@
-ALL_HOMES = True
-
 from matrix_factorisation import nmf_features, transform, transform_2, preprocess, get_static_features
 import  os
 
@@ -40,6 +38,12 @@ df = df.rename(columns={'house_num_rooms':'num_rooms',
                         'num_occupants':'total_occupants',
                         'difference_ratio_min_max':'ratio_difference_min_max'})
 
+
+
+appliance, test_home, ALL_HOMES = sys.argv[1:]
+test_home = int(test_home)
+ALL_HOMES =bool(int(ALL_HOMES))
+
 if not ALL_HOMES:
     df = df[(df.full_agg_available == 1) & (df.md_available == 1)]
     dfc = dfc.ix[df.index]
@@ -56,9 +60,6 @@ for l in range(1,4):
 
 
 
-appliance, test_home = sys.argv[1:]
-test_home = int(test_home)
-
 out = {}
 
 if appliance=="hvac":
@@ -74,7 +75,7 @@ all_cols.extend(aggregate_cols)
 
 
 
-for feature_comb in np.array(feature_combinations)[:]:
+for feature_comb in np.array(feature_combinations)[:1]:
     print feature_comb
     out[tuple(feature_comb)]={}
     if 'None' in feature_comb:
@@ -93,7 +94,7 @@ for feature_comb in np.array(feature_combinations)[:]:
             idx_user[fe]=np.where(static_features_df[fe].notnull())[0]
             data_user[fe]=static_features_df[fe].dropna().values
 
-    for lat in range(1,10):
+    for lat in range(1,2):
         try:
             print lat
 
@@ -115,5 +116,5 @@ for feature_comb in np.array(feature_combinations)[:]:
             out[tuple(feature_comb)][lat] = transform_2(pred_df.ix[test_home], appliance, col_max, col_min)[appliance_cols]
             pred_df = transform_2(pred_df.ix[test_home], appliance, col_max, col_min)[appliance_cols]
             _save_results(appliance, lat, feature_comb, test_home, pred_df)
-        except:
-            print "Exception occured"
+        except Exception, e:
+            print "Exception occured", e

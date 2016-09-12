@@ -2,7 +2,7 @@ import pickle
 import glob, os
 import pandas as pd
 path = os.path.expanduser('~/output/journal/gemello/new_all_homes_variable_features/')
-path = os.path.expanduser('~/output/journal/gemello/homes_with_all_features/')
+#path = os.path.expanduser('~/output/journal/gemello/homes_with_all_features/')
 
 
 res = {}
