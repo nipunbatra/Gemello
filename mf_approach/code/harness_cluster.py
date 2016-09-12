@@ -1,5 +1,6 @@
 ALL_HOMES = True
 
+print ALL_HOMES
 SLURM_OUT = "../../slurm_out"
 from subprocess import Popen
 import time
