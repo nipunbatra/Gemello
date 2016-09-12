@@ -93,7 +93,7 @@ for appliance in ['hvac']:
         with open(SLURM_SCRIPT, 'w') as f:
            f.writelines(lines)
         command = ['sbatch', SLURM_SCRIPT]
-        time.sleep(3)
+        time.sleep(2)
         print Popen(command)
     print "Now sleeping.."
 
