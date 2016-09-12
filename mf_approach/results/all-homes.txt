@@ -1,0 +1,12 @@
+\begin{tabular}{lrrrrr}
+\toprule
+{} &   FHMM &    LBM &     RA &    KNN &     MF \\
+\midrule
+HVAC             &  15.65 &  29.37 &  18.40 &  11.96 &  12.02 \\
+Fridge           &   3.90 &   2.69 &   4.41 &   3.38 &   3.62 \\
+Oven             &  34.00 &   3.84 &    NaN &   1.49 &   1.32 \\
+Dish\textbackslashnwasher     &  13.80 &   1.74 &   1.22 &   1.01 &   0.92 \\
+Washing\textbackslashnmachine &   3.89 &  13.29 &   1.40 &   1.45 &   1.33 \\
+Microwave        &   5.76 &   1.01 &    NaN &   0.98 &   0.91 \\
+\bottomrule
+\end{tabular}

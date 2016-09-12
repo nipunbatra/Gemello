@@ -75,7 +75,7 @@ all_cols.extend(aggregate_cols)
 
 
 
-for feature_comb in np.array(feature_combinations)[:]:
+for feature_comb in np.array(feature_combinations)[:1]:
     print feature_comb
     out[tuple(feature_comb)]={}
     if 'None' in feature_comb:
@@ -94,7 +94,7 @@ for feature_comb in np.array(feature_combinations)[:]:
             idx_user[fe]=np.where(static_features_df[fe].notnull())[0]
             data_user[fe]=static_features_df[fe].dropna().values
 
-    for lat in range(1,10):
+    for lat in range(2,3):
         try:
             print lat
 
