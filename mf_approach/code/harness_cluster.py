@@ -1,5 +1,8 @@
-ALL_HOMES = True
-
+ALL_HOMES = False
+if not ALL_HOMES:
+    home_var = 0
+else:
+    home_var=1
 print ALL_HOMES
 SLURM_OUT = "../../slurm_out"
 from subprocess import Popen
@@ -15,12 +18,6 @@ from subprocess import Popen
 sys.path.append("../../code")
 from features import feature_map
 import subprocess
-
-def _save_results(appliance, lat, feature_comb, test_home, pred_df):
-    if ALL_HOMES:
-        pred_df.to_csv(os.path.expanduser("~/collab_all_homes/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
-    else:
-        pred_df.to_csv(os.path.expanduser("~/collab_subset/%s_%d_%s_%d.csv" %(appliance, lat, '_'.join(feature_comb), test_home)))
 
 
 out_overall = pickle.load(open('../../data/input/all_regions.pkl', 'r'))
@@ -62,7 +59,8 @@ for l in range(1,4):
 
 import time
 
-for appliance in ['hvac','fridge','dw','wm','mw','oven']:
+#for appliance in ['hvac','fridge','dw','wm','mw','oven']:
+for appliance in ['hvac']:
 
     if appliance=="hvac":
         start, end = 5,11
@@ -79,7 +77,7 @@ for appliance in ['hvac','fridge','dw','wm','mw','oven']:
         OFILE = "%s/%s_%d.out" % (SLURM_OUT, appliance, home)
         EFILE = "%s/%s_%d.err" % (SLURM_OUT, appliance, home)
         SLURM_SCRIPT = "%s_%d.pbs" %(appliance, home)
-        CMD = 'python train_all_homes_test_all_homes.py %s %d' %(appliance, home)
+        CMD = 'python train_all_homes_test_all_homes.py %s %d %d' %(appliance, home, home_var)
         lines = []
         lines.append("#!/bin/sh\n")
         lines.append('#SBATCH --time=0-01:0:00\n')
