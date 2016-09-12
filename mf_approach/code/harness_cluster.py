@@ -63,7 +63,7 @@ for l in range(1,4):
 
 import time
 
-for appliance in ['fridge','dw','wm','mw','oven']:
+for appliance in ['hvac','fridge','dw','wm','mw','oven']:
 #for appliance in ['hvac']:
 
     if appliance=="hvac":
