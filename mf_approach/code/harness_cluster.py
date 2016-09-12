@@ -1,4 +1,8 @@
-ALL_HOMES = False
+import sys
+ALL_HOMES, = sys.argv[1:]
+ALL_HOMES = bool(int(ALL_HOMES))
+
+
 if not ALL_HOMES:
     home_var = 0
 else:
