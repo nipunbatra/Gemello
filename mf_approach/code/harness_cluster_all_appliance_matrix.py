@@ -68,7 +68,7 @@ for home in df.index:
     OFILE = "%s/%d.out" % (SLURM_OUT, home)
     EFILE = "%s/%d.err" % (SLURM_OUT, home)
     SLURM_SCRIPT = "%d.pbs" %(home)
-    CMD = 'python train_all_homes_test_all_homes_all_appliances.py %s %d %d' %(home, home_var)
+    CMD = 'python train_all_homes_test_all_homes_all_appliances.py %d %d' %(home, home_var)
     lines = []
     lines.append("#!/bin/sh\n")
     lines.append('#SBATCH --time=0-01:0:00\n')
