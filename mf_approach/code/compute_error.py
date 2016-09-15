@@ -1,10 +1,18 @@
 import os, glob
 import pandas as pd
 path = os.path.expanduser('~/collab_all_homes/')
+#path = os.path.expanduser('~/subset_105/')
 
 
 def compute_prediction(appliance, feature, k):
     files = glob.glob(path+'%s_%d_%s_*.csv' %(appliance, k, feature))
+    out = {}
+    for e in files:
+        out[int(e.split('_')[-1][:-4])] = pd.read_csv(e,index_col=0, header=None).squeeze()
+    return pd.DataFrame(out).T
+
+def compute_prediction_subset(appliance, feature, latent_factors, ran, num_homes):
+    files = glob.glob(path +'%d_%d_%s_%d_%s_*.csv' % (ran, num_homes, appliance, latent_factors, feature))
     out = {}
     for e in files:
         out[int(e.split('_')[-1][:-4])] = pd.read_csv(e,index_col=0, header=None).squeeze()
@@ -68,4 +76,27 @@ def create_overall_dict():
                 except:
                     pass
     return out
+
+def create_overall_dict_subset():
+    out = {}
+    for num_homes in range(5, 55, 5):
+        out[num_homes]={}
+        #for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+        for appliance in ['hvac']:
+            out[num_homes][appliance]={}
+            for feature in ['None']:
+            #for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+                out[num_homes][appliance][feature]={}
+                #for latent_factors in range(2, 10):
+                for latent_factors in range(2,3):
+                    out[num_homes][appliance][feature][latent_factors] = {}
+                    for ran in range(10):
+                        try:
+                            print num_homes, feature, latent_factors, appliance
+                            pred_df = compute_prediction_subset(appliance, feature, latent_factors, ran, num_homes)
+
+                            out[num_homes][appliance][feature][latent_factors][ran] = pred_df
+                        except Exception, e:
+                            print e
+
 
