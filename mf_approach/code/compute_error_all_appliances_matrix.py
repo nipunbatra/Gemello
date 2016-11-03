@@ -12,19 +12,18 @@ def compute_prediction(feature, k):
 
 def find_all_error():
     out = {}
-    for appliance in ['wm','mw','oven','fridge','hvac','dw']:
-        out[appliance]={}
-        for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
-            out[appliance][feature]={}
-            for k in range(1, 10):
-                try:
-                    print feature, k, appliance
-                    pred_df = compute_prediction(appliance, feature, k)
-                    gt_df = find_gt_df(appliance, pred_df)
-                    out[appliance][feature][k] = find_error_df(gt_df, pred_df)
-                except:
-                    pass
-    return out
+
+    for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms']:
+        out[feature]={}
+        for k in range(1, 10):
+            try:
+                print feature, k,
+                pred_df = compute_prediction(feature, k)
+                gt_df = find_gt_df(appliance, pred_df)
+                out[feature][k] = find_error_df(gt_df, pred_df)
+            except:
+                pass
+return out
 
 def find_gt_df(appliance, pred_df):
     import pickle
@@ -56,13 +55,18 @@ def find_optimal(appliance):
 def create_overall_dict():
     out = {}
     for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+        if appliance=="hvac":
+            start, stop = 5, 11
+        else:
+            start, stop =1,13
+        appliance_cols = [appliance+"_"+str(m) for m in range(start, stop)]
         out[appliance]={}
         for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
             out[appliance][feature]={}
             for k in range(1, 10):
                 try:
                     print feature, k, appliance
-                    pred_df = compute_prediction(appliance, feature, k)
+                    pred_df = compute_prediction(feature, k)[appliance_cols]
 
                     out[appliance][feature][k] = pred_df
                 except:
