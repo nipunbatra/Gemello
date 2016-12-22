@@ -1,12 +1,14 @@
 import sys
-ALL_HOMES, = sys.argv[1:]
+ALL_HOMES, case = sys.argv[1:]
 ALL_HOMES = bool(int(ALL_HOMES))
+case = int(case)
 
 
 if not ALL_HOMES:
     home_var = 0
 else:
     home_var=1
+
 print ALL_HOMES
 SLURM_OUT = "../../slurm_out"
 from subprocess import Popen
@@ -26,7 +28,7 @@ import subprocess
 
 out_overall = pickle.load(open('../../data/input/all_regions.pkl', 'r'))
 
-region = "Austin"
+region = "SanDiego"
 
 df = out_overall[region]
 
@@ -63,8 +65,8 @@ for l in range(1,4):
 
 import time
 
-for appliance in ['hvac','fridge','dw','wm','mw','oven']:
-#for appliance in ['hvac']:
+#for appliance in ['hvac','fridge','dw','wm','mw','oven']:
+for appliance in ['hvac','fridge']:
 
     if appliance=="hvac":
         start, end = 5,11
@@ -81,7 +83,7 @@ for appliance in ['hvac','fridge','dw','wm','mw','oven']:
         OFILE = "%s/%s_%d.out" % (SLURM_OUT, appliance, home)
         EFILE = "%s/%s_%d.err" % (SLURM_OUT, appliance, home)
         SLURM_SCRIPT = "%s_%d.pbs" %(appliance, home)
-        CMD = 'python train_all_homes_test_all_homes.py %s %d %d' %(appliance, home, home_var)
+        CMD = 'both_regions.py %s %d %d %d' %(appliance, home, home_var, case)
         lines = []
         lines.append("#!/bin/sh\n")
         lines.append('#SBATCH --time=0-01:0:00\n')
