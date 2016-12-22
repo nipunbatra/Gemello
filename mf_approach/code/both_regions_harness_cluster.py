@@ -83,7 +83,7 @@ for appliance in ['hvac','fridge']:
         OFILE = "%s/%s_%d.out" % (SLURM_OUT, appliance, home)
         EFILE = "%s/%s_%d.err" % (SLURM_OUT, appliance, home)
         SLURM_SCRIPT = "%s_%d.pbs" %(appliance, home)
-        CMD = 'both_regions.py %s %d %d %d' %(appliance, home, home_var, case)
+        CMD = 'python both_regions.py %s %d %d %d' %(appliance, home, home_var, case)
         lines = []
         lines.append("#!/bin/sh\n")
         lines.append('#SBATCH --time=0-01:0:00\n')
