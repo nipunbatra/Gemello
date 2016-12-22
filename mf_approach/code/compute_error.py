@@ -3,6 +3,12 @@ import pandas as pd
 path = os.path.expanduser('~/collab_all_homes_both_regions/')
 #path = os.path.expanduser('~/subset_105/')
 
+def compute_prediction_case(case, appliance, feature, k):
+    files = glob.glob(path+'%d_%s_%d_%s_*.csv' %(case, appliance, k, feature))
+    out = {}
+    for e in files:
+        out[int(e.split('_')[-1][:-4])] = pd.read_csv(e,index_col=0, header=None).squeeze()
+    return pd.DataFrame(out).T
 
 def compute_prediction(appliance, feature, k):
     files = glob.glob(path+'%s_%d_%s_*.csv' %(appliance, k, feature))
@@ -63,14 +69,35 @@ def find_optimal(appliance):
 
 def create_overall_dict():
     out = {}
-    for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+    #for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+    for appliance in ['fridge']:
         out[appliance]={}
-        for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+        for feature in ['None']:
+        #for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
             out[appliance][feature]={}
             for k in range(1, 10):
                 try:
                     print feature, k, appliance
                     pred_df = compute_prediction(appliance, feature, k)
+
+                    out[appliance][feature][k] = pred_df
+                except:
+                    pass
+    return out
+
+
+def create_overall_dict_case(case):
+    out = {}
+    #for appliance in ['wm','mw','oven','fridge','hvac','dw']:
+    for appliance in ['fridge']:
+        out[appliance]={}
+        for feature in ['None']:
+        #for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+            out[appliance][feature]={}
+            for k in range(1, 10):
+                try:
+                    print feature, k, appliance
+                    pred_df = compute_prediction_case(case, appliance, feature, k)
 
                     out[appliance][feature][k] = pred_df
                 except:
