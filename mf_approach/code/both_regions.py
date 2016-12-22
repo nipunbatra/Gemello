@@ -5,7 +5,8 @@
 ################################################################
 
 
-from matrix_factorisation import nmf_features, transform, transform_2, preprocess, get_static_features
+from matrix_factorisation import nmf_features, transform, transform_2, \
+    preprocess, get_static_features, get_static_features_region_level
 import  os
 
 import numpy as np
@@ -63,7 +64,13 @@ elif case==2:
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
 elif case==3:
-    pass
+    sd_df['temperature']=.92
+    sd_dfc['temperature'] = .92
+    aus_df['temperature'] = 1.0
+    aus_dfc['temperature'] = 1.0
+    df = pd.concat([sd_df, aus_df])
+    dfc = pd.concat([sd_dfc, aus_dfc])
+
 
 
 
@@ -78,7 +85,7 @@ from features_larger import *
 import itertools
 feature_combinations = [['None']]
 for l in range(1,4):
-    for a in itertools.combinations(['occ','area','rooms'], l):
+    for a in itertools.combinations(['temperature','occ','area','rooms'], l):
         feature_combinations.append(list(a))
 
 
@@ -90,15 +97,25 @@ if appliance=="hvac":
 else:
     start, end=1,13
 X_matrix, X_normalised, col_max, col_min, appliance_cols, aggregate_cols = preprocess(df, dfc, appliance)
-static_features= get_static_features(dfc, X_normalised)
+
+if case==3:
+    static_features = get_static_features_region_level(dfc, X_normalised)
+else:
+    static_features = get_static_features(dfc, X_normalised)
+
+
 from copy import deepcopy
 all_cols = deepcopy(appliance_cols)
 all_cols.extend(aggregate_cols)
 #all_feature_homes = dfc[(dfc.full_agg_available == 1) & (dfc.md_available == 1)][all_cols].dropna().index
 
 
+if case==3:
+    max_f = 2
+else:
+    max_f=1
 
-for feature_comb in np.array(feature_combinations)[:1]:
+for feature_comb in np.array(feature_combinations)[:max_f]:
     print feature_comb
     out[tuple(feature_comb)]={}
     if 'None' in feature_comb:
