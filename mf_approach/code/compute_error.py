@@ -1,6 +1,6 @@
 import os, glob
 import pandas as pd
-path = os.path.expanduser('~/collab_all_homes/')
+path = os.path.expanduser('~/collab_all_homes_both_regions/')
 #path = os.path.expanduser('~/subset_105/')
 
 
@@ -22,7 +22,7 @@ def find_all_error():
     out = {}
     for appliance in ['wm','mw','oven','fridge','hvac','dw']:
         out[appliance]={}
-        for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+        for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
             out[appliance][feature]={}
             for k in range(1, 10):
                 try:
@@ -37,7 +37,7 @@ def find_all_error():
 def find_gt_df(appliance, pred_df):
     import pickle
     out_overall = pickle.load(open('/if6/nb2cz/git/Neighbourhood-NILM/data/input/all_regions.pkl', 'r'))
-    region = "Austin"
+    region = "SanDiego"
     df = out_overall[region]
     gt_df = df[pred_df.columns].ix[pred_df.index]
     return gt_df
@@ -48,7 +48,7 @@ def find_error_df(gt_df, pred_df):
 
 def find_optimal(appliance):
     o = {}
-    for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+    for feature in ['None','temperature', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
         o[feature]={}
         for k in range(1, 10):
             try:
@@ -65,7 +65,7 @@ def create_overall_dict():
     out = {}
     for appliance in ['wm','mw','oven','fridge','hvac','dw']:
         out[appliance]={}
-        for feature in ['None', 'occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
+        for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
             out[appliance][feature]={}
             for k in range(1, 10):
                 try:
