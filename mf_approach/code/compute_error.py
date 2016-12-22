@@ -89,9 +89,9 @@ def create_overall_dict():
 def create_overall_dict_case(case):
     out = {}
     #for appliance in ['wm','mw','oven','fridge','hvac','dw']:
-    for appliance in ['fridge']:
+    for appliance in ['fridge','hvac']:
         out[appliance]={}
-        for feature in ['None']:
+        for feature in ['None','temperature']:
         #for feature in ['None', 'temperature','occ', 'area','rooms','occ_area','occ_rooms','area_rooms','occ_area_rooms']:
             out[appliance][feature]={}
             for k in range(1, 10):
