@@ -80,9 +80,12 @@ elif case==3:
 elif case==4:
     df = sd_df
     dfc = sd_dfc
+    """
     for key_num, key in enumerate(dd_keys):
         sd_df[key]=dds['SanDiego'][key_num]
         sd_dfc[key]=dds['SanDiego'][key_num]
+    """
+
 
 
 
@@ -100,10 +103,10 @@ from features_larger import *
 import itertools
 feature_combinations = [['None']]
 for l in range(1,2):
-    for a in itertools.combinations(['dd_1','dd_2','dd_3','dd_4','dd_5',
+    for a in itertools.combinations(['occ','area','rooms','dd_1','dd_2','dd_3','dd_4','dd_5',
                                      'dd_6','dd_7','dd_8','dd_9','dd_10',
-                                     'dd_11','dd_12',
-                                     'occ','area','rooms'], l):
+                                     'dd_11','dd_12'
+                                     ], l):
         feature_combinations.append(list(a))
 
 
@@ -128,10 +131,10 @@ all_cols.extend(aggregate_cols)
 #all_feature_homes = dfc[(dfc.full_agg_available == 1) & (dfc.md_available == 1)][all_cols].dropna().index
 
 
-if case>=3:
+if case==3:
     max_f = 20
 else:
-    max_f=1
+    max_f=4
 
 for feature_comb in np.array(feature_combinations)[:max_f]:
     print feature_comb
