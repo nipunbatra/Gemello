@@ -1,7 +1,8 @@
 ###################CASES#######################################
 ### CASE 1: Train and test on homes from SD w/o static features
 ### CASE 2: Train on homes from SD and Austin w/o static features
-### Case 3: Train on homes from SD and Austin w/ temp feature
+### Case 3: Train on homes from SD and Austin w/ static and temp feature
+### Case 4: Train and test on homes from SD w static and temp features
 ################################################################
 
 
@@ -76,6 +77,14 @@ elif case==3:
         aus_dfc[key]=dds['Austin'][key_num]
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
+elif case==4:
+    df = sd_df
+    dfc = sd_dfc
+    for key_num, key in enumerate(dd_keys):
+        sd_df[key]=dds['SanDiego'][key_num]
+        sd_dfc[key]=dds['SanDiego'][key_num]
+
+
 
 
 
@@ -107,7 +116,7 @@ else:
     start, end=1,13
 X_matrix, X_normalised, col_max, col_min, appliance_cols, aggregate_cols = preprocess(df, dfc, appliance)
 
-if case==3:
+if case>=3:
     static_features = get_static_features_region_level(dfc, X_normalised)
 else:
     static_features = get_static_features(dfc, X_normalised)
@@ -119,7 +128,7 @@ all_cols.extend(aggregate_cols)
 #all_feature_homes = dfc[(dfc.full_agg_available == 1) & (dfc.md_available == 1)][all_cols].dropna().index
 
 
-if case==3:
+if case>=3:
     max_f = 20
 else:
     max_f=1
