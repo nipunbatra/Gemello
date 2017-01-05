@@ -120,7 +120,7 @@ all_cols.extend(aggregate_cols)
 
 
 if case==3:
-    max_f = 2
+    max_f = 13
 else:
     max_f=1
 
