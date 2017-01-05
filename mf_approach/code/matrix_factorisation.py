@@ -168,8 +168,8 @@ def get_static_features_region_level(dfc, X_normalised):
     rooms = dfc.ix[X_normalised.index].house_num_rooms.div(dfc.ix[X_normalised.index].house_num_rooms.max())
     dd_keys = ['dd_' + str(x) for x in range(1, 13)]
     out =  {"area":area,"occ": occ,"rooms": rooms}
-    for dd_k in dd_keys:
-        out[dd_k] =  dfc.ix[X_normalised.index][dd_k].div(dfc.ix[X_normalised.index][dd_k].max())
+    #for dd_k in dd_keys:
+    #    out[dd_k] =  dfc.ix[X_normalised.index][dd_k].div(dfc.ix[X_normalised.index][dd_k].max())
     return out
 
 def preprocess_all_appliances(df, dfc):

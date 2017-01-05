@@ -134,7 +134,7 @@ all_cols.extend(aggregate_cols)
 if case==3:
     max_f = 20
 else:
-    max_f=4
+    max_f=3
 
 for feature_comb in np.array(feature_combinations)[:max_f]:
     print feature_comb
