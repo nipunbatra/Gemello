@@ -166,8 +166,11 @@ def get_static_features_region_level(dfc, X_normalised):
     area = dfc.ix[X_normalised.index].area.div(dfc.ix[X_normalised.index].area.max()).values
     occ = dfc.ix[X_normalised.index].num_occupants.div(dfc.ix[X_normalised.index].num_occupants.max()).values
     rooms = dfc.ix[X_normalised.index].house_num_rooms.div(dfc.ix[X_normalised.index].house_num_rooms.max())
-    temperature = dfc.ix[X_normalised.index].temperature.div(dfc.ix[X_normalised.index].temperature.max())
-    return {"area":area,"occ": occ,"rooms": rooms,"temperature":temperature}
+    dd_keys = ['dd_' + str(x) for x in range(1, 13)]
+    out =  {"area":area,"occ": occ,"rooms": rooms}
+    for dd_k in dd_keys.keys():
+        out[dd_k] =  dfc.ix[X_normalised.index][dd_k].div(dfc.ix[X_normalised.index][dd_k].max())
+    return out
 
 def preprocess_all_appliances(df, dfc):
 
