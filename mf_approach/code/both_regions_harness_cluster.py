@@ -59,10 +59,12 @@ from features_larger import *
 
 import itertools
 feature_combinations = [['None']]
-for l in range(1,4):
-    for a in itertools.combinations(['occ','area','rooms'], l):
+for l in range(1,2):
+    for a in itertools.combinations(['dd_1','dd_2','dd_3','dd_4','dd_5',
+                                     'dd_6','dd_7','dd_8','dd_9','dd_10',
+                                     'dd_11','dd_12',
+                                     'occ','area','rooms'], l):
         feature_combinations.append(list(a))
-
 import time
 
 #for appliance in ['hvac','fridge','dw','wm','mw','oven']:
@@ -83,7 +85,7 @@ for appliance in ['hvac','fridge']:
         OFILE = "%s/%s_%d.out" % (SLURM_OUT, appliance, home)
         EFILE = "%s/%s_%d.err" % (SLURM_OUT, appliance, home)
         SLURM_SCRIPT = "%s_%d.pbs" %(appliance, home)
-        CMD = 'python both_regions.py %s %d %d %d' %(appliance, home, home_var, case)
+        CMD = 'python both_regions_dd.py %s %d %d %d' %(appliance, home, home_var, case)
         lines = []
         lines.append("#!/bin/sh\n")
         lines.append('#SBATCH --time=0-01:0:00\n')
