@@ -69,10 +69,11 @@ elif case==2:
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
 elif case==3:
-    sd_df[dd_keys]=dds['SanDiego']
-    sd_dfc[dd_keys]=dds['SanDiego']
-    aus_df[dd_keys]=dds['Austin']
-    aus_dfc[dd_keys]=dds['Austin']
+    for key_num, key in enumerate(dd_keys):
+        sd_df[key]=dds['SanDiego'][key_num]
+        sd_dfc[key]=dds['SanDiego'][key_num]
+        aus_df[key]=dds['Austin'][key_num]
+        aus_dfc[key]=dds['Austin'][key_num]
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
 
