@@ -1,7 +1,8 @@
 ###################CASES#######################################
 ### CASE 1: Train and test on homes from SD w/o static features
 ### CASE 2: Train on homes from SD and Austin w/o static features
-### Case 3: Train on homes from SD and Austin w/ temp feature
+### Case 3: Train on homes from SD and Austin w/ static and temp feature
+### Case 4: Train and test on homes from SD w static and temp features
 ################################################################
 
 
@@ -69,12 +70,24 @@ elif case==2:
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
 elif case==3:
-    sd_df[dd_keys]=dds['SanDiego']
-    sd_dfc[dd_keys]=dds['SanDiego']
-    aus_df[dd_keys]=dds['Austin']
-    aus_dfc[dd_keys]=dds['Austin']
+    for key_num, key in enumerate(dd_keys):
+        sd_df[key]=dds['SanDiego'][key_num]
+        sd_dfc[key]=dds['SanDiego'][key_num]
+        aus_df[key]=dds['Austin'][key_num]
+        aus_dfc[key]=dds['Austin'][key_num]
     df = pd.concat([sd_df, aus_df])
     dfc = pd.concat([sd_dfc, aus_dfc])
+elif case==4:
+    df = sd_df
+    dfc = sd_dfc
+    """
+    for key_num, key in enumerate(dd_keys):
+        sd_df[key]=dds['SanDiego'][key_num]
+        sd_dfc[key]=dds['SanDiego'][key_num]
+    """
+
+
+
 
 
 
@@ -90,10 +103,10 @@ from features_larger import *
 import itertools
 feature_combinations = [['None']]
 for l in range(1,2):
-    for a in itertools.combinations(['dd_1','dd_2','dd_3','dd_4','dd_5',
+    for a in itertools.combinations(['occ','area','rooms','dd_1','dd_2','dd_3','dd_4','dd_5',
                                      'dd_6','dd_7','dd_8','dd_9','dd_10',
-                                     'dd_11','dd_12',
-                                     'occ','area','rooms'], l):
+                                     'dd_11','dd_12'
+                                     ], l):
         feature_combinations.append(list(a))
 
 
@@ -106,7 +119,7 @@ else:
     start, end=1,13
 X_matrix, X_normalised, col_max, col_min, appliance_cols, aggregate_cols = preprocess(df, dfc, appliance)
 
-if case==3:
+if case>=3:
     static_features = get_static_features_region_level(dfc, X_normalised)
 else:
     static_features = get_static_features(dfc, X_normalised)
@@ -119,9 +132,9 @@ all_cols.extend(aggregate_cols)
 
 
 if case==3:
-    max_f = 2
+    max_f = 20
 else:
-    max_f=1
+    max_f=3
 
 for feature_comb in np.array(feature_combinations)[:max_f]:
     print feature_comb
@@ -142,7 +155,7 @@ for feature_comb in np.array(feature_combinations)[:max_f]:
             idx_user[fe]=np.where(static_features_df[fe].notnull())[0]
             data_user[fe]=static_features_df[fe].dropna().values
 
-    for lat in range(1,8):
+    for lat in range(1,10):
         try:
             print lat
 
