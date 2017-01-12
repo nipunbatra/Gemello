@@ -19,6 +19,7 @@ Please use the following bib entry to cite the paper.
 ```
 
 More pertinent links to the paper
+
 1. [Paper pdf](https://www.iiitd.edu.in/~nipunb/papers/gemello.pdf)
 2. [Youtube video](https://www.youtube.com/watch?v=pzgqd9OhvDA)
 3. [Poster](https://www.iiitd.edu.in/~nipunb/slides/kdd_poster_final.pdf)
